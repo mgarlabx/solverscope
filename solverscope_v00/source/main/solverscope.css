@@ -1,0 +1,169 @@
+/* ┌────────────────────────────────────────┐ 
+   │ Solverscope                            │ 
+   │ Copyright © 2020 Maurício Garcia       │ 
+   │ SOLVERTANK                             │ 
+   └───────────────────────────────────--───┘ 
+*/
+
+
+
+		
+.svc-master {
+	font-size: 70%;
+	margin-left: 1rem;
+	color: #C0C0C0;
+}
+
+#svc-master-info {
+	color: #C0C0C0;
+}
+
+.svc-main-content {
+	display: none;
+}
+
+.svc-main-content-close {
+	cursor: pointer;
+	float: right;
+	margin-right: 1rem;
+	padding: 0.5rem;
+}
+
+.svc-main-content-header {
+	font-size: 120%;
+	text-align: left;
+	margin-left: 0.5rem;
+	margin-bottom: 1rem;
+	font-weight: bold;
+}
+
+
+.svc-main-content-path {
+	font-size: 90%;
+	text-align: left;
+	margin-left: 1rem;
+	margin-bottom: 1rem;
+}
+
+
+
+
+/**** EDITOR *************************************************************************************************/
+
+#svc-editor-id {
+	display: none;
+}
+
+#svc-editor-text {
+    border: 1px solid #C0C0C0;
+    height: 450px;
+    padding: 10px;
+    overflow: scroll;
+    padding: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	background-color: #F0F0F0;
+}
+
+
+#svc-editor-orderby-label {
+	display: inline-block;
+	margin-right:0.5rem;
+}
+
+#svc-editor-orderby-value {
+	display: inline-block;
+	text-align: center;
+	width: 3rem;
+	margin-right: 2rem;
+}
+	
+#svc-editor-style-label {
+	display: inline-block;
+	margin-right: 0.5rem;
+}
+
+#svc-editor-style-value {
+	display: inline-block;
+	margin-right: 2rem;
+	padding-right: 0.5rem;
+	padding-left: 0.5rem;
+}
+
+.svc-editor-button {
+	width: 4rem;
+	margin-right: 1rem;
+}
+
+#svc-editor-colors {
+	position: absolute;
+	display: none;
+}
+
+.svc-editor-color {
+	width: 2rem;
+	height: 2rem;
+	cursor: pointer;
+	border: 1px solid white;
+}
+
+.svc-editor-color:hover {
+	border: 1px solid black;
+}
+
+
+#svc-editor-symbols {
+	position: absolute;
+	display: none;
+}
+
+.svc-editor-symbol {
+	width: 2rem;
+	height: 2rem;
+	cursor: pointer;
+	border: 1px solid white;
+}
+
+.svc-editor-symbol:hover {
+	border: 1px solid black;
+}
+
+
+.svc-editor-for {
+	font-size: 200%;
+	width: 100%;
+	text-align: center;
+	padding: 1rem;
+}
+
+
+.svc-editor-img {
+	width: 100%;
+	text-align: center;
+	padding: 1rem;
+}
+
+
+.svc-editor-txt-paragraph {
+	font-size: 100%;
+	font-weight: normal;
+}
+
+.svc-editor-txt-heading-1 {
+	font-size: 180%;
+	font-weight: bold;
+}
+
+.svc-editor-txt-heading-2 {
+	font-size: 150%;
+	font-weight: bold;
+}
+
+.svc-editor-txt-footnote {
+	width: 100%;
+	text-align: right;
+	margin-bottom: 2rem;
+	font-size: 75%;
+	font-weight: normal;
+}
+

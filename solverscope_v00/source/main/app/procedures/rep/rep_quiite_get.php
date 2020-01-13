@@ -1,0 +1,56 @@
+<?php
+
+if ( $vld != 1 ) die();
+
+$OBJECT_ID = svc_sanitize_post( $post['object_id'] );
+
+$sql = "
+	
+	SELECT
+		OBJECT_NAME,
+		OBJECT_FOLDER_ID,
+		OBJECT_REV_1,
+		QUIITE_TXTITE_ID_COMMAND,
+		QUIITE_TXTITE_ID_FEEDBACK,
+		QUIOPT_TXTITE_ID,
+		QUIITE_ID,
+		QUIOPT_ID,
+		QUIOPT_ORDERBY,
+		QUIOPT_CORRECT,
+		CASE
+			WHEN OBJECT_CREATED_BY = " . $PERSON_ID . " THEN 1
+			ELSE 0
+		END AS PERMISSION
+
+	FROM
+		REP_OBJECT 
+
+		INNER JOIN REP_OBJTYP
+		ON OBJECT_OBJTYP_ID = OBJTYP_ID
+
+		INNER JOIN REP_QUIITE
+		ON QUIITE_OBJECT_ID = OBJECT_ID
+	
+		INNER JOIN REP_QUIOPT
+		ON QUIOPT_QUIITE_ID = QUIITE_ID
+
+	WHERE
+		OBJECT_ID = " . $OBJECT_ID . "
+		AND OBJTYP_NAME = 'OBJ_QUIZ'
+		AND OBJECT_DOMAIN_ID = " . $DOMAIN_ID . "
+	
+	ORDER BY
+	 	QUIOPT_ORDERBY
+	
+	";
+	
+$rows = svc_get_rows( $connection, $sql );
+
+svc_show_result_encoded( $rows );
+
+?>
+
+
+
+
+

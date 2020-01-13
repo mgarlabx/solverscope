@@ -68,9 +68,9 @@ Estrutura geral da aplicação
 Para seu propósito de código aberto (open source), foi escolhida a estrutura
 mais simples e genérica possível:
 
--   Banco de dados: MySQL
+-   Banco de dados: MySQL (versão 5.7 ou posterior)
 
--   Back-end: PhP
+-   Back-end: PhP (versão 7.3 ou posterior)
 
 -   Front-end: JQuery e Bootstrap
 
@@ -107,8 +107,8 @@ Instalação
 
  
 
--   Criar um ambiente para PhP e MySQL (sugestão [XAMPP](
-    https://www.apachefriends.org/pt_br/index.html)).
+-   Criar um ambiente para PhP e MySQL (sugestão
+    [XAMPP](https://www.apachefriends.org/pt_br/index.html)).
 
 -   Criar um banco de dados no MySQL e importar o conteúdo do arquivo
     **../extra/solverscope_datadump_v00.sql**.
@@ -125,8 +125,8 @@ Instalação
 
  
 
-Autenticação 
--------------
+Autenticação
+------------
 
  
 
@@ -160,7 +160,7 @@ tabela SYS_PERPRO. Só é permitido um perfil por usuário por domínio.
 
 A parte do front-end sob controle de autorização são os itens que são exibidos
 na barra lateral da aplicação (sidebar). A tabela SYS_PROFM0 registra os itens
-da barra lateral e a tabela SYS_PROFM1 faz a associação deles  com os perfis da
+da barra lateral e a tabela SYS_PROFM1 faz a associação deles com os perfis da
 tabela SYS_PROFIL. Para cada perfil criado é necessário informar quais itens da
 barra lateral ele terá acesso.
 
@@ -354,8 +354,8 @@ tabelas, procedures e funções a serem criadas/adaptadas
 
  
 
-\*  \*  \*
-----------
+\* \* \*
+--------
 
  
 

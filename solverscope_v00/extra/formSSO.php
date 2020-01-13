@@ -15,7 +15,7 @@ It is not part of the application and can be developed in any language.
 $base_url = 'http://localhost/...../'; //<-------- TO BE CONFIGURED 
 
 $secret = '176575655'; //<-------- DOMAIN_SECRET @ SYS_DOMAIN
-$tk = get_token( $base_url, $secret, 'Monica', 'monica@turmadamonica.com.br', 2 );
+$tk = get_token( $base_url, $secret, 'Mônica', 'monica@turmadamonica.com.br', 2 );
 $url_monica = $base_url . 'main/?tk=' . $tk;
 
 $secret = '176575655'; //<-------- DOMAIN_SECRET @ SYS_DOMAIN
@@ -52,9 +52,9 @@ $url_chavo = $base_url . 'main/?tk=' . $tk;
 	</head>
  
 	<body>
-		<a href="<?=$url_monica?>">Mônica</a><p>
+		<a href="<?=$url_monica?>">M&ocirc;nica</a><p>
 		<a href="<?=$url_cebolinha?>">Cebolinha</a><p>
-		<a href="<?=$url_cascao?>">Cascão</a><p>
+		<a href="<?=$url_cascao?>">Casc&atilde;o</a><p>
 		<a href="<?=$url_magali?>">Magali</a><p>
 		<a href="<?=$url_franjinha?>">Franjinha</a><p>
 

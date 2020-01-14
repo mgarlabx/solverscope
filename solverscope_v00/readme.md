@@ -40,9 +40,15 @@ Commons](https://creativecommons.org/licenses/by/4.0/).
 
 Dessa forma, a Solvertank não assume responsabilidades por qualquer
 instabilidade, perda de dados ou qualquer outro dano que eventualmente possa
-ocorrer durante sua utilização.
+ocorrer durante sua utilização. Também não há compromisso de suporte técnico ou
+garantia de funcionalidade.
 
 **Use ao seu próprio risco.**
+
+A Solvertank reserva-se ainda o direito de descontinuar esse projeto e/ou tornar
+fechado o código a qualquer momento, sem qualquer aviso prévio. Os códigos
+eventualmente já baixados poderão continuar a serem usados, mas não há
+compromisso de qualquer atualização, correção ou manutenção.
 
  
 
@@ -121,7 +127,14 @@ Instalação
 -   Alterar a permissão da pasta **../main/files** para permitir gravação.
 
 -   Alterar o conteúdo do arquivo **../svc_settings.php** informando os dados
-    solicitados.
+    solicitados:
+
+    \- \$cryp_key: um valor numérico com 10 dígitos, é importante mudar, não
+    deixar 1234567890
+
+    \- dados do banco MySQL: \$host, \$login, \$password e \$database
+
+     
 
  
 
@@ -143,7 +156,8 @@ As chaves ficam gravadas no campo DOMAIN_SECRET da tabela SYS_DOMAIN, ou seja, �
 uma chave por domínio.
 
 Um exemplo de como gerar esse token pode ser visto no arquivo
-**../extra/formSSO.php**.
+**../extra/formSSO.php** (ao usar esse arquivo é importante alterar a variável
+\$base_url para a pasta raiz onde irá rodar a aplicação).
 
  
 

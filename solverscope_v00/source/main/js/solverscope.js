@@ -20,6 +20,9 @@ var global_last_id = 0;
 var global_last_str1 = '';
 var global_last_str2 = '';
 
+
+
+
 /*** on load ****************************************************************************/
 
 
@@ -144,7 +147,7 @@ function page_click( label ){
 	try {
 		eval( label + '_main()' );
 	}
-	catch(err) {
+	catch ( e ) {
 		$( '#main-title' ).html( svc_lang_str( label ) );
    	 	$( '#svc-main-content-0' ).html( '<div style="margin:0 auto"><img src="img/work_in_progress.gif" /></div>' );
 	}
@@ -173,6 +176,9 @@ function main_display( n ) {
 	}
 }
 	
+
+
+
 	
 	
 	
@@ -185,7 +191,7 @@ function svc_get_json( data ) {
 		var prs = $.parseJSON( jso );
 		return prs;
 	}
-	catch ( error ){
+	catch ( e ){
 		return '#ERR';
 	}
 }
@@ -199,7 +205,7 @@ function svc_lang_str( str ) {
 		lineLang = lineLang[0];
 		ret = lineLang['LSTR'];
 	}
-	catch {}
+	catch ( e ){}
 
 	return ret
 }
@@ -210,6 +216,10 @@ function svc_master_function( str ) {
 	if ( global_master == 1 ) $( '#svc-master-info' ).html( str );
 
 }
+
+
+
+
 
 
 

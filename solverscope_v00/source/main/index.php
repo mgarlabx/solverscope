@@ -19,7 +19,6 @@ include( '../svc_settings.php' );
 include( 'app/app_cryp.php' );
 include( 'app/app_functions.php' );
 
-$appurl = $base_url . 'main/app/';
 
 ?>
 

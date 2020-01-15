@@ -215,7 +215,7 @@ CREATE TABLE `REP_TXTSEG` (
   `TXTSEG_DOMAIN_ID` int(11) unsigned NOT NULL,
   `TXTSEG_TXTITE_ID` int(11) unsigned NOT NULL,
   `TXTSEG_ORDERBY` smallint(6) NOT NULL DEFAULT '1',
-  `TXTSEG_TYPE` enum('TXT','IMG','FOR') COLLATE latin1_general_ci NOT NULL DEFAULT 'TXT',
+  `TXTSEG_TYPE` enum('TXT','IMG','FOR','YOU') COLLATE latin1_general_ci NOT NULL DEFAULT 'TXT',
   `TXTSEG_STYLE` varchar(50) COLLATE latin1_general_ci NOT NULL DEFAULT 'paragraph',
   `TXTSEG_CONTENT` varchar(3000) COLLATE latin1_general_ci NOT NULL DEFAULT '',
   `TXTSEG_CREATED_BY` int(11) unsigned NOT NULL,

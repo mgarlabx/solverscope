@@ -2,7 +2,7 @@
 /* ┌────────────────────────────────────────┐ 
    │ Solverscope                            │ 
    │ Copyright © 2020 Maurício Garcia       │ 
-   │ SOLVERTANK                             │ 
+   │ SOLVERTANK v.0                         │ 
    └───────────────────────────────────--───┘ 
 */
 

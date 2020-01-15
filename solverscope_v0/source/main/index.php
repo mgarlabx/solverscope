@@ -1,8 +1,8 @@
 <?php
 /* ┌────────────────────────────────────────┐ 
-   │ Solverscope                            │ 
+   │ Solverscope v.0                        │ 
    │ Copyright © 2020 Maurício Garcia       │ 
-   │ SOLVERTANK v.0                         │ 
+   │ SOLVERTANK                             │ 
    └───────────────────────────────────--───┘ 
 */
 

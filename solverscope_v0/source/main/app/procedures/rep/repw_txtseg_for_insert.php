@@ -33,8 +33,6 @@ $resp = svc_query( $connection, $sql );
 
 svc_show_result( $resp ); 
 
-//ftp://mgar2@ftp.mgar.com.br/solvercope_data
-
 ?>
 
 

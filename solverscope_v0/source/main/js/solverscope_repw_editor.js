@@ -29,8 +29,29 @@ $( document ).ready( function() {
 	});
 	
 	
+	
 });
 
+
+
+//translate editor labels
+function svc_editor_translate() {
+	$( '#svc-editor-modal-title' ).html( svc_lang_str( 'TEXT_EDITOR' ) );
+	$( '#svc-editor-button-BOLD' ).attr( 'title', svc_lang_str( 'BOLD' ) );
+	$( '#svc-editor-button-ITALIC' ).attr( 'title', svc_lang_str( 'ITALIC' ) );
+	$( '#svc-editor-button-UNDERLINED' ).attr( 'title', svc_lang_str( 'UNDERLINED' ) );
+	$( '#svc-editor-button-SUPERSCRIPT' ).attr( 'title', svc_lang_str( 'SUPERSCRIPT' ) );
+	$( '#svc-editor-button-SUBSCRIPT' ).attr( 'title', svc_lang_str( 'SUBSCRIPT' ) );
+	$( '#svc-editor-button-COLORS' ).attr( 'title', svc_lang_str( 'COLORS' ) );
+	$( '#svc-editor-button-SYMBOLS' ).attr( 'title', svc_lang_str( 'SYMBOLS' ) );
+	$( '#svc-editor-button-CLEAR_FORMAT' ).attr( 'title', svc_lang_str( 'CLEAR_FORMAT' ) );
+	$( '#svc-editor-orderby-label' ).html( svc_lang_str( 'ORDER_BY' ) );
+	$( '#svc-editor-style-label' ).html( svc_lang_str( 'STYLE' ) );
+	$( '#svc-editor-select-PARAGRAPH' ).html( svc_lang_str( 'PARAGRAPH' ) );
+	$( '#svc-editor-select-HEADER-1' ).html( svc_lang_str( 'HEADER' ) + ' 1' );
+	$( '#svc-editor-select-HEADER-2' ).html( svc_lang_str( 'HEADER' ) + ' 2' );
+	$( '#svc-editor-select-FOOTNOTE' ).html( svc_lang_str( 'FOOTNOTE' ) );
+}
 
 
 
@@ -158,6 +179,16 @@ function repw_txtite_update( txtite_id ) {
 					tx += '<div class="card-body">';
 					tx += '<div class="svc-editor-img"><img style="max-width:' + rows[i]['TXTSEG_STYLE'] + 'px;" src="' + rows[i]['TXTSEG_CONTENT'] + '" /></div>'; //<--- WORK_IN_PROGRESS limitar largura
 				}
+				else if ( rows[i]['TXTSEG_TYPE'] == 'YOU' ){
+					var content = rows[i]['TXTSEG_CONTENT'];
+					tx += '<button type="button" class="btn btn-primary" onclick="repw_txtseg_you_update(' + rows[i]['TXTSEG_ID'] + ', ' + txtite_id + ', \'' + content + '\')"><i class="fa fa-pencil"></i></button> ';
+					tx += '<button type="button" class="btn btn-danger" onclick="repw_txtseg_delete(' + rows[i]['TXTSEG_ID'] + ', ' + txtite_id + ')"><i class="fa fa-trash-o"></i></button>';
+					tx += '</div>';
+					tx += '</div>';
+					tx += '<div class="card-body">';
+					content = '<iframe width="560" height="349" src="https://www.youtube.com/embed/' + content +'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+					tx += '<div class="svc-editor-you">' + content + '</div>';
+				}
 				else if ( rows[i]['TXTSEG_TYPE'] == 'FOR' ){
 					var content = rows[i]['TXTSEG_CONTENT'];
 					content = content.replace(/\\/gi, 'X4597SEZXOUY');
@@ -167,9 +198,8 @@ function repw_txtite_update( txtite_id ) {
 					tx += '</div>';
 					tx += '<div class="card-body">';
 					content = rows[i]['TXTSEG_CONTENT'];
-					var content = katex.renderToString( content, {throwOnError: false} );
+					content = katex.renderToString( content, {throwOnError: false} );
 					tx += '<div class="svc-editor-for">' + content + '</div>';
-
 				}
 				tx += '</div>';
 				tx += '</div>';
@@ -180,9 +210,10 @@ function repw_txtite_update( txtite_id ) {
 			tx += '<div class="col-md-12">';
 			tx += '<div class="card">';
 			tx += '<div class="card-head">';
-			tx += '<div class="float-right">';
+			tx += '<div style="width:100%;text-align:center">';
 			tx += '<button type="button" class="btn btn-success" onclick="repw_txtseg_txt_insert(' + txtite_id + ',' + maxseg + ')">+ <i class="fa fa-file-word-o"></i> ' + svc_lang_str( 'TEXT' ) + '</button>&nbsp;&nbsp;';
 			tx += '<button type="button" class="btn btn-success" onclick="repw_txtseg_img_insert(' + txtite_id + ',' + maxseg + ')">+ <i class="fa fa-picture-o"></i> ' + svc_lang_str( 'IMAGE' ) + '</button>&nbsp;&nbsp;';
+			tx += '<button type="button" class="btn btn-success" onclick="repw_txtseg_you_insert(' + txtite_id + ',' + maxseg + ')">+ <i class="fa fa-youtube"></i> ' + 'Youtube' + '</button>&nbsp;&nbsp;';
 			tx += '<button type="button" class="btn btn-success" onclick="repw_txtseg_for_insert(' + txtite_id + ',' + maxseg + ')">+ <i class="fa fa-superscript"></i> ' + svc_lang_str( 'EQUATION' ) + '</button>&nbsp;&nbsp;';
 			tx += '</div>';
 			tx += '</div>';
@@ -338,6 +369,82 @@ function repw_txtseg_img_insert_save( txtite_id ) {
 
 
 
+/***** YOUTUBE *******************************************************************************************************************************************/
+
+//update YOU
+function repw_txtseg_you_update( txtseg_id, txtite_id, content ) {
+	//WORK_IN_PROGRESS: permitir mudar a ordenação
+	content = content.replace(/X4597SEZXOUY/gi, '\\');
+	$( '#myModalTitle' ).html( svc_lang_str( 'PROMPT_VIDEO_ID' ) );
+	$( '#myModalBody' ).html( '<input type="text" style="width:100%" class="youm-control" id="content" value="' + content + '">' );
+	$( '#myModalButton' ).html( '<button type="button" class="btn btn-primary" onclick="repw_txtseg_you_update_save(' + txtseg_id + ', ' + txtite_id + ')">' + svc_lang_str( 'SAVE' ) + '</button>' );
+	$( '#myModal' ).modal( 'show' );
+}
+
+
+//new save YOU
+function repw_txtseg_you_update_save( txtseg_id, txtite_id ) {
+	//WORK_IN_PROGRESS: permitir mudar a ordenação
+	var content = $( '#content' ).val();
+	content = svc_clean_youtube( content );
+	if ( content != '' && content != null ) {
+		$.ajax({
+			url: 'app/',
+			type: 'POST',
+			headers: { 'tk': tk, 'procedure': 'repw_txtseg_you_update' },
+			data: { 'txtseg_id': txtseg_id, 'content': content },
+			success: function( data ) {
+				repw_txtite_update( txtite_id );
+			}
+		});
+	}
+	$( '#myModal' ).modal( 'hide' );
+}
+
+
+
+//new YOU
+function repw_txtseg_you_insert( txtite_id, maxseg ) {
+	$( '#myModalTitle' ).html( svc_lang_str( 'PROMPT_VIDEO_ID' ) );
+	$( '#myModalBody' ).html( '<input type="text" style="width:100%" class="youm-control" id="content">' );
+	$( '#myModalButton' ).html( '<button type="button" class="btn btn-primary" onclick="repw_txtseg_you_insert_save(' + txtite_id + ',' + maxseg + ')">' + svc_lang_str( 'SAVE' ) + '</button>' );
+	$( '#myModal' ).modal( 'show' );
+}
+
+
+//new save YOU
+function repw_txtseg_you_insert_save( txtite_id, maxseg ) {
+	var content = $( '#content' ).val();
+	content = svc_clean_youtube( content );
+	if ( content != '' && content != null ) {
+		$.ajax({
+			url: 'app/',
+			type: 'POST',
+			headers: { 'tk': tk, 'procedure': 'repw_txtseg_you_insert' },
+			data: { 'txtite_id': txtite_id, 'orderby': (maxseg+1), 'content': content },
+			success: function( data ) {
+				repw_txtite_update( txtite_id );
+			}
+		});
+	}
+	$( '#myModal' ).modal( 'hide' );
+}
+
+
+//extract ID from Youtube URL
+function svc_clean_youtube( url ) {
+	if ( url.length == 11 ) {
+		return url;
+	}
+	else {
+		var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+		var match = url.match( regExp );
+		return ( match&&match[7].length==11 )? match[7] : false;
+	}
+}
+
+
+
 /***** FOR *******************************************************************************************************************************************/
 
 
@@ -346,7 +453,7 @@ function repw_txtseg_for_update( txtseg_id, txtite_id, content ) {
 	//WORK_IN_PROGRESS: permitir mudar a ordenação
 	content = content.replace(/X4597SEZXOUY/gi, '\\');
 	$( '#myModalTitle' ).html( svc_lang_str( 'PROMPT_EQUATION' ) );
-	$( '#myModalBody' ).html( '<input type="text" class="form-control" id="content" value="' + content + '">' );
+	$( '#myModalBody' ).html( '<input type="text" style="width:100%" class="form-control" id="content" value="' + content + '">' );
 	$( '#myModalButton' ).html( '<button type="button" class="btn btn-primary" onclick="repw_txtseg_for_update_save(' + txtseg_id + ', ' + txtite_id + ')">' + svc_lang_str( 'SAVE' ) + '</button>' );
 	$( '#myModal' ).modal( 'show' );
 }
@@ -376,7 +483,7 @@ function repw_txtseg_for_update_save( txtseg_id, txtite_id ) {
 //new FOR
 function repw_txtseg_for_insert( txtite_id, maxseg ) {
 	$( '#myModalTitle' ).html( svc_lang_str( 'PROMPT_EQUATION' ) );
-	$( '#myModalBody' ).html( '<input type="text" class="form-control" id="content">' );
+	$( '#myModalBody' ).html( '<input type="text" style="width:100%" class="form-control" id="content">' );
 	$( '#myModalButton' ).html( '<button type="button" class="btn btn-primary" onclick="repw_txtseg_for_insert_save(' + txtite_id + ',' + maxseg + ')">' + svc_lang_str( 'SAVE' ) + '</button>' );
 	$( '#myModal' ).modal( 'show' );
 }

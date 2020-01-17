@@ -247,16 +247,16 @@ function rep_objects_list ( objects, parent, op_layout ) {
 		txline += '<tr>';
 		txline += '<td style="width:60%" onclick="';
 		if ( objects[i]['OBJTYP_NAME'] == 'OBJ_QUIZ' ) {
-			txline += 'rep_quiite_get(' + objects[i]['OBJECT_ID'] +', 1 )';
+			txline += 'rep_quiite_get(' + objects[i]['OBJECT_ID'] + ', 1 )';
 		}
 		else if  ( objects[i]['OBJTYP_NAME'] == 'OBJ_QUIZ_ASM' ) {
 			txline += 'rep_quiasm_get(' + objects[i]['OBJECT_ID'] +')';
 		}
 		else if  ( objects[i]['OBJTYP_NAME'] == 'OBJ_ESSAY' ) {
-			txline += 'alert( svc_lang_str( \'WORK_IN_PROGRESS\' ) );'
+			txline += 'rep_essite_get(' + objects[i]['OBJECT_ID'] + ', 1 )';
 		}
 		else if  ( objects[i]['OBJTYP_NAME'] == 'OBJ_TEXT' ) {
-			txline += 'alert( svc_lang_str( \'WORK_IN_PROGRESS\' ) );'
+			txline += 'rep_htmobj_get(' + objects[i]['OBJECT_ID'] +')';
 		}
 		else if  ( objects[i]['OBJTYP_NAME'] == 'OBJ_BOT' ) {
 			txline += 'alert( svc_lang_str( \'WORK_IN_PROGRESS\' ) );'
@@ -338,6 +338,54 @@ function rep_objects_list ( objects, parent, op_layout ) {
 
 
 
+
+
+/***** TXTITE & TXTSEG ***********************************************************************************************************************************************************/
+                                    
+                 
+//get and display content from EDITOR                                                
+function rep_txtite_get( txtite_id, div_id ) {
+	
+	$.ajax({
+		url: 'app/',
+		type: 'POST',
+		headers: { 'tk': tk, 'procedure': 'rep_txtite_get' },
+		data: { 'txtite_id': txtite_id },
+		success: function( data ) {
+			var rows = svc_get_json( data );
+			var tx = '';
+			for ( var i = 0; i < rows.length ; i++ ) {
+				if ( rows[i]['TXTSEG_TYPE'] == 'TXT' ){
+					tx += '<div class="svc-editor-txt-' + rows[i]['TXTSEG_STYLE'] + '">' + rows[i]['TXTSEG_CONTENT'] + '</div>';
+				}
+				else if ( rows[i]['TXTSEG_TYPE'] == 'IMG' ){
+					tx += '<div class="svc-editor-img">';
+					tx += '<img style="max-width:' + rows[i]['TXTSEG_STYLE'] + 'px;" src="' + rows[i]['TXTSEG_CONTENT'] + '" />';
+					tx += '</div>'; //<--- WORK_IN_PROGRESS limitar largura
+				}
+				else if ( rows[i]['TXTSEG_TYPE'] == 'YOU' ){
+					var content = rows[i]['TXTSEG_CONTENT'];
+					content = '<iframe width="560" height="349" src="https://www.youtube.com/embed/' + content +'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+					tx += '<div class="svc-editor-you">' + content + '</div>';
+				}
+				
+				else if ( rows[i]['TXTSEG_TYPE'] == 'FOR' ){
+					var content = rows[i]['TXTSEG_CONTENT'];
+					content = katex.renderToString( content, {throwOnError: false} );
+					tx += '<div class="svc-editor-for">' + content + '</div>';
+				}
+			}
+			$( '#' + div_id ).html( tx );
+		}
+	});
+}
+                                            
+
+
+
+
+
+
 /***** QUIITE & QUIOPT ***********************************************************************************************************************************************************/
                 
 
@@ -347,6 +395,7 @@ function rep_quiite_get( object_id, svc_main_content_id ) {
 	svc_master_function( 'rep_quiite_get(' + object_id + ', ' + svc_main_content_id  + ') @ solverscope_rep.js' );
 
 	global_last_id = object_id;
+	global_last_str1 = 'rep_quiite_get';
 
 	$.ajax({
 		url: 'app/',
@@ -474,56 +523,10 @@ function rep_quiite_get( object_id, svc_main_content_id ) {
 				}
 			});
 
-
-
 		}
 	});
 
 }          
-
-
-
-
-
-
-
-/***** TXTITE & TXTSEG ***********************************************************************************************************************************************************/
-                                    
-                 
-//get and display content from EDITOR                                                
-function rep_txtite_get( txtite_id, div_id ) {
-	
-	$.ajax({
-		url: 'app/',
-		type: 'POST',
-		headers: { 'tk': tk, 'procedure': 'rep_txtite_get' },
-		data: { 'txtite_id': txtite_id },
-		success: function( data ) {
-			var rows = svc_get_json( data );
-			var tx = '';
-			for ( var i = 0; i < rows.length ; i++ ) {
-				if ( rows[i]['TXTSEG_TYPE'] == 'TXT' ){
-					tx += '<div class="svc-editor-txt-' + rows[i]['TXTSEG_STYLE'] + '">' + rows[i]['TXTSEG_CONTENT'] + '</div>';
-				}
-				else if ( rows[i]['TXTSEG_TYPE'] == 'IMG' ){
-					tx += '<div class="svc-editor-img">';
-					tx += '<img style="max-width:' + rows[i]['TXTSEG_STYLE'] + 'px;" src="' + rows[i]['TXTSEG_CONTENT'] + '" />';
-					tx += '</div>'; //<--- WORK_IN_PROGRESS limitar largura
-				}
-				else if ( rows[i]['TXTSEG_TYPE'] == 'FOR' ){
-					var content = rows[i]['TXTSEG_CONTENT'];
-					content = katex.renderToString( content, {throwOnError: false} );
-					tx += '<div class="svc-editor-for">' + content + '</div>';
-				}
-			}
-			$( '#' + div_id ).html( tx );
-		}
-	});
-}
-                                            
-
-
-
 
 
 
@@ -818,4 +821,195 @@ function rep_quiasm_pdf( quiasm_id ) {
 	
 }
 
+
+
+
+/***** ESSITE ***********************************************************************************************************************************************************/
+                                    
+
+//show essay						   
+function rep_essite_get( object_id , svc_main_content_id ) {
+	
+	svc_master_function( 'rep_essite_get(' + object_id + ', ' + svc_main_content_id  + ') @ solverscope_rep.js' );
+
+	global_last_id = object_id;
+	global_last_str1 = 'rep_essite_get';
+
+	$.ajax({
+		url: 'app/',
+		type: 'POST',
+		headers: { 'tk': tk, 'procedure': 'rep_essite_get' },
+		data: { 'object_id': object_id },
+		success: function( data ) {
+
+			var rows = svc_get_json( data );
+			var object_name = rows[0]['OBJECT_NAME'];
+			var command_id = rows[0]['ESSITE_TXTITE_ID_COMMAND'];
+			var feedback_id = rows[0]['ESSITE_TXTITE_ID_FEEDBACK'];
+			var essite_id = rows[0]['ESSITE_ID'];
+			var folder_id = rows[0]['OBJECT_FOLDER_ID'];
+
+			var permission = rows[0]['PERMISSION'];
+			if ( rows[0]['OBJECT_REV_1'] == 1 ) permission = 0;
+			
+			var tx = '';
+
+			//name
+			var header = object_name;
+			//if ( global_master == 1 ) header += '<span class="svc-master">ESSITE_ID: ' + essite_id + '</span>';
+			header += '<span class="svc-master">ESSITE_ID: ' + essite_id + '</span>'; //WORK_IN_PROGRESS: ocultar isso quando a interface para escolher as questões for melhor
+			$( '#svc-main-content-header-' + svc_main_content_id ).html( header );
+			tx += '<div class="svc-main-content-path" id="object-path"></div>';
+
+			//command
+			tx += '<div class="col-md-12">';
+			tx += '<div class="card">';
+			tx += '<div class="card-head">';
+			tx += '<header>' + svc_lang_str( 'COMMAND' );
+			if ( global_master == 1 ) tx += '<span class="svc-master">TXTITE_ID: ' + command_id + '</span>';
+			tx += '</header>';
+			if ( permission == 1 ) tx += '<div class="float-right"><button type="button" class="btn btn-primary" onclick="repw_txtite_update(' + command_id + ')"><i class="fa fa-pencil"></i></button></div>';
+			tx += '</div>';
+			tx += '<div class="card-body texseg" id="texseg-' + command_id +'"></div>';
+			tx += '</div>';
+			tx += '</div>';
+			tx += '</div>';
+
+			//feedback
+			tx += '<div class="col-md-12">';
+			tx += '<div class="card">';
+			tx += '<div class="card-head">';
+			tx += '<header>' + svc_lang_str( 'FEEDBACK' );
+			if ( global_master == 1 ) tx += '<span class="svc-master">TXTITE_ID: ' + feedback_id + '</span>';
+			tx += '</header>';
+			if ( permission == 1 ) tx += '<div class="float-right"><button type="button" class="btn btn-primary" onclick="repw_txtite_update(' + feedback_id + ')"><i class="fa fa-pencil"></i></button></div>';
+			tx += '</div>';
+			tx += '<div class="card-body texseg" id="texseg-' + feedback_id +'"></div>';
+			tx += '</div>';
+			tx += '</div>';
+			tx += '</div>';
+
+			$( '#svc-main-content-body-' + svc_main_content_id ).html( tx );
+
+			//get and populate texts
+			$( '.texseg' ).each( function(){
+				var id = $( this ).attr( 'id' );
+				id = id.replace( 'texseg-', '' );
+				rep_txtite_get( id, 'texseg-' + id );
+			});
+
+			$( '#svc-main-content-' + ( svc_main_content_id-1 ) ).hide();
+			$( '#svc-main-content-' + svc_main_content_id ).show();
+
+			$.ajax({
+				url: 'app/',
+				type: 'POST',
+				headers: { 'tk': tk, 'procedure': 'rep_folder_path' },
+				data: { 'parent': folder_id },
+				success: function( data ) {
+					var rows = svc_get_json( data );
+					var tx = '';
+					for ( var i = 0; i < rows.length ; i++ ) {
+						tx = '/' + rows[i]['FOLDER_NAME'] + tx;
+					}
+					tx = '..' + tx;
+
+					$( '#object-path' ).html( tx );
+				}
+			});
+
+		}
+	});
+	
+	
+}
+
+
+
+
+
+/***** TEXT (HTML Object) ***********************************************************************************************************************************************************/
+                                    
+
+//show htmobj						   
+function rep_htmobj_get( object_id ) {
+	
+	svc_master_function( 'rep_htmobj_get(' + object_id + ') @ solverscope_rep.js' );
+
+	global_last_id = object_id;
+	global_last_str1 = 'rep_htmobj_get';
+
+	$.ajax({
+		url: 'app/',
+		type: 'POST',
+		headers: { 'tk': tk, 'procedure': 'rep_htmobj_get' },
+		data: { 'object_id': object_id },
+		success: function( data ) {
+
+			var rows = svc_get_json( data );
+			var object_name = rows[0]['OBJECT_NAME'];
+			var command_id = rows[0]['HTMOBJ_TXTITE_ID'];
+			var htmobj_id = rows[0]['HTMOBJ_ID'];
+			var folder_id = rows[0]['OBJECT_FOLDER_ID'];
+
+			var permission = rows[0]['PERMISSION'];
+			if ( rows[0]['OBJECT_REV_1'] == 1 ) permission = 0;
+			
+			var tx = '';
+
+			//name
+			var header = object_name;
+			//if ( global_master == 1 ) header += '<span class="svc-master">HTMOBJ_ID: ' + htmobj_id + '</span>';
+			header += '<span class="svc-master">HTMOBJ_ID: ' + htmobj_id + '</span>'; //WORK_IN_PROGRESS: ocultar isso quando a interface para escolher as questões for melhor
+			$( '#svc-main-content-header-1' ).html( header );
+			tx += '<div class="svc-main-content-path" id="object-path"></div>';
+
+			//text
+			tx += '<div class="col-md-12">';
+			tx += '<div class="card">';
+			tx += '<div class="card-head">';
+			tx += '<header>' + svc_lang_str( 'TEXT' );
+			if ( global_master == 1 ) tx += '<span class="svc-master">TXTITE_ID: ' + command_id + '</span>';
+			tx += '</header>';
+			if ( permission == 1 ) tx += '<div class="float-right"><button type="button" class="btn btn-primary" onclick="repw_txtite_update(' + command_id + ')"><i class="fa fa-pencil"></i></button></div>';
+			tx += '</div>';
+			tx += '<div class="card-body texseg" id="texseg-' + command_id +'"></div>';
+			tx += '</div>';
+			tx += '</div>';
+			tx += '</div>';
+
+			$( '#svc-main-content-body-1'  ).html( tx );
+
+			//get and populate texts
+			$( '.texseg' ).each( function(){
+				var id = $( this ).attr( 'id' );
+				id = id.replace( 'texseg-', '' );
+				rep_txtite_get( id, 'texseg-' + id );
+			});
+
+			$( '#svc-main-content-0' ).hide();
+			$( '#svc-main-content-1' ).show();
+
+			$.ajax({
+				url: 'app/',
+				type: 'POST',
+				headers: { 'tk': tk, 'procedure': 'rep_folder_path' },
+				data: { 'parent': folder_id },
+				success: function( data ) {
+					var rows = svc_get_json( data );
+					var tx = '';
+					for ( var i = 0; i < rows.length ; i++ ) {
+						tx = '/' + rows[i]['FOLDER_NAME'] + tx;
+					}
+					tx = '..' + tx;
+
+					$( '#object-path' ).html( tx );
+				}
+			});
+
+		}
+	});
+	
+	
+}
 

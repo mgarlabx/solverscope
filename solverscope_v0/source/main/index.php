@@ -1,6 +1,6 @@
 <?php
 /* ┌────────────────────────────────────────┐ 
-   │ Solverscope v.0                        │ 
+   │ Solverscope                            │ 
    │ Copyright © 2020 Maurício Garcia       │ 
    │ SOLVERTANK                             │ 
    └───────────────────────────────────--───┘ 
@@ -18,7 +18,6 @@ $ntk = $_GET['tk'];
 include( '../svc_settings.php' );
 include( 'app/app_cryp.php' );
 include( 'app/app_functions.php' );
-
 
 ?>
 
@@ -114,7 +113,8 @@ include( 'app/app_functions.php' );
  			<div class="sidebar-container">
  				<div class="sidemenu-container navbar-collapse collapse fixed-menu">
 	                <div id="remove-scroll">
-	                    <ul class="sidemenu  page-header-fixed" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px" id="svc-side-bar"></ul>
+	                    <ul class="sidemenu  page-header-fixed" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px" id="svc-side-bar">
+	                    </ul>
 	                </div>
                 </div>
             </div>
@@ -206,7 +206,7 @@ include( 'app/app_functions.php' );
 	  <div class="modal-dialog modal-lg" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header" id="svc-editor-modal-header">
-	        <h2 class="modal-title" id="svc-editor-modal-title"><?=svc_translate( 'TEXT_EDITOR' );?></h2>
+	        <h2 class="modal-title" id="svc-editor-modal-title">TEXT_EDITOR</h2>
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
@@ -226,26 +226,26 @@ include( 'app/app_functions.php' );
 			</div>
 			<div id="svc-editor-symbols"></div>
 			<div>
-				<button class="btn btn-circle btn-default svc-editor-button" title="<?=svc_translate( 'BOLD' );?>" onclick="svc_editor_format('bold')"><i class="fa fa-bold"></i></button>
-				<button class="btn btn-circle btn-default svc-editor-button" title="<?=svc_translate( 'ITALIC' );?>" onclick="svc_editor_format('italic');"><i class="fa fa-italic"></i></button>
-				<button class="btn btn-circle btn-default svc-editor-button" title="<?=svc_translate( 'UNDERLINED' );?>" onclick="svc_editor_format('underline');"><i class="fa fa-underline"></i></button>
-				<button class="btn btn-circle btn-default svc-editor-button" title="<?=svc_translate( 'SUPERSCRIPT' );?>" onclick="svc_editor_format('superscript');"><i class="fa fa-superscript"></i></button>
-				<button class="btn btn-circle btn-default svc-editor-button" title="<?=svc_translate( 'SUBSCRIPT' );?>" onclick="svc_editor_format('subscript');"><i class="fa fa-subscript"></i></button>
-				<button class="btn btn-circle btn-default svc-editor-button" title="<?=svc_translate( 'COLORS' );?>" onclick="svc_editor_format('colors');" id="svc-editor-button-colors"><span style="color:yellow">I</span><span style="color:blue">I</span><span style="color:red">I</span></button>
-				<button class="btn btn-circle btn-default svc-editor-button" title="<?=svc_translate( 'SYMBOLS' );?>" onclick="svc_editor_format('symbols');" id="svc-editor-button-symbols">&#937;</button>&nbsp;&nbsp;&nbsp;
-				<button class="btn btn-circle btn-default svc-editor-button" title="<?=svc_translate( 'CLEAR_FORMAT' );?>" onclick="svc_editor_format('removeFormat');"><i class="fa fa-eraser"></i></button>
+				<button class="btn btn-circle btn-default svc-editor-button" id="svc-editor-button-BOLD" title="BOLD" onclick="svc_editor_format('bold')"><i class="fa fa-bold"></i></button>
+				<button class="btn btn-circle btn-default svc-editor-button" id="svc-editor-button-ITALIC" title="ITALIC" onclick="svc_editor_format('italic');"><i class="fa fa-italic"></i></button>
+				<button class="btn btn-circle btn-default svc-editor-button" id="svc-editor-button-UNDERLINED" title="UNDERLINED" onclick="svc_editor_format('underline');"><i class="fa fa-underline"></i></button>
+				<button class="btn btn-circle btn-default svc-editor-button" id="svc-editor-button-SUPERSCRIPT" title="SUPERSCRIPT" onclick="svc_editor_format('superscript');"><i class="fa fa-superscript"></i></button>
+				<button class="btn btn-circle btn-default svc-editor-button" id="svc-editor-button-SUBSCRIPT" title="SUBSCRIPT" onclick="svc_editor_format('subscript');"><i class="fa fa-subscript"></i></button>
+				<button class="btn btn-circle btn-default svc-editor-button" id="svc-editor-button-COLORS" title="COLORS" onclick="svc_editor_format('colors');" id="svc-editor-button-colors"><span style="color:yellow">I</span><span style="color:blue">I</span><span style="color:red">I</span></button>
+				<button class="btn btn-circle btn-default svc-editor-button" id="svc-editor-button-SYMBOLS" title="SYMBOLS" onclick="svc_editor_format('symbols');" id="svc-editor-button-symbols">&#937;</button>&nbsp;&nbsp;&nbsp;
+				<button class="btn btn-circle btn-default svc-editor-button" id="svc-editor-button-CLEAR_FORMAT" title="CLEAR_FORMAT" onclick="svc_editor_format('removeFormat');"><i class="fa fa-eraser"></i></button>
 			</div>
 			<div id="svc-editor-text" contenteditable="true" tabindex="-1"></div>
 	      </div>
 	      <div class="modal-footer">
-		  <div id="svc-editor-orderby-label"><?=svc_translate( 'ORDER_BY' );?></div>
+		  <div id="svc-editor-orderby-label">ORDER_BY</div>
 		  <input id="svc-editor-orderby-value">
-		  <div id="svc-editor-style-label"><?=svc_translate( 'STYLE' );?></div>
+		  <div id="svc-editor-style-label">STYLE</div>
 		  <select id="svc-editor-style-value">
-			<option value="paragraph"><?=svc_translate( 'PARAGRAPH' );?></option>
-			<option value="heading-1"><?=svc_translate( 'HEADER' );?> 1</option>
-			<option value="heading-2"><?=svc_translate( 'HEADER' );?> 2</option>
-			<option value="footnote"><?=svc_translate( 'FOOTNOTE' );?></option>
+			<option value="paragraph" id="svc-editor-select-PARAGRAPH">PARAGRAPH</option>
+			<option value="heading-1" id="svc-editor-select-HEADER-1">HEADER 1</option>
+			<option value="heading-2" id="svc-editor-select-HEADER-2">HEADER 2</option>
+			<option value="footnote" id="svc-editor-select-FOOTNOTE">FOOTNOTE</option>
 		  </select>  
 	      	<div class="inline-block" id="svc-editor-modal-button"></div>
 		  </div>

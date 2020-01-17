@@ -2,7 +2,7 @@
 
  
 
-Solverscope v0 - 13/01/2020
+Solverscope v0 - 17/01/2020
 ===========================
 
 (esse é um documento em evolução)
@@ -104,7 +104,7 @@ está na tabela SYS_LANGSTR e para cada nova funcionalidade é preciso criar um
 novo registro com a expressão nos 3 idiomas.
 
 A modelagem de dados está disponível no arquivo
-**../extra/solverscope_dataschema_v00.pdf**.
+**../extra/solverscope_dataschema_v0.pdf**.
 
  
 
@@ -117,7 +117,7 @@ Instalação
     [XAMPP](https://www.apachefriends.org/pt_br/index.html)).
 
 -   Criar um banco de dados no MySQL e importar o conteúdo do arquivo
-    **../extra/solverscope_datadump_v00.sql**.
+    **../extra/solverscope_datadump_v0.sql**.
 
 -   Criar uma pasta no ambiente PhP onde irá rodar a aplicação.
 
@@ -351,9 +351,7 @@ linha 106 \@ repw_object_delete.php
 
  
 
-**- Criar novos objetos no repositório**
-
-tabelas, procedures e funções a serem criadas/adaptadas
+ 
 
  
 

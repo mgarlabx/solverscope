@@ -141,7 +141,32 @@ else if  ( $OBJTYP_NAME == 'OBJ_QUIZ_ASM' ) {
 
 else if  ( $OBJTYP_NAME == 'OBJ_ESSAY' ) {
 
-	/* WORK_IN_PROGRESS */
+
+	$sql = "INSERT INTO REP_TXTITE (TXTITE_DOMAIN_ID, TXTITE_CREATED_BY) VALUES (" . $DOMAIN_ID . ", " . $PERSON_ID . ")";
+	svc_query( $connection, $sql );
+	$ESSITE_TXTITE_ID_COMMAND = svc_get_var( $connection, "SELECT MAX(TXTITE_ID) FROM REP_TXTITE" );
+	
+	$sql = "INSERT INTO REP_TXTITE (TXTITE_DOMAIN_ID, TXTITE_CREATED_BY) VALUES (" . $DOMAIN_ID . ", " . $PERSON_ID . ")";
+	svc_query( $connection, $sql );
+	$ESSITE_TXTITE_ID_FEEDBACK = svc_get_var( $connection, "SELECT MAX(TXTITE_ID) FROM REP_TXTITE" );
+	
+	//insert item
+	$sql = "
+		INSERT INTO REP_ESSITE (
+			ESSITE_DOMAIN_ID, 
+			ESSITE_CREATED_BY, 
+			ESSITE_OBJECT_ID, 
+			ESSITE_TXTITE_ID_COMMAND, 
+			ESSITE_TXTITE_ID_FEEDBACK
+		) VALUES (
+			" . $DOMAIN_ID . ",
+			" . $PERSON_ID . ",
+			" . $OBJECT_ID . ",
+			" . $ESSITE_TXTITE_ID_COMMAND . ",
+			" . $ESSITE_TXTITE_ID_FEEDBACK . "
+		)
+		";
+	svc_query( $connection, $sql );
 
 }
 
@@ -151,7 +176,25 @@ else if  ( $OBJTYP_NAME == 'OBJ_ESSAY' ) {
 
 else if  ( $OBJTYP_NAME == 'OBJ_TEXT' ) {
 
-	/* WORK_IN_PROGRESS */
+	$sql = "INSERT INTO REP_TXTITE (TXTITE_DOMAIN_ID, TXTITE_CREATED_BY) VALUES (" . $DOMAIN_ID . ", " . $PERSON_ID . ")";
+	svc_query( $connection, $sql );
+	$HTMOBJ_TXTITE_ID = svc_get_var( $connection, "SELECT MAX(TXTITE_ID) FROM REP_TXTITE" );
+	
+	//insert item
+	$sql = "
+		INSERT INTO REP_HTMOBJ (
+			HTMOBJ_DOMAIN_ID, 
+			HTMOBJ_CREATED_BY, 
+			HTMOBJ_OBJECT_ID, 
+			HTMOBJ_TXTITE_ID
+		) VALUES (
+			" . $DOMAIN_ID . ",
+			" . $PERSON_ID . ",
+			" . $OBJECT_ID . ",
+			" . $HTMOBJ_TXTITE_ID . "
+		)
+		";
+	svc_query( $connection, $sql );
 
 }
 

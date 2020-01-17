@@ -132,8 +132,67 @@ else if  ( $OBJTYP_NAME == 'OBJ_QUIZ_ASM' ) {
 
 else if  ( $OBJTYP_NAME == 'OBJ_ESSAY' ) {
 
-	/* WORK_IN_PROGRESS */
+	//get ESSITE_ID
+	$sql = "
+		SELECT
+			ESSITE_ID
+		FROM
+			REP_ESSITE 
+		WHERE
+			ESSITE_OBJECT_ID = " . $OBJECT_ID . "
+			AND ESSITE_DOMAIN_ID = " . $DOMAIN_ID . "
+			AND ESSITE_CREATED_BY = " . $PERSON_ID . "
+		";
+	$ESSITE_ID = svc_get_var( $connection, $sql );
+	
+	
+	//flag REP_TXTITE to delete
+	$sql = "
+		UPDATE REP_TXTITE SET TXTITE_DELETED = 1
+		WHERE TXTITE_ID IN
+			(SELECT ESSITE_TXTITE_ID_COMMAND FROM REP_ESSITE WHERE
+				ESSITE_OBJECT_ID = " . $OBJECT_ID . "
+				AND ESSITE_DOMAIN_ID = " . $DOMAIN_ID . "
+				AND ESSITE_CREATED_BY = " . $PERSON_ID . "
+			)
+		";
+	$resp = svc_query( $connection, $sql );
+	$sql = "
+		UPDATE REP_TXTITE SET TXTITE_DELETED = 1
+		WHERE TXTITE_ID IN
+			(SELECT ESSITE_TXTITE_ID_FEEDBACK FROM REP_ESSITE WHERE
+				ESSITE_OBJECT_ID = " . $OBJECT_ID . "
+				AND ESSITE_DOMAIN_ID = " . $DOMAIN_ID . "
+				AND ESSITE_CREATED_BY = " . $PERSON_ID . "
+			)
+		";
+	$resp = svc_query( $connection, $sql );
 
+	
+	//delete REP_ESSITE
+	$sql = "
+		DELETE FROM 
+			REP_ESSITE 
+		WHERE
+			ESSITE_OBJECT_ID = " . $OBJECT_ID . "
+			AND ESSITE_DOMAIN_ID = " . $DOMAIN_ID . "
+			AND ESSITE_CREATED_BY = " . $PERSON_ID . "
+		";
+	$resp = svc_query( $connection, $sql );
+	
+	
+	//delete REP_TXTITE
+	//REP_TXTSEG will be deleted by CASCADE
+	$sql = "
+		DELETE FROM 
+			REP_TXTITE 
+		WHERE
+			TXTITE_DELETED = 1
+			AND TXTITE_DOMAIN_ID = " . $DOMAIN_ID . "
+			AND TXTITE_CREATED_BY = " . $PERSON_ID . "
+		";
+	$resp = svc_query( $connection, $sql );
+	//WORK_IN_PROGRESS --- excluir arquivos de imagens em REP_TXTSEG
 }
 
 
@@ -142,7 +201,57 @@ else if  ( $OBJTYP_NAME == 'OBJ_ESSAY' ) {
 
 else if  ( $OBJTYP_NAME == 'OBJ_TEXT' ) {
 
-	/* WORK_IN_PROGRESS */
+	//get HTMOBJ_ID
+	$sql = "
+		SELECT
+			HTMOBJ_ID
+		FROM
+			REP_HTMOBJ 
+		WHERE
+			HTMOBJ_OBJECT_ID = " . $OBJECT_ID . "
+			AND HTMOBJ_DOMAIN_ID = " . $DOMAIN_ID . "
+			AND HTMOBJ_CREATED_BY = " . $PERSON_ID . "
+		";
+	$HTMOBJ_ID = svc_get_var( $connection, $sql );
+	
+	
+	//flag REP_TXTITE to delete
+	$sql = "
+		UPDATE REP_TXTITE SET TXTITE_DELETED = 1
+		WHERE TXTITE_ID IN
+			(SELECT HTMOBJ_TXTITE_ID FROM REP_HTMOBJ WHERE
+				HTMOBJ_OBJECT_ID = " . $OBJECT_ID . "
+				AND HTMOBJ_DOMAIN_ID = " . $DOMAIN_ID . "
+				AND HTMOBJ_CREATED_BY = " . $PERSON_ID . "
+			)
+		";
+	$resp = svc_query( $connection, $sql );
+
+	
+	//delete REP_HTMOBJ
+	$sql = "
+		DELETE FROM 
+			REP_HTMOBJ 
+		WHERE
+			HTMOBJ_OBJECT_ID = " . $OBJECT_ID . "
+			AND HTMOBJ_DOMAIN_ID = " . $DOMAIN_ID . "
+			AND HTMOBJ_CREATED_BY = " . $PERSON_ID . "
+		";
+	$resp = svc_query( $connection, $sql );
+	
+	
+	//delete REP_TXTITE
+	//REP_TXTSEG will be deleted by CASCADE
+	$sql = "
+		DELETE FROM 
+			REP_TXTITE 
+		WHERE
+			TXTITE_DELETED = 1
+			AND TXTITE_DOMAIN_ID = " . $DOMAIN_ID . "
+			AND TXTITE_CREATED_BY = " . $PERSON_ID . "
+		";
+	$resp = svc_query( $connection, $sql );
+	//WORK_IN_PROGRESS --- excluir arquivos de imagens em REP_TXTSEG
 
 }
 

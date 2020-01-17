@@ -6,7 +6,6 @@ $TXTITE_ID = svc_sanitize_post( $post['txtite_id'] );
 $orderby = svc_sanitize_post( $post['orderby'] );
 $content = $post['content']; //don't sanitize
 
-$content = str_replace( '\\', '\\\\', $content );
 
 //insert SEG
 $sql = "
@@ -24,7 +23,7 @@ $sql = "
 		" . $TXTITE_ID . ",
 		'" . $content . "',
 		'',
-		'FOR',
+		'YOU',
 		" . $orderby . "
 	)
 	";

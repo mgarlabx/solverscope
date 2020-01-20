@@ -18,7 +18,8 @@ function HOME_main() {
 
 	tx += '<div style="width:100%;text-align:center;margin-top:1rem"><a target="_blank" rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" width="150" src="img/cc_by.png" /></a></div>';
 		
-	tx += '<img style="width:100%;margin-top:1rem" src="img/prototype.jpg">';
+	tx += '<div style="width:100%;text-align:center;margin-top:3rem"><img style="width:60%" src="img/prototype.jpg"></div>';
+
 	
 	$( '#svc-main-content-0' ).html( tx );
 	

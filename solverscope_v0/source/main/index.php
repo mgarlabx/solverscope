@@ -31,7 +31,7 @@ include( 'app/app_functions.php' );
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <meta name="description" content="Digital Education" />
     <meta name="author" content="Solvertank" />
-    <title>Solverscope</title>
+    <title>Solverscope CMS</title>
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet" type="text/css" />
     <link href="../assets/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
     <link href="../fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
@@ -51,9 +51,13 @@ include( 'app/app_functions.php' );
 	
     <script src="../assets/plugins/jquery/jquery.min.js" ></script>
 
+    <link href="solverscope.css?<?php echo time(); ?>" rel="stylesheet" type="text/css" />
+
 	<script>var tk='<?=$ntk?>'</script>
 
     <script src="js/solverscope.js?<?php echo time(); ?>" ></script>
+
+    <script src="js/solverscope_sysw.js?<?php echo time(); ?>" ></script>
 
     <script src="js/solverscope_home.js?<?php echo time(); ?>" ></script>
 
@@ -61,12 +65,9 @@ include( 'app/app_functions.php' );
     <script src="js/solverscope_repw.js?<?php echo time(); ?>" ></script>
     <script src="js/solverscope_repw_editor.js?<?php echo time(); ?>" ></script>
 
-    <script src="js/solverscope_sysw.js?<?php echo time(); ?>" ></script>
+    <script src="js/solverscope_mod.js?<?php echo time(); ?>" ></script>
+    <script src="js/solverscope_modw.js?<?php echo time(); ?>" ></script>
 
-    <link href="solverscope.css?<?php echo time(); ?>" rel="stylesheet" type="text/css" />
-	
-
-	
  </head>
 
  
@@ -81,7 +82,7 @@ include( 'app/app_functions.php' );
 				
                 <div class="page-logo">
                     <img alt="" src="../assets/img/logo.png">
-                    <span class="logo-default" style="color:white;font-size:140%;">&nbsp;&nbsp;Solverscope</span>
+                    <span class="logo-default" style="color:white;font-size:100%;">&nbsp;&nbsp;Solverscope CMS</span>
                 </div>
 				
 				<ul class="nav navbar-nav navbar-left in">
@@ -135,13 +136,13 @@ include( 'app/app_functions.php' );
 						
 						
  	                <div class="row svc-main-content" id="svc-main-content-1">
-						<div class="svc-main-content-close" onclick="main_display( 0 )"><button class="btn btn-danger btn-xs" > X </button></div>
+						<div class="svc-main-content-close" onclick="main_display( 0 )"><button type="button" class="btn btn-info" ><i class="fa fa-times"></i></button></div>
 						<div class="svc-main-content-header" id="svc-main-content-header-1"></div><p>
 						<div class="svc-main-content-body" id="svc-main-content-body-1"></div>
 					</div>
 
  	                <div class="row svc-main-content" id="svc-main-content-2">
-						<div class="svc-main-content-close" onclick="main_display( 1 )"><button class="btn btn-danger btn-xs" > X </button></div>
+						<div class="svc-main-content-close" onclick="main_display( 1 )"><button type="button" class="btn btn-info" ><i class="fa fa-times"></i></button></div>
 						<div class="svc-main-content-header" id="svc-main-content-header-2"></div><p>
 						<div class="svc-main-content-body" id="svc-main-content-body-2"></div>
 					</div>

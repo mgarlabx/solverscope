@@ -9,7 +9,7 @@
 
 var global_processing = '<div id="processing" style="margin:0 auto"><img src="img/processig.gif" width="64" alt="Processing"></div>';
 var global_lang = [];
-var global_master = 0; //set 1 for debug purposes
+var global_master = 0; //set 1 for debug purposes - see function TOGGLE_ID()
 
 var global_tags_packets = [];
 var global_tags_entities = [];
@@ -40,7 +40,6 @@ $( document ).ready( function() {
 			global_lang = svc_get_json( data );
 			page_refresh();
 			svc_editor_translate();
-
 		}
 	});
 	
@@ -131,10 +130,11 @@ function page_sidebar() {
 			$( '#svc-side-bar' ).html( tx );
 			
 			page_click( first_label );
-
-			//rep_essite_get(9, 1); //<----------- RETIRAR ATALHO 
-			//rep_htmobj_get(8); //<----------- RETIRAR ATALHO 
-
+			
+			//MODULES_main(); //<---------- REMOVER ATALHO ------------------------------------------------------------------------------------------------------------
+			//mod_module_get( 2 ); //<---------- REMOVER ATALHO -----------------------------------------------------------------------------------------------------
+			//mod_templa_get( 2, 2 ); //<---------- REMOVER ATALHO -----------------------------------------------------------------------------------------------------
+			
 		}
 	});  
 
@@ -163,6 +163,7 @@ function page_click( label ){
 	catch ( e ) {
 		$( '#main-title' ).html( svc_lang_str( label ) );
    	 	$( '#svc-main-content-0' ).html( '<div style="margin:0 auto"><img src="img/work_in_progress.gif" /></div>' );
+		console.log( label );
 	}
 	
 	
@@ -199,15 +200,67 @@ function main_display( n ) {
 }
 	
 
-function LOGOUT_main() {
-	//WORK_IN_PROGRESS --- ajustar para encerrar a sessão
-	window.location.href = '../login/'; 
-}
 
 	
 	
 	
 /*** functions ****************************************************************************/
+
+
+
+//toggle var global_master for debug purposes
+function TOGGLE_ID_main(){
+	if ( global_master == 0 ) {
+		global_master = 1;
+	}
+	else {
+		global_master = 0;
+	}
+	page_refresh();
+}
+
+
+function LOGOUT_main() {
+	//WORK_IN_PROGRESS --- ajustar para encerrar a sessão
+	window.location.href = '../login/'; 
+}
+
+
+
+
+
+
+//format date according to language
+function svc_date_format( str ) {
+	var dat = new Date( str );
+	var d = dat.getDate();
+	var m = dat.getMonth();
+	var y = dat.getFullYear();
+	d = '0' + d;
+ 	d = d.substr( -2 );
+	m = m + 1;
+ 	m = '0' + m;
+ 	m = m.substr( -2 );
+
+	var langua_id = svc_lang_str( 'LANGUA_ID' );
+
+	if ( langua_id == 2 ) {
+		return m + '/' + d + '/' + y;
+	}
+	else {
+		return d + '/' + m + '/' + y;
+	}
+//	return dat;
+}
+
+
+//replace line breaks by HTML <br>
+function svc_line_break( str ) {
+	str = str.replace( /(?:\r\n|\r|\n)/g, '<br>' );
+	return str;
+}
+
+
 
 //read json
 function svc_get_json( data ) {
@@ -230,7 +283,9 @@ function svc_lang_str( str ) {
 		lineLang = lineLang[0];
 		ret = lineLang['LSTR'];
 	}
-	catch ( e ){}
+	catch ( e ){
+		//skip to return the input str
+	}
 
 	return ret
 }

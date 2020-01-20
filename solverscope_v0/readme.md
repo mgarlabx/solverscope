@@ -2,12 +2,17 @@
 
  
 
-Solverscope v0 - 17/01/2020
-===========================
+Solverscope CMS v0 - 20/01/2020
+===============================
 
 (esse é um documento em evolução)
 
 Para contribuições, dúvidas e mais informações: mauricio\@solvertank.com
+
+ 
+
+**AVISO: ESSA AINDA É UMA VERSÃO INSTÁVEL E COM ATUALIZAÇÕES CONSTANTES SEM
+AVISO PRÉVIO**
 
  
 
@@ -16,11 +21,39 @@ Apresentação
 
  
 
-O Solverscope é um programa para que organizações educacionais possam fazer a
-completa gestão acadêmica e entrega dos serviços educacionais. Ele inclui desde
-o controle do desenvolvimento dos materiais instrucionais (CMS - Content
-Management System) até a experiência dos alunos e professores na plataforma
-digital (LMS - Learning Management System).
+O **Solverscope CMS** é um programa para que organizações educacionais possam
+fazer a transformação digital de seus processos acadêmicos, fazendo a gestão de
+seus produtos educacionais, incluindo:
+
+ 
+
+-   repositório de objetos instrucionais
+
+-   ferramenta de autoria para objetos HTML responsivos
+
+-   etiquetagem (tags) em vários níveis
+
+-   controle do fluxo de revisão e aprovação
+
+-   modelos de articulação (matérias, disciplinas, cursos, capítulos, livros,
+    etc.)
+
+-   ferramentas para ensino adaptativo
+
+-   relatórios e estatísticas de utilização
+
+-   modelos preditivos com machine learning
+
+ 
+
+O **Solverscope CMS** destina-se a gestores pedagógicos, autores e revisores de
+conteúdos instrucionais. O seu objetivo é ser uma ferramenta para que outras
+aplicação, tipicamente um LMS (Learning Management System), possam fazer a
+entrega do processo educacional diretamente ao aluno.
+
+No futuro, a Solvertank pretende desenvolver o **Solverscope LMS**, todavia o
+**Solverscope CMS** continuará sendo agnóstico, podendo ser integrado a qualquer
+LMS existente.
 
  
 
@@ -29,7 +62,7 @@ Licença de uso
 
  
 
-O Solverscope é uma inicitativa da [Solvertank Digital
+O **Solverscope CMS** é uma inicitativa da [Solvertank Digital
 Science](http://www.solvertank.com/) no formato de código-livre (open source).
 Ou seja, qualquer pessoa poderá baixar e utilizar livremente os códigos
 desenvolvidos, da forma que achar conveniente, sem qualquer ônus, de acordo com
@@ -49,20 +82,6 @@ A Solvertank reserva-se ainda o direito de descontinuar esse projeto e/ou tornar
 fechado o código a qualquer momento, sem qualquer aviso prévio. Os códigos
 eventualmente já baixados poderão continuar a serem usados, mas não há
 compromisso de qualquer atualização, correção ou manutenção.
-
- 
-
-Plano de desenvolvimento (roadmap)
-----------------------------------
-
- 
-
-O Solverscope tem uma agenda audaciosa de funcionalidades, as quais podem ser
-visualizadas no menu lateral da tela principal e novas funcionalidades poderão
-ser incluídas.
-
-Nessa versão, porém, apenas as funcionalidades do **Repositório** estão
-disponíveis e apenas para provas e questões objetivas.
 
  
 
@@ -143,9 +162,9 @@ Autenticação
 
  
 
-O Solverscope não possui uma estrutura de autenticação. Será necessário criar
-uma forma de autenticação própria, dependendo do contexto em que irá rodar a
-aplicação.
+O **Solverscope CMS** não possui uma estrutura de autenticação. Será necessário
+criar uma forma de autenticação própria, dependendo do contexto em que irá rodar
+a aplicação.
 
 O processo de autenticação consiste basicamente em se obter um token, o que pode
 ser feito pelo endpoint **sysw_login** do back-end do Solverscope. Ao rodar esse
@@ -166,11 +185,11 @@ Autorização
 
  
 
-O Solverscope controla o acesso de suas várias funcionalidades por seus usuários
-a partir de rotinas de autorização, tanto no front-end quanto no back-end. Esse
-controle é feito através de **perfis** (tabela SYS_PROFIL), sendo que cada
-**usuário** (tabela SYS_PERSON) deve estar associado a um perfil, através da
-tabela SYS_PERPRO. Só é permitido um perfil por usuário por domínio.
+O **Solverscope CMS** controla o acesso de suas várias funcionalidades por seus
+usuários a partir de rotinas de autorização, tanto no front-end quanto no
+back-end. Esse controle é feito através de **perfis** (tabela SYS_PROFIL), sendo
+que cada **usuário** (tabela SYS_PERSON) deve estar associado a um perfil,
+através da tabela SYS_PERPRO. Só é permitido um perfil por usuário por domínio.
 
 A parte do front-end sob controle de autorização são os itens que são exibidos
 na barra lateral da aplicação (sidebar). A tabela SYS_PROFM0 registra os itens

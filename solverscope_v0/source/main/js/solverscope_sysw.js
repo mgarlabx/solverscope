@@ -14,6 +14,7 @@ function sysw_domain_change( domain_id ){
 		data: { 'domain_id': domain_id },
 		success: function( data ) {
 			page_refresh();
+			
 		}
 	});  
 

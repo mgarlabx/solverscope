@@ -12,14 +12,14 @@
 
 function repw_folder_insert( parent ) {
 	$( '#myModalTitle' ).html( svc_lang_str( 'PROMPT_FOLDER_NAME' ) );
-	$( '#myModalBody' ).html( '<input type="text" class="form-control" id="folder_name">' );
+	$( '#myModalBody' ).html( '<input type="text" class="form-control" id="folder-name">' );
 	$( '#myModalButton' ).html( '<button type="button" class="btn btn-primary" onclick="repw_folder_insert_save(' + parent + ')">' + svc_lang_str( 'SAVE' ) + '</button>' );
 	$( '#myModal' ).modal( 'show' );
 }
 
 
 function repw_folder_insert_save( parent ) {
-	var folder_name = $( '#folder_name' ).val();
+	var folder_name = $( '#folder-name' ).val();
 	folder_name = folder_name.trim();
 	if ( folder_name != '' && folder_name != null ) {
 		$.ajax({
@@ -59,14 +59,14 @@ function repw_folder_delete( folder_id, parent ) {
 
 function repw_folder_update( folder_id, parent, old_name ) {
 	$( '#myModalTitle' ).html( svc_lang_str( 'PROMPT_FOLDER_NAME' ) );
-	$( '#myModalBody' ).html( '<input type="text" class="form-control" id="folder_name" value="' + old_name + '">' );
+	$( '#myModalBody' ).html( '<input type="text" class="form-control" id="folder-name" value="' + old_name + '">' );
 	$( '#myModalButton' ).html( '<button type="button" class="btn btn-primary" onclick="repw_folder_update_save(' + folder_id + ', ' + parent + ', \'' + old_name + '\')">' + svc_lang_str( 'SAVE' ) + '</button>' );
 	$( '#myModal' ).modal( 'show' );
 }
 
 
 function repw_folder_update_save( folder_id, parent, old_name ) {
-	var folder_name = $( '#folder_name' ).val();
+	var folder_name = $( '#folder-name' ).val();
 	folder_name = folder_name.trim();
 	if ( folder_name != '' && folder_name != null ) {
 		$.ajax({
@@ -89,14 +89,14 @@ function repw_folder_move( folder_id, parent ) {
 	//WORK_IN_PROGRESS: repw_folder_move - melhorar essa interface
 	
 	$( '#myModalTitle' ).html( svc_lang_str( 'PROMPT_ID' ) );
-	$( '#myModalBody' ).html( '<input type="text" class="form-control" id="folder_to_id" value="' + parent + '">' );
+	$( '#myModalBody' ).html( '<input type="text" class="form-control" id="folder-to-id" value="' + parent + '">' );
 	$( '#myModalButton' ).html( '<button type="button" class="btn btn-primary" onclick="repw_folder_move_save(' + folder_id + ', ' + parent + ')">' + svc_lang_str( 'SAVE' ) + '</button>' );
 	$( '#myModal' ).modal( 'show' );
 }
 
 
 function repw_folder_move_save( folder_id, parent ) {
-	var folder_to_id = $( '#folder_to_id' ).val();
+	var folder_to_id = $( '#folder-to-id' ).val();
 	folder_to_id = folder_to_id.trim();
 	if ( folder_to_id != '' && folder_to_id != null ) {
 		$.ajax({
@@ -223,12 +223,12 @@ function repw_object_insert( parent ) {
 
 			tx += '<tr>';
 			tx += '<td style="padding-bottom:2rem">' + svc_lang_str( 'NAME' ) + '&nbsp;&nbsp;&nbsp;</td>';
-			tx += '<td style="width:100%;padding-bottom:2rem"><input type="text" class="form-control" id="object_name"></td>';
+			tx += '<td style="width:100%;padding-bottom:2rem"><input type="text" class="form-control" id="object-name"></td>';
 			tx += '</tr>';
 
 			tx += '<tr>';
 			tx += '<td style="padding-bottom:2rem">' + svc_lang_str( 'TYPE' ) + '</td>';
-			tx += '<td style="padding-bottom:2rem"><select class="form-control" id="object_type">';
+			tx += '<td style="padding-bottom:2rem"><select class="form-control" id="object-type">';
 			for ( var i = 0; i < objtypes.length ; i++ ) {
 				tx += '<option value="' + objtypes[i]['OBJTYP_ID'] + '">';
 				tx += svc_lang_str( objtypes[i]['OBJTYP_NAME'] );
@@ -255,24 +255,17 @@ function repw_object_insert( parent ) {
 
 function repw_object_insert_save( parent ) {
 	
-	var object_name = $( '#object_name' ).val();
-	var object_type = $( '#object_type' ).val();
-	var object_active = $( '#object_active' ).is( ':checked' );
+	var object_name = $( '#object-name' ).val();
+	var object_type = $( '#object-type' ).val();
 	
 	object_name = object_name.trim();
-	if ( object_active ) {
-		object_active = 1;
-	}
-	else {
-		object_active = 0;
-	}
 	
 	if ( object_name != '' && object_name != null ) {
 		$.ajax({
 			url: 'app/',
 			type: 'POST',
 			headers: { 'tk': tk, 'procedure': 'repw_object_insert' },
-			data: { 'parent': parent, 'object_name': object_name, 'object_type': object_type, 'object_active': object_active },
+			data: { 'parent': parent, 'object_name': object_name, 'object_type': object_type },
 			success: function( data ) {
 				if ( global_last_op == 'rep_folder_list' ) {
 					rep_folder_list( parent );
@@ -296,7 +289,7 @@ function repw_object_delete( object_id, parent ) {
 			headers: { 'tk': tk, 'procedure': 'repw_object_delete' },
 			data: { 'object_id': object_id },
 			success: function( data ) {
-				if ( data.trim() == '{"error": "804"}' ) {
+				if ( data.trim() == 'Error 804' ) {
 					alert( svc_lang_str( 'OBJECT_NOT_EMPTY' ) ); //WORK_IN_PROGRESS -------- checar se esse objeto está sendo usado
 				}
 				else {
@@ -321,7 +314,7 @@ function repw_object_update( object_id, parent, old_name, object_active ) {
 
 	tx += '<tr>';
 	tx += '<td style="padding-bottom:2rem">' + svc_lang_str( 'NAME' ) + '&nbsp;&nbsp;&nbsp;</td>';
-	tx += '<td style="width:100%;padding-bottom:2rem"><input type="text" class="form-control" id="object_name" value="' + old_name + '"></td>';
+	tx += '<td style="width:100%;padding-bottom:2rem"><input type="text" class="form-control" id="object-name" value="' + old_name + '"></td>';
 	tx += '</tr>';
 
 	tx += '<tr>';
@@ -330,7 +323,7 @@ function repw_object_update( object_id, parent, old_name, object_active ) {
 	tx += '<label class="switchToggle">';
     tx += '<input type="checkbox" ';
 	if ( object_active == 1 ) tx += 'checked ';
-	tx += 'id="object_active">';
+	tx += 'id="object-active">';
 	tx += '<span class="slider aqua round"></span>';
 	tx += '</label>';
 	tx += '</td>';
@@ -349,8 +342,8 @@ function repw_object_update( object_id, parent, old_name, object_active ) {
 
 function repw_object_update_save( parent, object_id ) {
 	
-	var object_name = $( '#object_name' ).val();
-	var object_active = $( '#object_active' ).is( ':checked' );
+	var object_name = $( '#object-name' ).val();
+	var object_active = $( '#object-active' ).is( ':checked' );
 	
 	object_name = object_name.trim();
 	if ( object_active ) {

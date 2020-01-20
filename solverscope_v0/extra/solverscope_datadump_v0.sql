@@ -7,6 +7,7 @@
 
 /********** SYS ************************************************************************************************/
 
+
 # Dump of table SYS_LANGUA
 # ------------------------------------------------------------
 
@@ -28,9 +29,9 @@ CREATE TABLE `SYS_LNGSTR` (
   `LNGSTR_EN` varchar(200) COLLATE latin1_general_ci NOT NULL DEFAULT '',
   `LNGSTR_PT` varchar(200) COLLATE latin1_general_ci NOT NULL DEFAULT '',
   `LNGSTR_ES` varchar(200) COLLATE latin1_general_ci NOT NULL DEFAULT '',
-  PRIMARY KEY (`LNGSTR_ID`)
+  PRIMARY KEY (`LNGSTR_ID`),
+  UNIQUE KEY `LNGSTR_UN1` (`LNGSTR_KEY`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
-
 
 
 # Dump of table SYS_DOMAIN
@@ -571,7 +572,186 @@ CREATE TABLE `TAG_TARGET` (
 
 
 
+/********** MOD ************************************************************************************************/
 
+
+
+
+# Dump of table FEE_FORUNS
+# ------------------------------------------------------------
+# THIS TABLE IS NOT THE FINAL LAYOUT - NOW, JUST TO ALLOW FOREIGN KEYS
+
+CREATE TABLE `FEE_FORUNS` (
+  `FORUNS_ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `FORUNS_DOMAIN_ID` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`FORUNS_ID`),
+  KEY `FORUNS_FK1` (`FORUNS_DOMAIN_ID`),
+  CONSTRAINT `FORUNS_FK1` FOREIGN KEY (`FORUNS_DOMAIN_ID`) REFERENCES `SYS_DOMAIN` (`DOMAIN_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+# Dump of table MOD_MODLBL
+# ------------------------------------------------------------
+
+CREATE TABLE `MOD_MODLBL` (
+  `MODLBL_ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `MODLBL_DOMAIN_ID` int(11) unsigned NOT NULL,
+  `MODLBL_NAME` varchar(100) COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`MODLBL_ID`),
+  KEY `MODLBL_FK1` (`MODLBL_DOMAIN_ID`),
+  CONSTRAINT `MODLBL_FK1` FOREIGN KEY (`MODLBL_DOMAIN_ID`) REFERENCES `SYS_DOMAIN` (`DOMAIN_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+# Dump of table MOD_MODTYP
+# ------------------------------------------------------------
+
+CREATE TABLE `MOD_MODTYP` (
+  `MODTYP_ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `MODTYP_DOMAIN_ID` int(11) unsigned NOT NULL,
+  `MODTYP_MODLBL_ID` int(11) unsigned NOT NULL,
+  `MODTYP_NAME` varchar(100) COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`MODTYP_ID`),
+  KEY `MODTYP_FK1` (`MODTYP_DOMAIN_ID`),
+  KEY `MODTYP_FK2` (`MODTYP_MODLBL_ID`),
+  CONSTRAINT `MODTYP_FK1` FOREIGN KEY (`MODTYP_DOMAIN_ID`) REFERENCES `SYS_DOMAIN` (`DOMAIN_ID`),
+  CONSTRAINT `MODTYP_FK2` FOREIGN KEY (`MODTYP_MODLBL_ID`) REFERENCES `MOD_MODLBL` (`MODLBL_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+# Dump of table MOD_MODULE
+# ------------------------------------------------------------
+
+CREATE TABLE `MOD_MODULE` (
+  `MODULE_ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `MODULE_DOMAIN_ID` int(11) unsigned NOT NULL,
+  `MODULE_MODLBL_ID` int(11) unsigned NOT NULL,
+  `MODULE_MODTYP_ID` int(11) unsigned NOT NULL,
+  `MODULE_CODE` varchar(50) COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  `MODULE_NAME` varchar(200) COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  `MODULE_SUMMARY` varchar(1000) COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  `MODULE_DESCRIPTION` varchar(5000) COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  `MODULE_LENGTH` smallint(5) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`MODULE_ID`),
+  KEY `MODULE_FK1` (`MODULE_DOMAIN_ID`),
+  KEY `MODULE_FK2` (`MODULE_MODLBL_ID`),
+  KEY `MODULE_FK3` (`MODULE_MODTYP_ID`),
+  CONSTRAINT `MODULE_FK1` FOREIGN KEY (`MODULE_DOMAIN_ID`) REFERENCES `SYS_DOMAIN` (`DOMAIN_ID`),
+  CONSTRAINT `MODULE_FK2` FOREIGN KEY (`MODULE_MODLBL_ID`) REFERENCES `MOD_MODLBL` (`MODLBL_ID`),
+  CONSTRAINT `MODULE_FK3` FOREIGN KEY (`MODULE_MODTYP_ID`) REFERENCES `MOD_MODTYP` (`MODTYP_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+# Dump of table MOD_TEMPLA
+# ------------------------------------------------------------
+
+CREATE TABLE `MOD_TEMPLA` (
+  `TEMPLA_ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `TEMPLA_DOMAIN_ID` int(11) unsigned NOT NULL,
+  `TEMPLA_MODULE_ID` int(11) unsigned NOT NULL,
+  `TEMPLA_DATE` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `TEMPLA_ACTIVE` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`TEMPLA_ID`),
+  KEY `TEMPLA_FK1` (`TEMPLA_DOMAIN_ID`),
+  KEY `TEMPLA_FK2` (`TEMPLA_MODULE_ID`),
+  CONSTRAINT `TEMPLA_FK1` FOREIGN KEY (`TEMPLA_DOMAIN_ID`) REFERENCES `SYS_DOMAIN` (`DOMAIN_ID`),
+  CONSTRAINT `TEMPLA_FK2` FOREIGN KEY (`TEMPLA_MODULE_ID`) REFERENCES `MOD_MODULE` (`MODULE_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+# Dump of table MOD_TPPHAS
+# ------------------------------------------------------------
+
+CREATE TABLE `MOD_TPPHAS` (
+  `TPPHAS_ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `TPPHAS_DOMAIN_ID` int(11) unsigned NOT NULL,
+  `TPPHAS_TEMPLA_ID` int(11) unsigned NOT NULL,
+  `TPPHAS_WEIGHT` smallint(5) NOT NULL DEFAULT '0',
+  `TPPHAS_ORDERBY` smallint(5) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`TPPHAS_ID`),
+  KEY `TPPHAS_FK1` (`TPPHAS_DOMAIN_ID`),
+  KEY `TPPHAS_FK2` (`TPPHAS_TEMPLA_ID`),
+  CONSTRAINT `TPPHAS_FK1` FOREIGN KEY (`TPPHAS_DOMAIN_ID`) REFERENCES `SYS_DOMAIN` (`DOMAIN_ID`),
+  CONSTRAINT `TPPHAS_FK2` FOREIGN KEY (`TPPHAS_TEMPLA_ID`) REFERENCES `MOD_TEMPLA` (`TEMPLA_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+
+# Dump of table MOD_TPUNIT
+# ------------------------------------------------------------
+
+CREATE TABLE `MOD_TPUNIT` (
+  `TPUNIT_ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `TPUNIT_DOMAIN_ID` int(11) unsigned NOT NULL,
+  `TPUNIT_TEMPLA_ID` int(11) unsigned NOT NULL,
+  `TPUNIT_NAME` varchar(100) COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  `TPUNIT_ORDERBY` smallint(5) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`TPUNIT_ID`),
+  KEY `TPUNIT_FK1` (`TPUNIT_DOMAIN_ID`),
+  KEY `TPUNIT_FK2` (`TPUNIT_TEMPLA_ID`),
+  CONSTRAINT `TPUNIT_FK1` FOREIGN KEY (`TPUNIT_DOMAIN_ID`) REFERENCES `SYS_DOMAIN` (`DOMAIN_ID`),
+  CONSTRAINT `TPUNIT_FK2` FOREIGN KEY (`TPUNIT_TEMPLA_ID`) REFERENCES `MOD_TEMPLA` (`TEMPLA_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+
+# Dump of table MOD_TPSEGM
+# ------------------------------------------------------------
+
+CREATE TABLE `MOD_TPSEGM` (
+  `TPSEGM_ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `TPSEGM_DOMAIN_ID` int(11) unsigned NOT NULL,
+  `TPSEGM_TPUNIT_ID` int(11) unsigned NOT NULL,
+  `TPSEGM_OBJECT_ID` int(11) unsigned DEFAULT NULL,
+  `TPSEGM_FORUNS_ID` int(11) unsigned DEFAULT NULL,
+  `TPSEGM_NAME` varchar(100) COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  `TPSEGM_DESCRIPTION` varchar(1000) COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  `TPSEGM_TPPHAS_ID` int(11) unsigned DEFAULT NULL,
+  `TPSEGM_WEIGHT` smallint(5) NOT NULL DEFAULT '0',
+  `TPSEGM_LENGHT` smallint(5) NOT NULL DEFAULT '0',
+  `TPSEGM_ALLOW_UPLOAD` tinyint(1) NOT NULL DEFAULT '1',
+  `TPSEGM_MANUAL_GRADING` tinyint(1) NOT NULL DEFAULT '1',
+  `TPSEGM_ORDERBY` smallint(5) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`TPSEGM_ID`),
+  KEY `TPSEGM_FK1` (`TPSEGM_DOMAIN_ID`),
+  KEY `TPSEGM_FK2` (`TPSEGM_TPUNIT_ID`),
+  KEY `TPSEGM_FK3` (`TPSEGM_OBJECT_ID`),
+  KEY `TPSEGM_FK4` (`TPSEGM_FORUNS_ID`),
+  KEY `TPSEGM_FK5` (`TPSEGM_TPPHAS_ID`),
+  CONSTRAINT `TPSEGM_FK1` FOREIGN KEY (`TPSEGM_DOMAIN_ID`) REFERENCES `SYS_DOMAIN` (`DOMAIN_ID`),
+  CONSTRAINT `TPSEGM_FK2` FOREIGN KEY (`TPSEGM_TPUNIT_ID`) REFERENCES `MOD_TPUNIT` (`TPUNIT_ID`),
+  CONSTRAINT `TPSEGM_FK3` FOREIGN KEY (`TPSEGM_OBJECT_ID`) REFERENCES `REP_OBJECT` (`OBJECT_ID`),
+  CONSTRAINT `TPSEGM_FK4` FOREIGN KEY (`TPSEGM_FORUNS_ID`) REFERENCES `FEE_FORUNS` (`FORUNS_ID`),
+  CONSTRAINT `TPSEGM_FK5` FOREIGN KEY (`TPSEGM_TPPHAS_ID`) REFERENCES `MOD_TPPHAS` (`TPPHAS_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+
+
+# Dump of table MOD_SEGREL
+# ------------------------------------------------------------
+
+CREATE TABLE `MOD_SEGREL` (
+  `SEGREL_ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `SEGREL_DOMAIN_ID` int(11) unsigned NOT NULL,
+  `SEGREL_SOURCE_TPSEGM_ID` int(11) unsigned NOT NULL,
+  `SEGREL_TARGET_TPSEGM_ID` int(11) unsigned NOT NULL,
+  `SEGREL_TYPE` enum('REQUISITIVE','ADAPTIVE') COLLATE latin1_general_ci NOT NULL DEFAULT 'REQUISITIVE',
+  PRIMARY KEY (`SEGREL_ID`),
+  KEY `SEGREL_FK1` (`SEGREL_DOMAIN_ID`),
+  KEY `SEGREL_FK2` (`SEGREL_SOURCE_TPSEGM_ID`),
+  KEY `SEGREL_FK3` (`SEGREL_TARGET_TPSEGM_ID`),
+  CONSTRAINT `SEGREL_FK1` FOREIGN KEY (`SEGREL_DOMAIN_ID`) REFERENCES `SYS_DOMAIN` (`DOMAIN_ID`),
+  CONSTRAINT `SEGREL_FK2` FOREIGN KEY (`SEGREL_SOURCE_TPSEGM_ID`) REFERENCES `MOD_TPSEGM` (`TPSEGM_ID`),
+  CONSTRAINT `SEGREL_FK3` FOREIGN KEY (`SEGREL_TARGET_TPSEGM_ID`) REFERENCES `MOD_TPSEGM` (`TPSEGM_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 
 
@@ -607,7 +787,7 @@ VALUES
 
 INSERT INTO `SYS_LNGSTR` (`LNGSTR_ID`, `LNGSTR_KEY`, `LNGSTR_EN`, `LNGSTR_PT`, `LNGSTR_ES`)
 VALUES
-	(1,'PROGRAMS','Programs','Cursos','Programas'),
+	(1,'LANGUA_ID','2','3','4'),
 	(2,'INSTITUTIONS','Institutions','Instituições','Instituciones'),
 	(3,'COURSES','Courses','Disciplinas','Materias'),
 	(4,'COURSE','Course','Disciplina','Materia'),
@@ -670,10 +850,10 @@ VALUES
 	(61,'LOGOUT','Logout','Sair','Salir'),
 	(62,'FOLDER','Folder','Pasta','Carpeta'),
 	(63,'OBJECT','Object','Objeto','Objeto'),
-	(65,'CONFIRM_FOLDER_DEL','Confirm folder delete?','Confirma a exclusão da pasta?','¿Confirma eliminación de carpeta?'),
+	(65,'CONFIRM_FOLDER_DEL','Confirm folder delete?','Confirma a exclusão da pasta?','¿Confirma eliminación de la carpeta?'),
 	(66,'FOLDER_NOT_EMPTY','The folder cannot be deleted because it is not empty.','A pasta não pode ser excluída porque não está vazia.','La carpeta no se puede eliminar porque no está vacía.'),
 	(67,'WORK_IN_PROGRESS','Work in progress...','Em desenvolvimento...','En desarrollo...'),
-	(68,'CONFIRM_OBJECT_DEL','Confirm object delete?','Confirma a exclusão do objeto?','¿Confirma eliminación de objeto?'),
+	(68,'CONFIRM_OBJECT_DEL','Confirm object delete?','Confirma a exclusão do objeto?','¿Confirma eliminación del objeto?'),
 	(69,'SAVE','Save','Salvar','Salvar'),
 	(70,'PROMPT_OBJECT_DATA','Please enter the object data:','Por favor, insira os dados do objeto:','Por favor, introduzca los datos del objeto:'),
 	(71,'NAME','Name','Nome','Nombre'),
@@ -700,12 +880,11 @@ VALUES
 	(92,'CORRECT','Correct','Correta','Correcta'),
 	(93,'PROMPT_FOLDER_NAME','Please enter the folder name:','Por favor informe o nome da pasta:','Por favor ingrese el nombre de la carpeta:'),
 	(94,'PROMPT_OPTION_INFO','Please enter data of this option:','Por favor informe os dados dessa opção:','Por favor ingrese los datos de esta opción:'),
-	(95,'CONFIRM_OPTION_DEL','Confirm option delete?','Confirma a exclusão da opção?','¿Confirma eliminación de opción?'),
+	(95,'CONFIRM_OPTION_DEL','Confirm option delete?','Confirma a exclusão da opção?','¿Confirma eliminación de la opción?'),
 	(96,'PARAGRAPH','Paragraph','Parágrafo','Párrafo'),
 	(97,'HEADER','Header','Cabeçalho','Encabezado'),
 	(98,'FOOTNOTE','Footnote','Rodapé','Pie de página'),
-	(99,'SEGMENT','Segment','Segmento','Segmento'),
-	(100,'CONFIRM_SEGMENT_DEL','Confirm segment delete?','Confirma a exclusão do segmento?','¿Confirma eliminación de segmento?'),
+	(100,'CONFIRM_SEGMENT_DEL','Confirm segment delete?','Confirma a exclusão do segmento?','¿Confirma eliminación del segmento?'),
 	(101,'PROMPT_FILE_NAME','Please enter the file name:','Por favor informe o nome do arquivo:','Por favor ingrese el nombre del archivo:'),
 	(102,'PROMPT_EQUATION','Please enter the equation (TeX):','Por favor informe a equação (TeX):','Por favor ingrese el ecuación (TeX):'),
 	(103,'OBJ_QUIZ_ASM','Quiz assessment','Prova questões objetivas','Evaluación cuestiónes objetivas'),
@@ -740,7 +919,51 @@ VALUES
 	(132,'TAG_NOT_FOUND','Tag not found','Etiqueta não encontrada','Etiqueta no encontrada'),
 	(133,'TAG_ALL_FILTERS','All filters','Todos filtros','Todos filtros'),
 	(134,'TAG_MAX_50','Max 50 tags ...','Máx 50 etiquetas','Máx 50 etiquetas'),
-	(135,'PROMPT_VIDEO_ID','Please enter the video ID:','Por favor informe o ID do vídeo:','Por favor ingrese lel ID del vídeo:');
+	(135,'PROMPT_VIDEO_ID','Please enter the video ID:','Por favor informe o ID do vídeo:','Por favor ingrese lel ID del vídeo:'),
+	(136,'SCHEMA','Schema','Esquema','Esquema'),
+	(137,'SCHEMAS','Schemas','Esquemas','Esquemas'),
+	(138,'BLOCK','Block','Bloco','Bloque'),
+	(139,'BLOCKS','Blocks','Blocos','Bloques'),
+	(140,'MODULE','Module','Módulo','Modulo'),
+	(141,'MODULES','Modules','Módulos','Modulos'),
+	(142,'UNIT','Unit','Unidade','Unidad'),
+	(143,'UNITS','Units','Unidades','Unidades'),
+	(144,'SEGMENT','Segment','Segmento','Segmento'),
+	(145,'SEGMENTS','Segments','Segmentos','Segmentos'),
+	(146,'DEVELOPER','Developer','Desenvolvedor','Desarrollador'),
+	(147,'TOGGLE_ID','Toggle IDs','Alternar IDs','Alternar IDs'),
+	(148,'LABEL','Label','Rótulo','Rótulo'),
+	(149,'LENGTH','Length','Duração','Duración'),
+	(150,'SUMMARY','Summary','Resumo','Resumen'),
+	(151,'DESCRIPTION','Description','Descrição','Descripción'),
+	(152,'PROMPT_MODULE_DATA','Please enter the module data:','Por favor, insira os dados do módulo:','Por favor, introduzca los datos del modulo:'),
+	(153,'MODULE_CODE','Code','Código','Código'),
+	(154,'MODULE_NAME','Name','Nome','Nombre'),
+	(155,'MODLBL_NAME','Label','Rótulo','Rótulo'),
+	(156,'MODTYP_NAME','Type','Tipo','Tipo'),
+	(157,'MODULE_LENGTH','Length','Duração','Duración'),
+	(158,'MODULE_SUMMARY','Summary','Resumo','Resumen'),
+	(159,'MODULE_DESCRIPTION','Description','Descrição','Descripción'),
+	(160,'MODULE_DATA','Module data','Dados do módulo','Datos del modulo'),
+	(161,'TEMPLATE','Template','Modelo','Plantilla'),
+	(162,'TEMPLATES','Templates','Modelos','Plantillas'),
+	(163,'PROMPT_MODULE_CODE','Please enter the module code:','Por favor, insira o código do módulo:','Por favor, introduzca el código del modulo:'),
+	(164,'CONFIRM_MODULE_DEL','Confirm module delete?','Confirma a exclusão do módulo?','¿Confirma eliminación del modulo?'),
+	(165,'MODULE_NOT_EMPTY','The module cannot be deleted because it is being used.','O módulo não pode ser excluído porque ele está sendo usado.','El módulo no se puede eliminar porque se está utilizando.'),
+	(167,'PROGRAMS','Programs','Cursos','Programas'),
+	(168,'DELETE','Delete','Excluir','Eliminar'),
+	(169,'CONFIRM_TEMPLA_DEL','Confirm template delete?','Confirma a exclusão do modelo?','¿Confirma eliminación de la plantilla?'),
+	(170,'TPUNIT_NOT_EMPTY','The unit cannot be deleted because it is being used.','A unidade não pode ser excluída porque está sendo usada.','La unidad no se puede eliminar porque se está utilizando.'),
+	(171,'CONFIRM_TPUNIT_DEL','Confirm unit delete?','Confirma a exclusão da unidade?','¿Confirma eliminación de la unidad?'),
+	(172,'TEMPLA_NOT_EMPTY','The template cannot be deleted because it is being used.','O modelo não pode ser excluído porque está sendo usado.','La plantilla no se puede eliminar porque se está utilizando.'),
+	(173,'PROMPT_TPUNIT_NAME','Please enter the unit name:','Por favor informe o nome da unidade:','Por favor ingrese el nombre de la unidad:'),
+	(174,'PROMPT_UNIT_DATA','Please enter the unit data:','Por favor, insira os dados da unidade:','Por favor, introduzca los datos de la unidad:'),
+	(175,'PROMPT_TEMPLA_INFO','Please enter data of this template:','Por favor informe os dados desse modelo:','Por favor ingrese los datos de esta plantilla:'),
+	(176,'DATE','Date','Data','Fecha'),
+	(177,'DASHBOARD','Dashboard','Painel de controle','Panel de control'),
+	(178,'STRUCTURE','Structure','Estrutura','Estructura'),
+	(179,'PRODUCT','Product','Produto','Producto'),
+	(180,'PRODUCTS','Products','Produtos','Productos');
 
 
 
@@ -786,10 +1009,8 @@ INSERT INTO `SYS_PROFIL` (`PROFIL_ID`, `PROFIL_NAME`)
 VALUES
 	(1,'(blank)'),
 	(2,'Master'),
-	(3,'Manager'),
-	(4,'Author'),
-	(5,'Student'),
-	(6,'Professor');
+	(3,'User read'),
+	(4,'Author');
 
 
 
@@ -803,18 +1024,18 @@ VALUES
 	(2,2,2,2),
 	(3,2,3,3),
 	(4,2,4,4),
-	(5,2,5,5),
-	(6,2,6,6),
+	(5,2,5,3),
+	(6,2,6,3),
 	(7,3,7,2),
 	(8,3,8,3),
 	(9,3,9,4),
-	(10,3,10,5),
-	(11,3,11,6),
+	(10,3,10,3),
+	(11,3,11,3),
 	(12,4,12,2),
 	(13,4,13,3),
 	(14,4,14,4),
-	(15,4,15,5),
-	(16,4,16,6),
+	(15,4,15,3),
+	(16,4,16,3),
 	(17,3,2,4),
 	(18,4,2,4),
 	(19,2,7,4),
@@ -830,31 +1051,19 @@ VALUES
 INSERT INTO `SYS_PROFM0` (`PROFM0_ID`, `PROFM0_LABEL`, `PROFM0_LEVEL`, `PROFM0_ICON`, `PROFM0_ORDERBY`, `PROFM0_ACTIVE`, `PROFM0_PARENT_ID`, `PROFM0_COMMENTS`)
 VALUES
 	(1,'(blank)',1,'(blank)',1,0,0,''),
-	(2,'MY_DASHBOARD',1,'dashboard',65,0,0,''),
-	(3,'MY_COURSES',1,'edit',30,1,0,''),
-	(4,'MY_CLASSES',1,'class',40,1,0,''),
-	(5,'MY_GROUPS',1,'group',18,1,0,''),
-	(6,'ACADEMICS',2,'school',60,1,0,''),
-	(7,'PROGRAMS',3,'',10,1,6,''),
-	(8,'COURSES',3,'',20,1,6,''),
-	(9,'INSTITUTIONS',3,'',30,1,6,''),
-	(10,'REPOSITORY',2,'library_books',65,1,0,''),
-	(11,'OPERATIONS',2,'business',70,1,0,''),
-	(12,'ADMISSIONS',3,'',10,1,11,''),
-	(13,'SCHEDULING',3,'',20,1,11,''),
-	(14,'FINANCIAL',3,'',30,1,11,''),
-	(15,'SETTINGS',2,'settings',80,1,0,''),
-	(16,'USERS',3,'',10,1,15,''),
-	(17,'FACULTY',3,'',20,1,15,''),
-	(18,'STUDENTS',3,'',30,1,15,''),
-	(19,'ADMIN',2,'vpn_key',90,1,0,''),
-	(20,'DOMAINS',3,'',10,1,19,''),
-	(21,'LANGUAGES',3,'',20,1,19,''),
-	(22,'HOME',1,'home',10,1,0,''),
-	(23,'REPOSITORY_FULL_ACCESS',3,'',10,1,10,''),
-	(24,'REPOSITORY_MY_FOLDERS',3,'',20,1,10,''),
-	(25,'FEED',1,'list',15,1,0,''),
-	(26,'TAGS',3,'',30,1,10,'');
+	(2,'HOME',1,'home',2,1,0,''),
+	(3,'DASHBOARD',1,'dashboard',3,1,0,''),
+	(11,'REPOSITORY',2,'library_books',11,1,0,''),
+	(12,'REPOSITORY_FULL_ACCESS',3,'',1,1,11,''),
+	(13,'REPOSITORY_MY_FOLDERS',3,'',2,1,11,''),
+	(14,'TAGS',3,'',3,1,11,''),
+	(21,'STRUCTURE',2,'layers',21,1,0,''),
+	(22,'MODULES',3,'',1,1,21,''),
+	(23,'PRODUCTS',3,'',2,1,21,''),
+	(81,'SETTINGS',2,'settings',81,1,0,''),
+	(82,'USERS',3,'',1,1,81,''),
+	(91,'DEVELOPER',2,'developer_mode',91,1,0,''),
+	(92,'TOGGLE_ID',3,'',1,1,91,'');
 
 
 
@@ -864,40 +1073,31 @@ VALUES
 INSERT INTO `SYS_PROFM1` (`PROFM1_ID`, `PROFM1_PROFM0_ID`, `PROFM1_PROFIL_ID`)
 VALUES
 	(1,1,1),
-	(2,2,2),
-	(3,3,2),
-	(4,4,2),
-	(5,5,2),
-	(6,6,2),
-	(7,7,2),
-	(8,8,2),
-	(9,9,2),
-	(10,10,2),
-	(11,11,2),
-	(12,12,2),
-	(13,13,2),
-	(14,14,2),
-	(15,15,2),
-	(16,16,2),
-	(17,17,2),
-	(18,18,2),
-	(19,19,2),
-	(20,20,2),
-	(21,21,2),
-	(22,22,2),
-	(23,23,2),
-	(24,24,2),
-	(25,25,2),
-	(26,26,2),
-	(28,10,3),
-	(29,24,3),
-	(30,10,4),
-	(31,24,4),
-	(32,10,5),
-	(33,24,5),
-	(34,10,6),
-	(35,24,6);
-
+	(42,2,2),
+	(43,3,2),
+	(44,11,2),
+	(45,12,2),
+	(46,13,2),
+	(47,14,2),
+	(48,21,2),
+	(49,22,2),
+	(50,23,2),
+	(51,81,2),
+	(52,82,2),
+	(53,91,2),
+	(54,92,2),
+	(55,2,3),
+	(56,3,3),
+	(57,11,3),
+	(58,12,3),
+	(59,13,3),
+	(60,14,3),
+	(61,21,3),
+	(62,22,3),
+	(63,23,3),
+	(64,2,4),
+	(65,11,4),
+	(66,13,4);
 
 
 # Dump of table SYS_PROFP0
@@ -906,16 +1106,17 @@ VALUES
 INSERT INTO `SYS_PROFP0` (`PROFP0_ID`, `PROFP0_NAME`, `PROFP0_COMMENTS`, `PROFP0_OPEN`)
 VALUES
 	(1,'(blank)','(blank)',0),
-	(2,'%%','Master Full',0),
-	(3,'rep%','Repository',0),
-	(12,'sys_domain_last_get','',1),
-	(13,'sys_domain_list','',1),
-	(14,'sys_lngstr_%','',1),
-	(15,'sysw_domain_last_set','',1),
-	(16,'sys_profm0_list','',1);
-
-/*!40000 ALTER TABLE `SYS_PROFP0` ENABLE KEYS */;
-UNLOCK TABLES;
+	(2,'%%','Master Full - BE CAREFUL',0),
+	(11,'rep%','Repository read and write',0),
+	(12,'rep_%','Repository read only',0),
+	(21,'mod%','Module read and write',0),
+	(22,'mod_%','Module read only',0),
+	(92,'sys_domain_last_get','Get last domain visited',1),
+	(93,'sys_domain_list','List of user domains',1),
+	(94,'sys_lngstr_%','Dictionary',1),
+	(95,'sysw_domain_last_set','Set last domain visited',1),
+	(96,'sys_profm0_list','List of user menu (sidebar) items',1);
+	
 
 
 # Dump of table SYS_PROFP1
@@ -924,11 +1125,10 @@ UNLOCK TABLES;
 INSERT INTO `SYS_PROFP1` (`PROFP1_ID`, `PROFP1_PROFP0_ID`, `PROFP1_PROFIL_ID`)
 VALUES
 	(1,1,1),
-	(2,2,2),
-	(3,3,3),
-	(4,3,4),
-	(5,3,5),
-	(6,3,6);
+	(7,2,2),
+	(8,12,3),
+	(9,22,3),
+	(10,11,4);
 
 
 
@@ -5538,10 +5738,7 @@ INSERT INTO `TAG_TARTYP` (`TARTYP_ID`, `TARTYP_TABLE_NAME`)
 VALUES
 	(1,'(blank)'),
 	(2,'REP_OBJECT'),
-	(3,'CRS_COURSE'),
-	(4,'CRS_SYLLAB'),
-	(5,'CRS_SYLDET'),
-	(6,'CRS_SYLOBJ');
+	(3,'MOD_MODULE');
 
 
 
@@ -5553,6 +5750,14 @@ VALUES
 	(1,1,1,1,1),
 	(5,3,2,2,1508),
 	(6,3,2,2,1421);
+
+
+
+
+
+
+
+
 
 
 

@@ -1,5 +1,37 @@
 <?php
 
+
+
+//deformat date according to language
+function svc_date_deformat( $str ) {
+	if ( strlen( $str ) != 10 ) {
+		$dat = 0;
+	}
+	else {
+		if ( $GLOBALS['LANGUA_ID'] == 2 ){
+			$m = substr( $str, 0, 2 ); 
+			$d = substr( $str, 3, 2 ); 
+			$y = substr( $str, 6, 4 ); 
+		}
+		else {
+			$d = substr( $str, 0, 2 ); 
+			$m = substr( $str, 3, 2 ); 
+			$y = substr( $str, 6, 4 ); 
+		}
+		if ( checkdate( $m, $d, $y ) ) {
+			$dat = $y . '-' . $m . '-' . $d;
+		}	
+		else {
+			$dat = 0;
+		}
+	}
+	return $dat;
+}
+
+
+
+
+
 //prevent SQL injection
 function svc_sanitize_post( $str ) {
 	$ret = filter_var( $str, FILTER_SANITIZE_STRING );

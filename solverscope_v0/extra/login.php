@@ -12,10 +12,11 @@ This script is a simple suggestion on how to implement a SSO for Solverscope.
 It is not part of the application and can be developed in any language.
 */
 
-$base_url = 'http://localhost/...../'; //<-------- TO BE CONFIGURED 
+$base_url = 'http://www.solvertank.com/solverscope/'; //<-------- TO BE CONFIGURED 
+
 
 $secret = '176575655'; //<-------- DOMAIN_SECRET @ SYS_DOMAIN
-$tk = get_token( $base_url, $secret, 'Mônica', 'monica@turmadamonica.com.br', 2 );
+$tk = get_token( $base_url, $secret, 'Monica', 'monica@turmadamonica.com.br', 2 );
 $url_monica = $base_url . 'main/?tk=' . $tk;
 
 $secret = '176575655'; //<-------- DOMAIN_SECRET @ SYS_DOMAIN
@@ -25,15 +26,6 @@ $url_cebolinha = $base_url . 'main/?tk=' . $tk;
 $secret = '176575655'; //<-------- DOMAIN_SECRET @ SYS_DOMAIN
 $tk = get_token( $base_url, $secret, 'Cascão', 'cascao@turmadamonica.com.br', 4 );
 $url_cascao = $base_url . 'main/?tk=' . $tk;
-
-$secret = '176575655'; //<-------- DOMAIN_SECRET @ SYS_DOMAIN
-$tk = get_token( $base_url, $secret, 'Magali', 'magali@turmadamonica.com.br', 5 );
-$url_magali = $base_url . 'main/?tk=' . $tk;
-
-$secret = '176575655'; //<-------- DOMAIN_SECRET @ SYS_DOMAIN
-$tk = get_token( $base_url, $secret, 'Franjinha', 'franjinha@turmadamonica.com.br', 6 );
-$url_franjinha = $base_url . 'main/?tk=' . $tk;
-
 
 $secret = '479929474'; //<-------- DOMAIN_SECRET @ SYS_DOMAIN
 $tk = get_token( $base_url, $secret, 'Bruce Wayne', 'batman@wayne.com', 2 );
@@ -45,24 +37,43 @@ $url_chavo = $base_url . 'main/?tk=' . $tk;
 
 
 ?>
+
+
+<!DOCTYPE html>
 <html>
-
-	<head>
-	    <title>Solversope SSO</title>
-	</head>
- 
-	<body>
-		<a href="<?=$url_monica?>">M&ocirc;nica</a><p>
-		<a href="<?=$url_cebolinha?>">Cebolinha</a><p>
-		<a href="<?=$url_cascao?>">Casc&atilde;o</a><p>
-		<a href="<?=$url_magali?>">Magali</a><p>
-		<a href="<?=$url_franjinha?>">Franjinha</a><p>
-
-		<hr>
-		<a href="<?=$url_batman?>">Bruce Wayne</a><p>
-		<a href="<?=$url_chavo?>">El Chavo del Ocho</a><p>
-	</body>
-
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta name="description" content="Digital Education" />
+    <meta name="author" content="Solvertank" />
+    <title>Solverscope Login</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet" type="text/css" />
+    <link href="../fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+	<link href="../fonts/material-design-icons/material-icon.css" rel="stylesheet" type="text/css" />
+	<link href="../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="../assets/css/pages/extra_pages.css">
+    <link rel="shortcut icon" href="../assets/img/favicon.ico" /> 
+</head>
+<body>
+    <div class="form-title">
+        <h1>Login para testes</h1>
+    </div>
+    <!-- Login Form-->
+    <div class="login-form text-center">
+        <div class="toggle"></div>
+        <div class="form formLogin">
+			<h3><a href="<?=$url_monica?>">USU&Aacute;RIO MASTER</a></h3><p>&nbsp;<p>
+			<h3><a href="<?=$url_cebolinha?>">USU&Aacute;RIO GESTOR</a></h3><p>&nbsp;<p>
+			<h3><a href="<?=$url_cascao?>">USU&Aacute;RIO AUTOR</a></h3><p>&nbsp;<p>
+			<hr>
+			<h3><a href="<?=$url_chavo?>">ESPA&Ntilde;OL</a></h3><p>&nbsp;<p>
+			<h3><a href="<?=$url_batman?>">ENGLISH</a></h3><p>&nbsp;<p>
+        </div>
+    </div>
+    <script src="../assets/plugins/jquery/jquery.min.js" ></script>
+    <script src="../assets/js/pages/extra_pages/pages.js" ></script>
+</body>
 </html>
 
 <?php

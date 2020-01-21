@@ -187,37 +187,9 @@ function mod_module_get( module_id ) {
 			$( '#svc-main-content-body-1' ).html( tx );
 			$( '#svc-main-content-0' ).hide();
 			$( '#svc-main-content-1' ).show();
-			
-			
-			//templates
-			$.ajax({
-				url: 'app/',
-				type: 'POST',
-				headers: { 'tk': tk, 'procedure': 'mod_templa_list' },
-				data: { 'module_id': module_id },
-				success: function( data ) {
-					rows = svc_get_json( data );
-					var ty = '';
-					ty += '<table class="table table-hover">';
-					ty += '<tbody>';
-					for ( var i = 0; i < rows.length ; i++ ) {
-						if ( rows[i]['TEMPLA_ID'] != undefined ) {
-							var active = '&nbsp;';
-							if ( rows[i]['TEMPLA_ACTIVE'] == 1 ) active = '<i title="' + svc_lang_str( 'ACTIVE' ) + '" class="fa fa-check"></i>';
-							ty += '<tr>';
-							ty += '<td onclick="mod_templa_get(' + rows[i]['TEMPLA_ID'] + ', ' + module_id + ')"><a href="#">' + svc_date_format( rows[i]['TEMPLA_DATE'] ) + '</a>&nbsp;&nbsp;&nbsp;' + active;
-							if ( global_master == 1 ) ty += ' <span class="svc-master">TEMPLA_ID: ' + rows[i]['TEMPLA_ID'] + '</span>';
-							ty += '</td>' ;
-							if ( rows[i][ 'PERMISSION' ] == 1 ) ty += '<td align="right"><button type="button" class="btn btn-danger" onclick="modw_templa_delete(' + rows[i]['TEMPLA_ID'] + ', ' + module_id + ' )"><i class="fa fa-trash"></i></button></td>';
-							ty += '</tr>';
-						}
-					}
-					ty += '</tbody>';
-					ty += '</table>';
-					$( '#module-templates' ).html( ty );
 
-				}
-			});
+			//templates
+			mod_templa_list( module_id );
 
 
 		}
@@ -232,21 +204,36 @@ function mod_module_get( module_id ) {
 
 
 function mod_templa_list( module_id ) {
-	
 	$.ajax({
 		url: 'app/',
-		txpe: 'POST',
+		type: 'POST',
 		headers: { 'tk': tk, 'procedure': 'mod_templa_list' },
 		data: { 'module_id': module_id },
 		success: function( data ) {
-			console.log( data ); //WORK_IN_PROGRESS: não está lendo esse post !!!
+			rows = svc_get_json( data );
+			var ty = '';
+			ty += '<table class="table table-hover">';
+			ty += '<tbody>';
+			for ( var i = 0; i < rows.length ; i++ ) {
+				if ( rows[i]['TEMPLA_ID'] != undefined ) {
+					var active = '&nbsp;';
+					if ( rows[i]['TEMPLA_ACTIVE'] == 1 ) active = '<i title="' + svc_lang_str( 'ACTIVE' ) + '" class="fa fa-check"></i>';
+					ty += '<tr>';
+					ty += '<td onclick="mod_templa_get(' + rows[i]['TEMPLA_ID'] + ', ' + module_id + ')"><a href="#">' + svc_date_format( rows[i]['TEMPLA_DATE'] ) + '</a>&nbsp;&nbsp;&nbsp;' + active;
+					if ( global_master == 1 ) ty += ' <span class="svc-master">TEMPLA_ID: ' + rows[i]['TEMPLA_ID'] + '</span>';
+					ty += '</td>' ;
+					if ( rows[i][ 'PERMISSION' ] == 1 ) ty += '<td align="right"><button type="button" class="btn btn-danger" onclick="modw_templa_delete(' + rows[i]['TEMPLA_ID'] + ', ' + module_id + ' )"><i class="fa fa-trash"></i></button></td>';
+					ty += '</tr>';
+				}
+			}
+			ty += '</tbody>';
+			ty += '</table>';
+			$( '#module-templates' ).html( ty );
+
 		}
 	});
-	
+
 }
-
-
-
 
 
 function mod_templa_get( templa_id, module_id ) {
@@ -280,7 +267,9 @@ function mod_templa_get( templa_id, module_id ) {
 
 					rows = svc_get_json( data1 );
 
-					if ( templa[ 'PERMISSION' ] == 1 ) tx += '<p><button type="button" class="btn btn-primary mb-3" onclick="modw_tpunit_insert(' + templa_id + ', ' + module_id + ' )"><i class="fa fa-plus"></i> ' + svc_lang_str( 'UNIT' ) + '</button>';
+					tx += '<p>';
+					if ( templa[ 'PERMISSION' ] == 1 ) tx += '<button type="button" class="btn btn-primary mb-3" onclick="modw_tpunit_insert(' + templa_id + ', ' + module_id + ' )"><i class="fa fa-plus"></i> ' + svc_lang_str( 'UNIT' ) + '</button>&nbsp;&nbsp;&nbsp;';
+					tx += '<button type="button" class="btn btn-info mb-3" onclick="mod_tpphas_list(' + templa_id + ' )"><i class="fa fa-list-ul"></i> ' + svc_lang_str( 'PHASES' ) + '&nbsp;&nbsp;</button>';
 
 					for ( var i = 0; i < rows.length ; i++ ) {
 						if ( rows[i]['TPUNIT_ID'] != undefined ) {
@@ -288,9 +277,10 @@ function mod_templa_get( templa_id, module_id ) {
 							tx += '<div class="panel panel-default">';
 							tx += '<div class="panel-heading panel-heading-gray">';
 							tx += '<h4 class="panel-title">';
-							tx += '<a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" onclick="mod_tpunit_get(' + rows[i]['TPUNIT_ID'] + ')" href="#collapse-units-' + i + '" aria-expanded="true"> ';
+							tx += '<a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" onclick="mod_tpsegm_show(' + rows[i]['TPUNIT_ID'] + ', ' + templa[ 'PERMISSION' ] + ')" href="#collapse-units-' + i + '" aria-expanded="true"> ';
 							tx += rows[i]['TPUNIT_NAME'];
 							tx += ' </a>';
+							if ( global_master == 1 ) tx += ' <span class="svc-master">TPUNIT_ID: ' + rows[i]['TPUNIT_ID'] + '</span>';
 							if ( rows[i][ 'PERMISSION' ] == 1 ) {
 								tx += '<div class="float-right">';
 								tx += '<button type="button" class="btn btn-primary" onclick="modw_tpunit_update(' + rows[i]['TPUNIT_ID'] + ', ' + templa_id + ', ' + module_id + ')"><i class="fa fa-pencil"></i></button>&nbsp;&nbsp;';
@@ -322,11 +312,45 @@ function mod_templa_get( templa_id, module_id ) {
 }
 
 
+//assessment phases
+function mod_tpphas_list( templa_id ) {
+	//WORK_IN_PROGRESS - listar, inserir, alterar e excluir fases de avaliação - tabela MOD_TPPHAS - campos TPPHAS_WEIGHT e TPPHAS_ORDERBY
+	alert( 'WORK IN PROGRESS: listar, inserir, alterar e excluir fases de avaliação.' );
+}
 
-function mod_tpunit_get( tpunit_id ) {
-	//WORK_IN_PROGRESS - segmentos nas unidades
-	var tx = '';
-	tx += 'WORK IN PROGRESS ' + tpunit_id;
-	$( '#tpunit-' + tpunit_id ).html( tpunit_id );
-	
+
+/***** SEGMENTS ***********************************************************************************************************************************************************/
+
+
+function mod_tpsegm_show( tpunit_id, permission ) {
+	if ( $( '#tpunit-' + tpunit_id ).html() == '' ) {
+		mod_tpsegm_list( tpunit_id, permission );
+	}
+}
+
+
+function mod_tpsegm_list( tpunit_id, permission ) {
+
+	$.ajax({
+		url: 'app/',
+		type: 'POST',
+		headers: { 'tk': tk, 'procedure': 'mod_tpsegm_list' },
+		data: { 'tpunit_id': tpunit_id },
+		success: function( data ) {
+			rows = svc_get_json( data );
+			var tx = '';
+			
+			if ( permission ==  1 ) tx += '<p><button type="button" class="btn btn-primary mb-3" onclick="modw_tpsegm_insert(' + tpunit_id + ', ' + permission + ' )"><i class="fa fa-plus"></i> ' + svc_lang_str( 'SEGMENT' ) + '</button>';
+
+			tx += '<table class="table">';
+			for ( var i = 0; i < rows.length ; i++ ) {
+				tx += '<tr>';
+				tx += '<td>' + rows[i]['TPSEGM_NAME'] + '</td>';
+				tx += '</tr>';
+			}
+			tx += '</table>';
+			$( '#tpunit-' + tpunit_id ).html( tx );
+		}
+	});
+
 }

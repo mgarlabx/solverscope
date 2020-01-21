@@ -181,11 +181,14 @@ function modw_templa_insert( module_id ) {
 		headers: { 'tk': tk, 'procedure': 'modw_templa_insert' },
 		data: { 'module_id': module_id },
 		success: function( data ) {
-			mod_module_get( module_id );
+			mod_templa_list( module_id );
 		}
 	});
 	
 }
+
+
+
 
 function modw_templa_delete( templa_id, module_id ) {
 	
@@ -200,7 +203,7 @@ function modw_templa_delete( templa_id, module_id ) {
 					alert( svc_lang_str( 'TEMPLA_NOT_EMPTY' ) ); 
 				}
 				else {
-					mod_module_get( module_id );
+					mod_templa_list( module_id );
 				}
 			}
 		});
@@ -402,5 +405,43 @@ function modw_tpunit_delete( tpunit_id, templa_id, module_id ) {
 		});
 		
 	}
+	
+}
+
+
+
+
+
+/***** SEGMENTS ***********************************************************************************************************************************************************/
+
+
+function modw_tpsegm_insert( tpunit_id, permission ) {
+	
+	$( '#myModalTitle' ).html( svc_lang_str( 'PROMPT_TPSEGM_NAME' ) );
+	$( '#myModalBody' ).html( '<input type="text" class="form-control" id="tpsegm-name">' );
+	$( '#myModalButton' ).html( '<button type="button" class="btn btn-primary" onclick="modw_tpsegm_insert_save(' + tpunit_id + ',' + permission + ')">' + svc_lang_str( 'SAVE' ) + '</button>' );
+	$( '#myModal' ).modal( 'show' );
+	
+}
+
+
+function modw_tpsegm_insert_save( tpunit_id, permission ) {
+	
+	var tpsegm_name = $( '#tpsegm-name' ).val();
+	
+	tpsegm_name = tpsegm_name.trim();
+	if ( tpsegm_name != '' && tpsegm_name != null ) {
+		$.ajax({
+			url: 'app/',
+			type: 'POST',
+			headers: { 'tk': tk, 'procedure': 'modw_tpsegm_insert' },
+			data: { 'tpunit_id': tpunit_id, 'tpsegm_name': tpsegm_name },
+			success: function( data ) {
+				mod_tpsegm_list( tpunit_id, permission );
+			}
+		});
+	}
+	$( '#myModal' ).modal( 'hide' );
+	
 	
 }

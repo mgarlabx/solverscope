@@ -2,9 +2,8 @@
 
 if ( $vld != 1 ) die();
 
-$TPUNIT_NAME = svc_sanitize_post( $post['tpunit_name'] );
 $TEMPLA_ID = svc_sanitize_post( $post['templa_id'] );
-
+$TPUNIT_NAME = svc_sanitize_post( $post['tpunit_name'] );
 $TPUNIT_NAME = trim( $TPUNIT_NAME );
 
 $sql = "

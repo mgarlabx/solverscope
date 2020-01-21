@@ -2,7 +2,7 @@
 
 if ( $vld != 1 ) die();
 
-$parent = svc_sanitize_post( $post['parent'] );
+$FOLDER_ID = svc_sanitize_post( $post['folder_id'] );
 
 $folders = array();
 
@@ -17,15 +17,15 @@ for ( $i = 1; $i < 20; $i++ ) {
 			REP_FOLDER
 		WHERE
 			FOLDER_DOMAIN_ID = " . $DOMAIN_ID . "
-			AND FOLDER_ID = " . $parent ."
+			AND FOLDER_ID = " . $FOLDER_ID ."
 		LIMIT 1
 		";
 
 	$rows = svc_get_rows( $connection, $sql );
 
 	$folders[] = $rows[0];
-	$parent = $rows[0]['FOLDER_PARENT_ID'];
-	if ( $parent == 0 ) break;
+	$folder_id = $rows[0]['FOLDER_PARENT_ID'];
+	if ( $folder_id == 0 ) break;
 
 }
 

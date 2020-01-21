@@ -53,7 +53,7 @@ function rep_folder_list( parent ) {
 						url: 'app/',
 						type: 'POST',
 						headers: { 'tk': tk, 'procedure': 'rep_folder_path' },
-						data: { 'parent': parent },
+						data: { 'folder_id': parent },
 						success: function( path ) {
 							path = svc_get_json( path );
 							var txp = '';
@@ -410,6 +410,7 @@ function rep_quiite_get( object_id, svc_main_content_id ) {
 			var feedback_id = rows[0]['QUIITE_TXTITE_ID_FEEDBACK'];
 			var quiite_id = rows[0]['QUIITE_ID'];
 			var folder_id = rows[0]['OBJECT_FOLDER_ID'];
+			var author_name = rows[0]['AUTHOR_NAME'];
 
 			var permission = rows[0]['PERMISSION'];
 			if ( rows[0]['OBJECT_REV_1'] == 1 ) permission = 0;
@@ -421,7 +422,9 @@ function rep_quiite_get( object_id, svc_main_content_id ) {
 			//if ( global_master == 1 ) header += '<span class="svc-master">QUIITE_ID: ' + quiite_id + '</span>';
 			header += '<span class="svc-master">QUIITE_ID: ' + quiite_id + '</span>'; //WORK_IN_PROGRESS: ocultar isso quando a interface para escolher as questões for melhor
 			$( '#svc-main-content-header-' + svc_main_content_id ).html( header );
+			tx += '<h4 class="ml-2">' + svc_lang_str( 'AUTHOR' ) + ': ' + author_name +'</h4>';
 			tx += '<div class="svc-main-content-path" id="object-path"></div>';
+			
 
 			//command
 			tx += '<div class="col-md-12">';
@@ -510,7 +513,7 @@ function rep_quiite_get( object_id, svc_main_content_id ) {
 				url: 'app/',
 				type: 'POST',
 				headers: { 'tk': tk, 'procedure': 'rep_folder_path' },
-				data: { 'parent': folder_id },
+				data: { 'folder_id': folder_id },
 				success: function( data ) {
 					var rows = svc_get_json( data );
 					var tx = '';
@@ -527,8 +530,6 @@ function rep_quiite_get( object_id, svc_main_content_id ) {
 	});
 
 }          
-
-
 
 
 
@@ -554,6 +555,7 @@ function rep_quiasm_get( object_id ) {
 			var quiasm_random_items = rows[0]['QUIASM_RANDOM_ITEMS'];
 			var quiasm_random_options = rows[0]['QUIASM_RANDOM_OPTIONS'];
 			var permission = rows[0]['PERMISSION'];
+			var author_name = rows[0]['AUTHOR_NAME'];
 	
 			var tx = '';
 			var chk = '';
@@ -562,6 +564,8 @@ function rep_quiasm_get( object_id ) {
 	
 			//name
 			$( '#svc-main-content-header-1' ).html( object_name );
+			tx += '<h4 class="ml-2">' + svc_lang_str( 'AUTHOR' ) + ': ' + author_name +'</h4>';
+	
 	
 			//settings BEGIN
 	
@@ -848,6 +852,7 @@ function rep_essite_get( object_id , svc_main_content_id ) {
 			var feedback_id = rows[0]['ESSITE_TXTITE_ID_FEEDBACK'];
 			var essite_id = rows[0]['ESSITE_ID'];
 			var folder_id = rows[0]['OBJECT_FOLDER_ID'];
+			var author_name = rows[0]['AUTHOR_NAME'];
 
 			var permission = rows[0]['PERMISSION'];
 			if ( rows[0]['OBJECT_REV_1'] == 1 ) permission = 0;
@@ -859,6 +864,7 @@ function rep_essite_get( object_id , svc_main_content_id ) {
 			//if ( global_master == 1 ) header += '<span class="svc-master">ESSITE_ID: ' + essite_id + '</span>';
 			header += '<span class="svc-master">ESSITE_ID: ' + essite_id + '</span>'; //WORK_IN_PROGRESS: ocultar isso quando a interface para escolher as questões for melhor
 			$( '#svc-main-content-header-' + svc_main_content_id ).html( header );
+			tx += '<h4 class="ml-2">' + svc_lang_str( 'AUTHOR' ) + ': ' + author_name +'</h4>';
 			tx += '<div class="svc-main-content-path" id="object-path"></div>';
 
 			//command
@@ -905,7 +911,7 @@ function rep_essite_get( object_id , svc_main_content_id ) {
 				url: 'app/',
 				type: 'POST',
 				headers: { 'tk': tk, 'procedure': 'rep_folder_path' },
-				data: { 'parent': folder_id },
+				data: { 'folder_id': folder_id },
 				success: function( data ) {
 					var rows = svc_get_json( data );
 					var tx = '';
@@ -951,6 +957,7 @@ function rep_htmobj_get( object_id ) {
 			var command_id = rows[0]['HTMOBJ_TXTITE_ID'];
 			var htmobj_id = rows[0]['HTMOBJ_ID'];
 			var folder_id = rows[0]['OBJECT_FOLDER_ID'];
+			var author_name = rows[0]['AUTHOR_NAME'];
 
 			var permission = rows[0]['PERMISSION'];
 			if ( rows[0]['OBJECT_REV_1'] == 1 ) permission = 0;
@@ -962,6 +969,7 @@ function rep_htmobj_get( object_id ) {
 			//if ( global_master == 1 ) header += '<span class="svc-master">HTMOBJ_ID: ' + htmobj_id + '</span>';
 			header += '<span class="svc-master">HTMOBJ_ID: ' + htmobj_id + '</span>'; //WORK_IN_PROGRESS: ocultar isso quando a interface para escolher as questões for melhor
 			$( '#svc-main-content-header-1' ).html( header );
+			tx += '<h4 class="ml-2">' + svc_lang_str( 'AUTHOR' ) + ': ' + author_name +'</h4>';
 			tx += '<div class="svc-main-content-path" id="object-path"></div>';
 
 			//text
@@ -994,7 +1002,7 @@ function rep_htmobj_get( object_id ) {
 				url: 'app/',
 				type: 'POST',
 				headers: { 'tk': tk, 'procedure': 'rep_folder_path' },
-				data: { 'parent': folder_id },
+				data: { 'folder_id': folder_id },
 				success: function( data ) {
 					var rows = svc_get_json( data );
 					var tx = '';

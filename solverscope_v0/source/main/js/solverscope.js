@@ -10,6 +10,7 @@
 var global_processing = '<div id="processing" style="margin:0 auto"><img src="img/processig.gif" width="64" alt="Processing"></div>';
 var global_lang = [];
 var global_master = 0; //set 1 for debug purposes - see function TOGGLE_ID()
+var global_person_name = '';
 
 var global_tags_packets = [];
 var global_tags_entities = [];
@@ -38,8 +39,18 @@ $( document ).ready( function() {
 		headers: { 'tk': tk, 'procedure': 'sys_lngstr_current' },
 		success: function( data ) {
 			global_lang = svc_get_json( data );
-			page_refresh();
-			svc_editor_translate();
+			
+			$.ajax({
+				url: 'app/',
+				type: 'POST',
+				headers: { 'tk': tk, 'procedure': 'sys_person_name_get' },
+				success: function( data1 ) {
+					global_person_name = data1.trim();
+					page_refresh();
+					svc_editor_translate();
+				}
+			});
+			
 		}
 	});
 	
@@ -94,6 +105,8 @@ function page_sidebar() {
 
 	        tx += '<li class="sidebar-toggler-wrapper hide"><div class="sidebar-toggler"><span></span></div></li>';
 			
+			tx += '<h4 style="width:100%;color:white;text-align:center">' + global_person_name + '</h4>';
+			
 			for ( var i = 0; i < top_menu_items.length; i++ ){
 		       
 				if ( top_menu_items[i]['PROFM0_LEVEL'] == 1 ) {
@@ -132,7 +145,7 @@ function page_sidebar() {
 			page_click( first_label );
 			
 			//MODULES_main(); //<---------- REMOVER ATALHO ------------------------------------------------------------------------------------------------------------
-			//mod_module_get( 2 ); //<---------- REMOVER ATALHO -----------------------------------------------------------------------------------------------------
+			//mod_module_get( 3 ); //<---------- REMOVER ATALHO -----------------------------------------------------------------------------------------------------
 			//mod_templa_get( 2, 2 ); //<---------- REMOVER ATALHO -----------------------------------------------------------------------------------------------------
 			
 		}

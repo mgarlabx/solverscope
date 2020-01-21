@@ -445,3 +445,35 @@ function modw_tpsegm_insert_save( tpunit_id, permission ) {
 	
 	
 }
+
+
+function modw_tpsegm_delete( tpsegm_id, tpunit_id, permission ) {
+	
+	if ( confirm( svc_lang_str( 'CONFIRM_TPSEGM_DEL' ) ) ) {
+		$.ajax({
+			url: 'app/',
+			type: 'POST',
+			headers: { 'tk': tk, 'procedure': 'modw_tpsegm_delete' },
+			data: { 'tpsegm_id': tpsegm_id },
+			success: function( data ) {
+				if ( data.trim() == 'Error 804' ) {
+					alert( svc_lang_str( 'TPSEGM_NOT_EMPTY' ) ); 
+				}
+				else {
+					mod_tpsegm_list( tpunit_id, permission );
+				}
+			}
+		});
+		
+	}
+	
+}
+
+
+
+function modw_tbsegm_update(){
+	//WORK_IN_PROGRESS - updates nos segmentos
+	
+	
+	
+}

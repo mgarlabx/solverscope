@@ -160,7 +160,7 @@ function repw_txtite_update( txtite_id ) {
 				tx += '<div class="col-md-12">';
 				tx += '<div class="card">';
 				tx += '<div class="card-head">';
-				tx += '<header>' + svc_lang_str( 'SEGMENT' ) + ' ' + rows[i]['TXTSEG_ORDERBY'];
+				tx += '<header>' + svc_lang_str( 'PART' ) + ' ' + rows[i]['TXTSEG_ORDERBY'];
 				if ( global_master == 1 ) tx += '<span class="svc-master">TXTSEG_ID: ' + rows[i]['TXTSEG_ID'] + '</span>';
 				tx += '</header>';
 				tx += '<div class="float-right">';
@@ -236,7 +236,7 @@ function repw_txtite_update( txtite_id ) {
 
 //del 
 function repw_txtseg_delete( txtseg_id, txtite_id ) {
-	if ( confirm( svc_lang_str( 'CONFIRM_SEGMENT_DEL') ) ) {
+	if ( confirm( svc_lang_str( 'CONFIRM_PART_DEL') ) ) {
 		$.ajax({
 			url: 'app/',
 			type: 'POST',

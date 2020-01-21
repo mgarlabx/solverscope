@@ -68,6 +68,9 @@ include( 'app/app_functions.php' );
     <script src="js/solverscope_mod.js?<?php echo time(); ?>" ></script>
     <script src="js/solverscope_modw.js?<?php echo time(); ?>" ></script>
 
+    <script src="js/solverscope_pro.js?<?php echo time(); ?>" ></script>
+    <script src="js/solverscope_prow.js?<?php echo time(); ?>" ></script>
+
  </head>
 
  

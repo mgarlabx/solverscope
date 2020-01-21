@@ -345,7 +345,14 @@ function mod_tpsegm_list( tpunit_id, permission ) {
 			tx += '<table class="table">';
 			for ( var i = 0; i < rows.length ; i++ ) {
 				tx += '<tr>';
-				tx += '<td>' + rows[i]['TPSEGM_NAME'] + '</td>';
+				tx += '<td><a href="#" onclick="mod_tbsegm_get(' + rows[i]['TPSEGM_ID'] + ',' + tpunit_id + ',' + permission + ')">' + rows[i]['TPSEGM_NAME'] + '</a>';
+				if ( global_master == 1 ) tx += ' <span class="svc-master">TPSEGM_ID: ' + rows[i]['TPSEGM_ID'] + '</span>';
+				tx += '</td>';
+				if ( permission == 1 ) {
+					tx += '<td align="right">';
+					tx += '<button type="button" class="btn btn-danger" onclick="modw_tpsegm_delete(' + rows[i]['TPSEGM_ID'] + ', ' + tpunit_id + ', ' + permission + ')"><i class="fa fa-trash"></i></button>';
+					tx += '</td>';
+				}
 				tx += '</tr>';
 			}
 			tx += '</table>';
@@ -353,4 +360,57 @@ function mod_tpsegm_list( tpunit_id, permission ) {
 		}
 	});
 
+}
+
+
+function mod_tbsegm_get( tpsegm_id, tpunit_id, permission ) {
+	
+	
+	$.ajax({
+		url: 'app/',
+		type: 'POST',
+		headers: { 'tk': tk, 'procedure': 'mod_tpsegm_get' },
+		data: { 'tpsegm_id': tpsegm_id },
+		success: function( data ) {
+			tpsegm = svc_get_json( data );
+
+			var tx = '';
+			tx += '<table class="table table-hover">';
+			tx += '<tbody>';
+
+			Object.entries( tpsegm ).forEach( ( [ key, value ] ) => {
+				tx += mod_tbsegm_row( tpsegm_id, key, value, permission );
+			});
+	
+			tx += '</tbody>';
+			tx += '</table><p>';
+	
+			//WORK_IN_PROGRESS: incluir relação entre segmentos (adaptativo e requisitivo)
+	
+			$( '#myModalTitle' ).html( svc_lang_str( 'SEGMENT' ) );
+			$( '#myModalBody' ).html( tx );
+			$( '#myModalButton' ).html( '' );
+			$( '#myModal' ).modal( 'show' );
+
+			
+		}
+	});
+	
+	
+	
+	
+	
+	
+	
+	
+}
+
+function mod_tbsegm_row( tpsegm_id, key, value, permission ) {
+	var tx = '';
+	tx += '<tr>';
+	tx += '<td>' + svc_lang_str( key ) + '</td>';
+	tx += '<td>' + value + '</td>';
+	if ( permission == 1 ) tx += '<td align="right"><button type="button" class="btn btn-primary" onclick="modw_tbsegm_update(' + tpsegm_id + ', \'' + key + '\' )"><i class="fa fa-pencil"></i></button></td>';
+	tx += '</tr>';
+	return tx;
 }

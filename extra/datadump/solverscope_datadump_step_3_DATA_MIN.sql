@@ -1,6 +1,256 @@
 /******************************************************************************************************************/
-/********** DATA LANGSTR ******************************************************************************************/
+/********** DATA MIN **********************************************************************************************/
 /******************************************************************************************************************/
+
+# Dump of table SYS_PROFIL
+# ------------------------------------------------------------
+
+INSERT INTO `SYS_PROFIL` (`PROFIL_ID`, `PROFIL_NAME`)
+VALUES
+	(1,'Desenvolvedor'),
+	(2,'Administrador'),
+	(3,'Gestor'),
+	(4,'Autor');
+
+
+
+
+# Dump of table SYS_PROFP0
+# ------------------------------------------------------------
+
+INSERT INTO `SYS_PROFP0` (`PROFP0_ID`, `PROFP0_NAME`, `PROFP0_COMMENTS`, `PROFP0_OPEN`)
+VALUES
+	(2,'%%','Master Full - BE CAREFUL',0),
+	(11,'rep%','Repository read and write',0),
+	(12,'rep\\_%','Repository read only',0),
+	(21,'mod%','Module read and write',0),
+	(22,'mod\\_%','Module read only',0),
+	(90,'sys_person_domain_list','List of persons of the current domain',0),
+	(91,'sys_person_name_get','Get name of current user',1),
+	(92,'sys_domain_last_get','Get last domain visited',1),
+	(93,'sys_domain_list','List of user domains',1),
+	(94,'sys_lngstr\\_%','Dictionary',1),
+	(95,'sysw_domain_last_set','Set last domain visited',1),
+	(96,'sys_profm0_list','List of user menu (sidebar) items',1);
+
+
+
+# Dump of table SYS_PROFP1
+# ------------------------------------------------------------
+
+INSERT INTO `SYS_PROFP1` (`PROFP1_PROFP0_ID`, `PROFP1_PROFIL_ID`)
+VALUES
+	(2,1),
+	(2,2),
+	(12,3),
+	(22,3),
+	(11,4);
+
+
+# Dump of table SYS_PROFM0
+# ------------------------------------------------------------
+
+INSERT INTO `SYS_PROFM0` (`PROFM0_ID`, `PROFM0_LABEL`, `PROFM0_LEVEL`, `PROFM0_ICON`, `PROFM0_ORDERBY`, `PROFM0_ACTIVE`, `PROFM0_PARENT_ID`, `PROFM0_COMMENTS`)
+VALUES
+	(2,'HOME',1,'home',2,1,0,''),
+	(3,'DASHBOARD',1,'dashboard',3,0,0,''),
+	(11,'REPOSITORY',2,'library_books',11,1,0,''),
+	(12,'REPOSITORY_FULL_ACCESS',3,'',1,1,11,''),
+	(13,'REPOSITORY_MY_FOLDERS',3,'',2,1,11,''),
+	(14,'TAGS',3,'',3,1,11,''),
+	(21,'STRUCTURE',2,'layers',21,1,0,''),
+	(22,'MODULES',3,'',1,1,21,''),
+	(23,'PRODUCTS',3,'',2,1,21,''),
+	(81,'SETTINGS',2,'settings',81,1,0,''),
+	(82,'USERS',3,'',2,1,81,''),
+	(83,'PROFILES',3,'',1,1,81,''),
+	(84,'DOMAINS',3,'',3,1,81,''),
+	(91,'DEVELOPER',2,'developer_mode',91,1,0,''),
+	(92,'TOGGLE_ID',3,'',1,1,91,'');
+
+
+
+# Dump of table SYS_PROFM1
+# ------------------------------------------------------------
+
+INSERT INTO `SYS_PROFM1` (`PROFM1_PROFM0_ID`, `PROFM1_PROFIL_ID`)
+VALUES
+
+	(2,1),
+	(3,1),
+	(11,1),
+	(12,1),
+	(13,1),
+	(14,1),
+	(21,1),
+	(22,1),
+	(23,1),
+	(81,1),
+	(82,1),
+	(83,1),
+	(84,1),
+	(91,1),
+	(92,1),
+
+	(2,2),
+	(3,2),
+	(11,2),
+	(12,2),
+	(13,2),
+	(14,2),
+	(21,2),
+	(22,2),
+	(23,2),
+	(81,2),
+	(82,2),
+	(83,2),
+	(84,2),
+
+	(2,3),
+	(3,3),
+	(11,3),
+	(12,3),
+	(13,3),
+	(14,3),
+	(21,3),
+	(22,3),
+	(23,3),
+	
+	(2,4),
+	(11,4),
+	(13,4);
+
+
+
+
+# Dump of table SYS_LANGUA
+# ------------------------------------------------------------
+
+INSERT INTO `SYS_LANGUA` (`LANGUA_ID`, `LANGUA_NAME`, `LANGUA_ACRONYM`)
+VALUES
+	(1,'Português','PT'),
+	(2,'Español','ES'),
+	(3,'English','EN');
+
+
+
+# Dump of table SYS_DOMAIN
+# ------------------------------------------------------------
+
+INSERT INTO `SYS_DOMAIN` (`DOMAIN_ID`, `DOMAIN_LANGUA_ID`, `DOMAIN_NAME`, `DOMAIN_SECRET`)
+VALUES
+	(1,1,'Turma da Mônica',176575655),
+	(2,2,'El Chavo del Ocho',719198561),
+	(3,3,'Wayne Corporation',479929474);
+
+
+
+# Dump of table SYS_PERSON
+# ------------------------------------------------------------
+
+INSERT INTO `SYS_PERSON` (`PERSON_ID`, `PERSON_NAME`, `PERSON_EMAIL`, `PERSON_LAST_DOMAIN_ID`)
+VALUES
+
+	(1,'M&ocirc;nica','monica@turmadamonica.com.br',1),
+	(2,'Cebolinha','cebolinha@turmadamonica.com.br',1),
+	(3,'Casc&atilde;o','cascao@turmadamonica.com.br',1),
+	(4,'Magali','magali@turmadamonica.com.br',1),
+	(5,'Franjinha','franjinha@turmadamonica.com.br',1),
+
+	(6,'El Chavo del Ocho','chavo@elchavo8.com.mx',2),
+	(7,'La Chilindrina','chilindrina@elchavo8.com.mx',2),
+	(8,'Don Ram&oacute;n','ramon@elchavo8.com.mx',2),
+	(9,'Do&ntilde;a Florinda','florinda@elchavo8.com.mx',2),
+	(10,'Quico','quico@elchavo8.com.mx',2),
+
+	(11,'Bruce Wayne','batman@wayne.com',3),
+	(12,'Dick Grayson','robin@wayne.com',3),
+	(13,'Barbara Gordon','batgirl@wayne.com',3),
+	(14,'Selina Kyle','catwoman@wayne.com',3),
+	(15,'Dark Knight','joker@wayne.com',3);
+
+
+
+
+# Dump of table SYS_PERPRO
+# ------------------------------------------------------------
+
+INSERT INTO `SYS_PERPRO` (`PERPRO_DOMAIN_ID`, `PERPRO_PERSON_ID`, `PERPRO_PROFIL_ID`)
+VALUES
+
+	(1,1,2),
+	(2,1,3),
+	(3,1,4),
+
+	(1,2,3),
+	(1,3,4),
+	(1,4,4),
+	(1,5,4),
+
+	(1,6,4),
+	(2,6,2),
+	(3,6,3),
+	
+	(2,7,3),
+	(2,8,4),
+	(2,9,4),
+	(2,10,4),
+
+	(1,11,3),
+	(2,11,4),
+	(3,11,2),
+	
+	(3,12,3),
+	(3,13,4),
+	(3,14,4),
+	(3,15,4);
+
+
+
+
+
+
+# Dump of table TAG_TARTYP
+# ------------------------------------------------------------
+
+INSERT INTO `TAG_TARTYP` (`TARTYP_ID`, `TARTYP_TABLE_NAME`)
+VALUES
+	(1,'REP_OBJECT'),
+	(2,'MOD_MODULE');
+
+
+
+
+# Dump of table MOD_MODLBL
+# ------------------------------------------------------------
+
+INSERT INTO `MOD_MODLBL` (`MODLBL_ID`, `MODLBL_DOMAIN_ID`, `MODLBL_NAME`)
+VALUES
+	(1,1,'Disciplina'),
+	(2,1,'Curso'),
+	(3,1,'Livro'),
+	(4,1,'Capítulo');
+
+
+
+
+# Dump of table MOD_MODTYP
+# ------------------------------------------------------------
+
+INSERT INTO `MOD_MODTYP` (`MODTYP_ID`, `MODTYP_DOMAIN_ID`, `MODTYP_MODLBL_ID`, `MODTYP_NAME`)
+VALUES
+	(1,1,1,'Disciplina regular'),
+	(2,1,1,'Trabalho de conclusão'),
+	(3,1,1,'Atividade complementar'),
+	(4,1,1,'Estágio supervisionado'),
+	(5,1,1,'Projeto'),
+	(6,1,2,'Curso de extensão');
+
+
+
+
+
+
 
 
 

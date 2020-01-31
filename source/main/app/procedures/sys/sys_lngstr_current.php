@@ -2,13 +2,13 @@
 
 if ( $vld != 1 ) die();
 
-if ( $LANGUA_ID == 2 ) {
+if ( $LANGUA_ID == 3 ) {
 	$sql = "SELECT LNGSTR_KEY AS LKEY, LNGSTR_EN AS LSTR FROM SYS_LNGSTR";
 }
-else if ( $LANGUA_ID == 3 ) {
+else if ( $LANGUA_ID == 1 ) {
 	$sql = "SELECT LNGSTR_KEY AS LKEY, LNGSTR_PT AS LSTR FROM SYS_LNGSTR";
 }
-else if ( $LANGUA_ID == 4 ) {
+else if ( $LANGUA_ID == 2 ) {
 	$sql = "SELECT LNGSTR_KEY AS LKEY, LNGSTR_ES AS LSTR FROM SYS_LNGSTR";
 }
 else {

@@ -111,9 +111,9 @@ if ( $xlsx = SimpleXLSX::parse( $my_file ) ) {
 	
 	$r = 0;
 	foreach ( $xlsx->rows() as $row ) {
-		if ( $r > 0 ) {
+		if ( $r > 0 && trim( $row[1] ) != '' ) {
 			
-			
+		
 			//1 - INSERT OBJECT
 			$sql = "
 				INSERT INTO REP_OBJECT (
@@ -128,7 +128,7 @@ if ( $xlsx = SimpleXLSX::parse( $my_file ) ) {
 					" . $DOMAIN_ID . ",	
 					" . $FOLDER_ID . ",	
 					1,
-					'" . $row[1] . "',
+					'" . svc_sanitize_post( $row[1] ) . "',
 					1,
 					" . $PERSON_ID . ",
 					'" . $row[0] . "'
@@ -152,7 +152,7 @@ if ( $xlsx = SimpleXLSX::parse( $my_file ) ) {
 					OBJECT_DOMAIN_ID = " . $DOMAIN_ID . "
 					AND OBJECT_FOLDER_ID = " . $FOLDER_ID . "
 					AND OBJECT_OBJTYP_ID = 1
-					AND OBJECT_NAME = '" . $row[1] . "'
+					AND OBJECT_NAME = '" . svc_sanitize_post( $row[1] ) . "'
 					AND OBJECT_ACTIVE = 1
 					AND OBJECT_CREATED_BY = " . $PERSON_ID . "
 					AND OBJECT_LEGACY_ID = '" . $row[0] . "'
@@ -242,7 +242,11 @@ if ( $xlsx = SimpleXLSX::parse( $my_file ) ) {
 			$TXTITE_ID = $res;
 
 			
-			//7 - INSERT TXTSEG
+			//7 - INSERT TXTSEG FOR COMMAND
+			$content = svc_sanitize_post( $row[2] );
+			$content = str_replace( '&amp;#34;', '&quot;', $content );
+			$content = str_replace( '&amp;#39;', '&apos;', $content );
+			$content = str_replace( '&amp;#61;', '=', $content );
 			$sql = "
 				INSERT INTO REP_TXTSEG (
 					TXTSEG_DOMAIN_ID,
@@ -258,7 +262,7 @@ if ( $xlsx = SimpleXLSX::parse( $my_file ) ) {
 					1,
 					'TXT',
 					'paragraph',
-					'" . svc_sanitize_post( $row[2] ) . "',
+					'" . $content . "',
 					" . $PERSON_ID . "
 				)
 				";
@@ -364,6 +368,10 @@ if ( $xlsx = SimpleXLSX::parse( $my_file ) ) {
 
 			
 					//103 - INSERT TXTSEG
+					$content = svc_sanitize_post( $row[ 3 + $i ] );
+					$content = str_replace( '&amp;#34;', '&quot;', $content );
+					$content = str_replace( '&amp;#39;', '&apos;', $content );
+					$content = str_replace( '&amp;#61;', '=', $content );
 					$sql = "
 						INSERT INTO REP_TXTSEG (
 							TXTSEG_DOMAIN_ID,
@@ -379,7 +387,7 @@ if ( $xlsx = SimpleXLSX::parse( $my_file ) ) {
 							1,
 							'TXT',
 							'paragraph',
-							'" . svc_sanitize_post( $row[ 3 + $i ] ) . "',
+							'" . $content . "',
 							" . $PERSON_ID . "
 						)
 						";
@@ -407,7 +415,7 @@ if ( $xlsx = SimpleXLSX::parse( $my_file ) ) {
 							" . $DOMAIN_ID . ",
 							" . $QUIITE_ID . ",
 							" . $TXTITE_ID . ",
-							1,
+							" . $i .",
 							" . $CORRECT .",
 							" . $PERSON_ID . "
 						)

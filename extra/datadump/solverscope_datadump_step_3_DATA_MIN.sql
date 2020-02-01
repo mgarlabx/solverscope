@@ -23,6 +23,7 @@ VALUES
 	(2,'%%','Master Full - BE CAREFUL',0),
 	(11,'rep%','Repository read and write',0),
 	(12,'rep\\_%','Repository read only',0),
+	(13,'repwr\\_%','Repository review write',0),
 	(21,'mod%','Module read and write',0),
 	(22,'mod\\_%','Module read only',0),
 	(90,'sys_person_domain_list','List of persons of the current domain',0),
@@ -32,6 +33,7 @@ VALUES
 	(94,'sys_lngstr\\_%','Dictionary',1),
 	(95,'sysw_domain_last_set','Set last domain visited',1),
 	(96,'sys_profm0_list','List of user menu (sidebar) items',1);
+	(97,'sys_domain_id_get','Get current domain id',1);
 
 
 
@@ -43,6 +45,7 @@ VALUES
 	(2,1),
 	(2,2),
 	(12,3),
+	(13,3),
 	(22,3),
 	(11,4);
 
@@ -206,6 +209,17 @@ VALUES
 	(3,15,4);
 
 
+
+
+# Dump of table REP_OBJTYP
+# ------------------------------------------------------------
+
+INSERT INTO `REP_OBJTYP` (`OBJTYP_ID`, `OBJTYP_NAME`, `OBJTYP_ORDERBY`, `OBJTYP_ICON`, `OBJTYP_ACTIVE`)
+VALUES
+	(1,'OBJ_QUIZ',10,'check-square-o',1),
+	(2,'OBJ_ESSAY',20,'pencil-square-o',1),
+	(3,'OBJ_TEXT',30,'file-text-o',1),
+	(4,'OBJ_QUIZ_ASM',40,'th-list',1);
 
 
 

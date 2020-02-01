@@ -518,7 +518,7 @@ function repw_object_review_save( object_id, reviewer ) {
 	$.ajax({
 		url: 'app/',
 		type: 'POST',
-		headers: { 'tk': tk, 'procedure': 'repw_object_review_save' },
+		headers: { 'tk': tk, 'procedure': 'repwr_object_review_save' },
 		data: { 'object_id': object_id, 'reviewer': reviewer, 'rev': rev, 'comment': comment },
 		success: function( data ) {
 

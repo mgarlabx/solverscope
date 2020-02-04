@@ -24,7 +24,6 @@ $QUIASM_RANDOM_OPTIONS = $settings[0]['QUIASM_RANDOM_OPTIONS'];
 $questions = api_quiait_list();
 
 
-
 //prepare exam
 $ct = 0;
 foreach ( $questions as $question ) {
@@ -43,11 +42,6 @@ foreach ( $questions as $question ) {
 	
 	$ct++;
 }
-
-
-
-
-
 
 
 svc_show_result_encoded( $rows );

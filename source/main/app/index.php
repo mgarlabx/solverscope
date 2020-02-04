@@ -69,10 +69,9 @@ if ( strlen( $tk ) != 29 ){
 }
 
 
-
 //procedures
 if ( file_exists( 'procedures/' . $procedure_path . '/' . $procedure . '.php' ) ) {
-	
+
 	//decryp person
 	$PERSON_ID = svc_decryp( $tk, $cryp_app_key, 24 ); //hours // $cryp_app_key @ svc_settings.php
 	

@@ -130,8 +130,18 @@ function modw_module_update_save( module_id, column ) {
 		headers: { 'tk': tk, 'procedure': 'modw_module_update' },
 		data: { 'module_id': module_id, 'column': column, 'module_input': module_input },
 		success: function( data ) {
-			mod_module_get( module_id );
+			if ( column == 'MODULE_SUMMARY' ) {
+				$( '#module-summary').html( module_input );
+			}
+			else if ( column == 'MODULE_DESCRIPTION' ) {
+				$( '#module-description').html( module_input );
+			}
+			else {
+				mod_module_get( module_id );
+			}
 			$( '#myModal' ).modal( 'hide' );
+			
+			
 		}
 	});
 
@@ -289,6 +299,52 @@ function modw_templa_update_save( templa_id ){
 }
 
 
+function modw_tpphas_insert( templa_id, permission ){
+	
+	var phase_number = prompt( svc_lang_str( 'PROMPT_PHASE_NUMBER' ) );
+
+	if ( phase_number != null && phase_number.trim() != '' ) {
+
+		var phase_weight = prompt( svc_lang_str( 'PROMPT_PHASE_WEIGHT' ) );
+
+		if ( phase_weight != null && phase_weight.trim() != '' ) {
+	
+			$.ajax({
+				url: 'app/',
+				type: 'POST',
+				headers: { 'tk': tk, 'procedure': 'modw_tpphas_insert' },
+				data: { 'templa_id': templa_id, 'phase_number': phase_number, 'phase_weight': phase_weight },
+				success: function( data ) {
+					mod_tpphas_list( templa_id, permission );		
+				}
+			});  
+	
+		}
+	
+	}
+	
+	
+	
+}
+
+
+function modw_tpphas_delete( tpphas_id, templa_id, permission ){
+	if ( confirm( svc_lang_str( 'CONFIRM_DEL' ) ) ) {
+		
+		$.ajax({
+			url: 'app/',
+			type: 'POST',
+			headers: { 'tk': tk, 'procedure': 'modw_tpphas_delete' },
+			data: { 'tpphas_id': tpphas_id },
+			success: function( data ) {
+				mod_tpphas_list( templa_id, permission );		
+			}
+		});  
+		
+		
+	}
+	
+}
 
 
 
@@ -447,6 +503,27 @@ function modw_tpsegm_insert_save( tpunit_id, permission ) {
 }
 
 
+
+function modw_tpsegm_object( tpsegm_id ) {
+	alert( 'WORK IN PROGRESS' );
+	//WORK_IN_PROGRESS: relação entre segmentos (adaptativo e requisitivo)
+	
+}
+
+
+function modw_tpsegm_segrel( tpsegm_id ) {
+	alert( 'WORK IN PROGRESS' );
+	//WORK_IN_PROGRESS: relação entre segmentos (adaptativo e requisitivo)
+	
+}
+
+
+function modw_tpsegm_update(){
+	alert( 'WORK IN PROGRESS' );
+	//WORK_IN_PROGRESS - updates nos segmentos
+
+}
+
 function modw_tpsegm_delete( tpsegm_id, tpunit_id, permission ) {
 	
 	if ( confirm( svc_lang_str( 'CONFIRM_TPSEGM_DEL' ) ) ) {
@@ -471,9 +548,6 @@ function modw_tpsegm_delete( tpsegm_id, tpunit_id, permission ) {
 
 
 
-function modw_tbsegm_update(){
-	//WORK_IN_PROGRESS - updates nos segmentos
-	
-	
-	
-}
+
+
+

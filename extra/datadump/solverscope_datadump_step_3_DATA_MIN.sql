@@ -44,10 +44,10 @@ INSERT INTO `SYS_PROFP1` (`PROFP1_PROFP0_ID`, `PROFP1_PROFIL_ID`)
 VALUES
 	(2,1),
 	(2,2),
+	(21,2),
 	(12,3),
 	(13,3),
-	(22,3),
-	(11,4);
+	(22,3);
 
 
 # Dump of table SYS_PROFM0
@@ -258,8 +258,12 @@ VALUES
 	(3,1,1,'Atividade complementar'),
 	(4,1,1,'Estágio supervisionado'),
 	(5,1,1,'Projeto'),
-	(6,1,2,'Curso de extensão');
-
+	(6,1,2,'Curso de extensão'),
+	(7,1,2,'Curso livre'),
+	(8,1,3,'Livro básico'),
+	(9,1,3,'Livro complementar'),
+	(10,1,4,'Capítulo regular'),
+	(12,1,4,'Anexo');
 
 
 

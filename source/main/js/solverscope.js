@@ -34,8 +34,8 @@ var global_master = 0; //set 1 for debug purposes - see function TOGGLE_ID()
 
 //include shortcuts to speed up development
 function svc_develop_mode() {
-//	rep_quiasm_get(452);
-//	global_master = 1;
+	//mod_templa_get(2, 5);
+	//global_master = 1;
 }
 
 

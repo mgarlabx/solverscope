@@ -2,7 +2,7 @@
 
  
 
-Solverscope CMS v0 - 31/01/2020
+Solverscope CMS v0 - 04/02/2020
 ===============================
 
 (esse é um documento em evolução)
@@ -153,8 +153,11 @@ Instalação
 -   Alterar o conteúdo do arquivo **../svc_settings.php** informando os dados
     solicitados:
 
-    \- \$cryp_key: um valor numérico com 10 dígitos, é importante mudar, não
-    deixar 1234567890
+    \- \$cryp_app_key: um valor numérico com 10 dígitos, usado na criptografia
+    da aplicação
+
+    \- \$cryp_api_key: um valor numérico com 10 dígitos, usado na criptografia
+    da API para acesso externo (não usar o mesmo número da \$cryp_app_key)
 
     \- dados do banco MySQL: \$host, \$login, \$password e \$database
 
@@ -172,7 +175,7 @@ criar uma forma de autenticação própria, dependendo do contexto em que irá r
 a aplicação.
 
 O processo de autenticação consiste basicamente em se obter um token, o que pode
-ser feito pelo endpoint **sysw_login** do back-end do Solverscope. Ao rodar esse
+ser feito pelo endpoint **login** da API do **Solverscope CMS**. Ao rodar esse
 endpoint, se for informada uma chave válida (secret), a aplicação irá devolver o
 token e, caso não exista o usuário, irá criá-lo no banco de dados.
 
@@ -322,57 +325,8 @@ WORK_IN_PROGRESS
 
  
 
-### Críticas
-
- 
-
-**- Melhorar a interface para inserir questões nas avaliações:**
-
-function repw_quiait_insert() \@ solverscope_repw.js
-
- 
-
-**- Revisar a elaboração do PDF da avaliação, para adequar ao caso de uso (use
-case)**
-
-function rep_quiasm_pdf () \@ solverscope_rep.js
-
- 
-
-**- Criar a interface para cadastro e manutenção das etiquetas (tags):**
-
-function TAGS_main() a ser criada
-
- 
-
-### Importantes
-
- 
-
-**- Melhorar a interface para mover pastas:**
-
-function repw_folder_move() \@ solverscope_repw.js
-
- 
-
-**- Melhorar a interface para mover objetos nas pastas:**
-
-function repw_object_move() \@ solverscope_repw.js
-
- 
-
- 
-
- 
-
- 
-
-### Outras
-
- 
-
-\- Há várias outras necessidades, assinaladas no código com a expressão
-"WORK_IN_PROGRESS". Um busca pode facilmente localizar todas elas.
+\- Há várias necessidades de desenvolvimento, assinaladas no código com a
+expressão "WORK_IN_PROGRESS". Uma busca pode facilmente localizar todas elas.
 
  
 

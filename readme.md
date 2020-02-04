@@ -45,10 +45,6 @@ seus produtos educacionais, incluindo:
 
 -   ferramentas para ensino adaptativo
 
--   relatórios e estatísticas de utilização
-
--   modelos preditivos com machine learning
-
  
 
 O **Solverscope CMS** destina-se a gestores pedagógicos, autores e revisores de

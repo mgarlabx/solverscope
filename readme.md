@@ -100,16 +100,11 @@ mais simples e genérica possível:
 
 -   Front-end: JQuery e Bootstrap
 
+ 
+
 Foram previstas, todavia, facilidades na conversão dos códigos para a utilização
 de outros tipos de banco de dados (desde que sejam relacionais SQL) e de outras
 linguagens de back-end. Consulte para mais informações.
-
-O back-end foi construído com a lógica REST e pode ser acessado usando
-aplicativos como o [Postman](https://www.getpostman.com/). Os endpoints podem
-ser acessados informando o respectivo nome no header da solicitação. Todavia,
-será necessário obter um token (ver abaixo em "Autenticação"). Essa arquitetura
-permite construir distintos front-ends, acessando o mesmo back-end. O back-end
-roda na pasta **..main/app/** da aplicação.
 
 Esta aplicação não contém códigos específicos para aplicações móveis (mobile),
 todavia todo front-end é responsivo e se adapta a qualquer tipo de dispositivo
@@ -125,6 +120,28 @@ novo registro com a expressão nos 3 idiomas.
 
 A modelagem de dados está disponível no arquivo
 **../extra/solverscope_dataschema_v0.pdf**.
+
+ 
+
+Back-end e API
+--------------
+
+ 
+
+O back-end foi construído com a lógica REST e pode ser acessado usando
+aplicativos como o [Postman](https://www.getpostman.com/). Os endpoints podem
+ser acessados informando o respectivo nome no header da solicitação. Todavia,
+será necessário obter um token (ver abaixo em "Autenticação"). Essa arquitetura
+permite construir distintos front-ends, acessando o mesmo back-end. O back-end
+roda na pasta **..main/app/** da aplicação.
+
+Além desse back-end, na pasta **..main/api/** da aplicação existem uma série de
+endpoints que permitem o acesso de outras aplicações (por exemplo, LMS) no
+sentido de consumir o que tiver sido produzido dentro do **Solverscope CMS**.
+
+Dessa forma, os endpoints de **..main/app/** são para consumo da própria
+aplicação, enquanto que os endpoints de  **..main/api/** são para consumo de
+aplicações externas.
 
  
 
@@ -171,9 +188,10 @@ criar uma forma de autenticação própria, dependendo do contexto em que irá r
 a aplicação.
 
 O processo de autenticação consiste basicamente em se obter um token, o que pode
-ser feito pelo endpoint **login** da API do **Solverscope CMS**. Ao rodar esse
-endpoint, se for informada uma chave válida (secret), a aplicação irá devolver o
-token e, caso não exista o usuário, irá criá-lo no banco de dados.
+ser feito pelo endpoint **login** da API do **Solverscope CMS** (pasta
+**..main/api/**). Ao rodar esse endpoint, se for informada uma chave válida
+(secret), a aplicação irá devolver o token e, caso não exista o usuário, irá
+criá-lo no banco de dados e devolver seu token.
 
 As chaves ficam gravadas no campo DOMAIN_SECRET da tabela SYS_DOMAIN, ou seja, é
 uma chave por domínio.
@@ -309,8 +327,8 @@ importante.
 -   O nome dos objetos DOM devem ser separados por hífens (exemplo:
     svc-domain-name)
 
--   O nome das funções devem dever ser separados por underscore (exemplo:
-    rep_folder_list)
+-   O nome das funções e variáveis devem dever ser separados por underscore
+    (exemplo: rep_folder_list)
 
  
 

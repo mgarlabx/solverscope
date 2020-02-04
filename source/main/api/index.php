@@ -16,9 +16,15 @@ include( '../app/app_cryp.php' );
 include( '../app/app_data.php' );
 
 
+//read post
+$post = json_decode( file_get_contents( 'php://input' ), true );
+if ( sizeof( $post ) == 0 ) {
+	$post = $_POST;
+}
+
+
 //read headers
 $headers = apache_request_headers();
-
 
 //header procedure
 if ( !isset( $headers['Procedure'] ) && !isset( $headers['procedure'] ) ){
@@ -34,10 +40,24 @@ else {
 	}
 }
 
+//get API token
+if ( $procedure == 'get_token' ) {
+	
+	if ( file_exists( 'procedures/' . '/api_' . $procedure . '.php' ) ) {
+		$vld = 1;
+		include( 'procedures/' . $procedure_path . '/api_' . $procedure . '.php' );
+	}
+	else {
+		echo svc_error( 'api/index.php', 'Error 102' );
+	}
+	die();
+	
+}
 
-//header token
+
+//get DOMAIN token
 if ( !isset( $headers['Tk'] ) && !isset( $headers['tk'] ) ) {
-	echo svc_error( 'api/index.php', 'Error 102' );
+	echo svc_error( 'api/index.php', 'Error 103' );
 	die();
 }
 else {
@@ -49,29 +69,19 @@ else {
 	}
 }
 
-
-//read post
-$post = json_decode( file_get_contents( 'php://input' ), true );
-if ( sizeof( $post ) == 0 ) {
-	$post = $_POST;
-}
-
-
 //procedures
 if ( file_exists( 'procedures/' . '/api_' . $procedure . '.php' ) ) {
 	
-	//connect databases
-	$connection = svc_connect( $host, $login, $password, $database );
+	$DOMAIN_ID = svc_decryp( $tk, $cryp_api_key, 24 ); //hours // $cryp_api_key @ svc_settings.php
 	
-	$sql = "SELECT DOMAIN_ID FROM SYS_DOMAIN WHERE DOMAIN_SECRET = " .$tk;
-	$DOMAIN_ID = svc_get_var( $connection, $sql );
-	
-	if ( $DOMAIN_ID ==  '' ) {
+	if ( $DOMAIN_ID <  1 ) {
 		echo svc_error( 'api/index.php', 'Error 105 | procedure: ' . $procedure );
-		svc_disconnect( $connection );
 		die();
 	}
 
+	//connect databases
+	$connection = svc_connect( $host, $login, $password, $database );
+	
 	//run procedure
 	$vld = 1;
 	include( 'procedures/' . $procedure_path . '/api_' . $procedure . '.php' );

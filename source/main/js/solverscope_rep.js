@@ -302,12 +302,12 @@ function rep_objects_list ( objects, parent, op_layout ) {
 		}
 		txline += '</tr>';
 		
-		if ( op_layout == 2 && objects[i]['OBJTYP_NAME'] == 'OBJ_QUIZ_ASM' ) {
-			tx += '';
-		}
-		else {
+//		if ( op_layout == 2 && objects[i]['OBJTYP_NAME'] == 'OBJ_QUIZ_ASM' ) { //WORK_IN_PROGRESS: remover
+		// 	tx += '';
+		// }
+//		else {
 			tx += txline;
-		}
+//		}
 	
 	}
 	tx += '</tbody>';

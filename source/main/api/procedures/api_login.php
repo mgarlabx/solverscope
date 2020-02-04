@@ -6,6 +6,7 @@ $email = svc_sanitize_post( $post['email'] );
 $name = svc_sanitize_post( $post['name'] );
 $profile = svc_sanitize_post( $post['profile'] );
 
+
 //get PERSON_ID
 $sql = "
 	SELECT
@@ -86,7 +87,7 @@ $res = svc_query( $connection, $sql );
 
 
 //generate token
-$tk = svc_encryp( $PERSON_ID, $cryp_key ); // $cryp_key @ svc_settings.php
+$tk = svc_encryp( $PERSON_ID, $cryp_app_key ); // $cryp_app_key @ svc_settings.php
 
 svc_show_result( $tk );
 

@@ -46,16 +46,6 @@ if ( sizeof( $post ) == 0 ) {
 $connection = svc_connect( $host, $login, $password, $database );
 
 
-//login
-if ( $procedure == 'sysw_login' ) {
-	$vld = 1; 
-	include( 'procedures/' . $procedure_path . '/' . $procedure . '.php' );
-	svc_disconnect( $connection );
-	die();
-}
-
-
-
 //header token
 if ( !isset( $headers['Tk'] ) && !isset( $headers['tk'] ) ) {
 	echo svc_error( 'app/index.php', 'Error 102' );
@@ -80,19 +70,11 @@ if ( strlen( $tk ) != 29 ){
 
 
 
-
-
-
-
-
-
-
-
 //procedures
 if ( file_exists( 'procedures/' . $procedure_path . '/' . $procedure . '.php' ) ) {
 	
 	//decryp person
-	$PERSON_ID = svc_decryp( $tk, $cryp_key, 24 ); //hours // $cryp_key @ svc_settings.php
+	$PERSON_ID = svc_decryp( $tk, $cryp_app_key, 24 ); //hours // $cryp_app_key @ svc_settings.php
 	
 	//get current domain and language
 	$sql = "
@@ -111,7 +93,7 @@ if ( file_exists( 'procedures/' . $procedure_path . '/' . $procedure . '.php' ) 
 	$LANGUA_ID = $rows[0]['DOMAIN_LANGUA_ID'];
 	$path_img = 'files/DOM' . str_pad( $DOMAIN_ID, 10, '0', STR_PAD_LEFT ) . '/IMG/' ;
 	
-	
+
 	//check permissions for this procedure
 	$vld = svc_procedure_permission( $procedure );
 	
@@ -123,7 +105,7 @@ if ( file_exists( 'procedures/' . $procedure_path . '/' . $procedure . '.php' ) 
 	
 	//run procedure
 	include( 'procedures/' . $procedure_path . '/' . $procedure . '.php' );
-	
+
 }
 
 

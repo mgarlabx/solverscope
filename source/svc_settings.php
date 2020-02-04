@@ -1,12 +1,13 @@
 <?php
 
 //General settings
-$cryp_key = '1234567890'; //change by 10 digit random number, this key should be unique in every Solverscope instance
+$cryp_app_key = 'TEN_NUMBER'; //change by 10 digit random NUMBER, this key should be unique in every Solverscope CMS instance
+$cryp_api_key = 'TEN_NUMBER'; //change by 10 digit random NUMBER, this key should be unique in every Solverscope CMS instance
 
 //MySQL settings
-$host = 'hostname';
-$login = 'login';
-$password = 'passaword';
-$database = 'database';
+$host = 'HOSTNAME';
+$login = 'LOGIN';
+$password = 'PASSAWORD';
+$database = 'DATABASE';
 
 ?>

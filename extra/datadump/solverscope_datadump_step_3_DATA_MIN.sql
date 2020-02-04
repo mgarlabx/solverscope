@@ -32,7 +32,7 @@ VALUES
 	(93,'sys_domain_list','List of user domains',1),
 	(94,'sys_lngstr\\_%','Dictionary',1),
 	(95,'sysw_domain_last_set','Set last domain visited',1),
-	(96,'sys_profm0_list','List of user menu (sidebar) items',1);
+	(96,'sys_profm0_list','List of user menu (sidebar) items',1),
 	(97,'sys_domain_id_get','Get current domain id',1);
 
 

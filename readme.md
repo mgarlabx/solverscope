@@ -140,7 +140,7 @@ endpoints que permitem o acesso de outras aplicações (por exemplo, LMS) no
 sentido de consumir o que tiver sido produzido dentro do **Solverscope CMS**.
 
 Dessa forma, os endpoints de **..main/app/** são para consumo da própria
-aplicação, enquanto que os endpoints de  **..main/api/** são para consumo de
+aplicação, enquanto que os endpoints de **..main/api/** são para consumo de
 aplicações externas.
 
  
@@ -189,9 +189,9 @@ a aplicação.
 
 O processo de autenticação consiste basicamente em se obter um token, o que pode
 ser feito pelo endpoint **login** da API do **Solverscope CMS** (pasta
-**..main/api/**). Ao rodar esse endpoint, se for informada uma chave válida
-(secret), a aplicação irá devolver o token e, caso não exista o usuário, irá
-criá-lo no banco de dados e devolver seu token.
+**..main/api/**). Ao rodar esse endpoint, se for informada uma chave válida, a
+aplicação irá devolver o token e, caso não exista o usuário, irá criá-lo no
+banco de dados e devolver seu token.
 
 As chaves ficam gravadas no campo DOMAIN_SECRET da tabela SYS_DOMAIN, ou seja, é
 uma chave por domínio.

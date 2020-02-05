@@ -34,6 +34,7 @@ var global_master = 0; //set 1 for debug purposes - see function TOGGLE_ID()
 
 //include shortcuts to speed up development
 function svc_develop_mode() {
+	//mod_module_get(5); 
 	//mod_templa_get(2, 5);
 	//global_master = 1;
 }
@@ -55,6 +56,8 @@ function TOGGLE_ID_main(){
 
 
 $( document ).ready( function() {
+	
+	$( '#svc-main-content-0' ).html( global_processing );
 	
 	$( '[data-toggle="tooltip"]' ).tooltip(); //<--- WORK_IN_PROGRESS: fazer funcionar tooltip
 
@@ -148,7 +151,7 @@ function page_refresh() {
 
 function page_sidebar() {
 
-	$( '#svc-side-bar' ).html( global_processing );
+	$( '#svc-side-bar' ).html( '<i class="fa fa-spinner fa-spin"></i>' );
 	
 	$.ajax({
 		url: 'app/',
@@ -203,7 +206,7 @@ function page_sidebar() {
 			page_click( first_label );
 			
 			
-			svc_develop_mode(); //<---------- REMOVER ------------------------------------------------------------------------------------------------------------
+			svc_develop_mode(); 
 			
 			
 			

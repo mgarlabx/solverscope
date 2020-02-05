@@ -138,11 +138,11 @@ function mod_module_get( module_id ) {
 			tx += '<h3>' + svc_lang_str( 'SUMMARY' );
 			if ( module[ 'PERMISSION' ] == 1 ) tx += '<span class="float-right"><button type="button" class="btn btn-primary" onclick="modw_module_update(' + module_id + ', \'MODULE_SUMMARY\' )"><i class="fa fa-pencil"></i></button></span>';
 			tx += '</h3>';
-			tx += '<div id="module-summary">' + module[ 'MODULE_SUMMARY' ] + '</div>';
+			tx += '<div id="module-summary">' + svc_line_break( module[ 'MODULE_SUMMARY' ] ) + '</div>';
 			tx += '<h3>' + svc_lang_str( 'DESCRIPTION' );
 			if ( module[ 'PERMISSION' ] == 1 ) tx += '<span class="float-right"><button type="button" class="btn btn-primary" onclick="modw_module_update(' + module_id + ', \'MODULE_DESCRIPTION\' )"><i class="fa fa-pencil"></i></button></span>';
 			tx += '</h3>';
-			tx += '<div id="module-description">' + module[ 'MODULE_DESCRIPTION' ] + '</div>';
+			tx += '<div id="module-description">' + svc_line_break( module[ 'MODULE_DESCRIPTION' ] ) + '</div>';
 			tx += '</div>';
 			tx += '</div>';
 			tx += '</div>';
@@ -269,7 +269,8 @@ function mod_templa_get( templa_id, module_id ) {
 
 					tx += '<p>';
 					if ( templa[ 'PERMISSION' ] == 1 ) tx += '<button type="button" class="btn btn-primary mb-3" onclick="modw_tpunit_insert(' + templa_id + ', ' + module_id + ' )"><i class="fa fa-plus"></i> ' + svc_lang_str( 'UNIT' ) + '</button>&nbsp;&nbsp;&nbsp;';
-					tx += '<button type="button" class="btn btn-info mb-3" onclick="mod_tpphas_list(' + templa_id + ', ' + templa[ 'PERMISSION' ] + ' )"><i class="fa fa-list-ul"></i> ' + svc_lang_str( 'PHASES' ) + '&nbsp;&nbsp;</button>';
+					tx += '<button type="button" class="btn btn-info mb-3" onclick="mod_tpphas_tpsegm_list(' + templa_id + ', ' + templa[ 'PERMISSION' ] + ' )"><i class="fa fa-list-ul"></i> ' + svc_lang_str( 'ASSESSMENT' ) + '&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;';
+					tx += '<button type="button" class="btn btn-warning mb-3" onclick="modw_tpsegm_segrel(' + templa_id + ', ' + templa[ 'PERMISSION' ] + ' )"><i class="fa fa-cogs"></i> ' + svc_lang_str( 'RELATIONSHIP' ) + '&nbsp;&nbsp;</button>';
 
 					for ( var i = 0; i < rows.length ; i++ ) {
 						if ( rows[i]['TPUNIT_ID'] != undefined ) {
@@ -277,7 +278,7 @@ function mod_templa_get( templa_id, module_id ) {
 							tx += '<div class="panel panel-default">';
 							tx += '<div class="panel-heading panel-heading-gray">';
 							tx += '<h4 class="panel-title">';
-							tx += '<a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" onclick="mod_tpsegm_show(' + rows[i]['TPUNIT_ID'] + ', ' + templa[ 'PERMISSION' ] + ')" href="#collapse-units-' + i + '" aria-expanded="true"> ';
+							tx += '<a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" onclick="mod_tpsegm_show(' + rows[i]['TPUNIT_ID'] + ', ' + templa_id +', ' + templa[ 'PERMISSION' ] + ')" href="#collapse-units-' + i + '" aria-expanded="true"> ';
 							tx += rows[i]['TPUNIT_NAME'];
 							tx += ' </a>';
 							if ( global_master == 1 ) tx += ' <span class="svc-master">TPUNIT_ID: ' + rows[i]['TPUNIT_ID'] + '</span>';
@@ -313,18 +314,20 @@ function mod_templa_get( templa_id, module_id ) {
 
 
 //assessment phases
-function mod_tpphas_list( templa_id, permission ) {
+function mod_tpphas_tpsegm_list( templa_id, permission ) {
 	
 	$.ajax({
 		url: 'app/',
 		type: 'POST',
-		headers: { 'tk': tk, 'procedure': 'mod_tpphas_list' },
+		headers: { 'tk': tk, 'procedure': 'mod_tpphas_tpsegm_list' },
 		data: { 'templa_id': templa_id },
 		success: function( data ) {
+			
 			var rows = svc_get_json( data );
+			var last_tpphas_id = 0;
 		
 			var tx = '';
-		
+			
 			if ( permission > 0 ) {
 				tx += '<div class="m-3"><button class="btn btn-primary" onclick="modw_tpphas_insert(' + templa_id + ',' + permission + ')"><i class="fa fa-plus"></i> ' + svc_lang_str( 'PHASE' ) + '</button></div>';
 			}
@@ -332,23 +335,37 @@ function mod_tpphas_list( templa_id, permission ) {
 			tx += '<table class="table table-hover">';
 			tx += '<thead>';
 			tx += '<tr>';
-			tx += '<td align="center">' + svc_lang_str( 'PHASE' ) + '</td>' ;
-			tx += '<td align="center">' + svc_lang_str( 'TPSEGM_WEIGHT' ) + '</td>' ;
+			tx += '<td align="center"><b>' + svc_lang_str( 'PHASE' ) + '</b></td>' ;
+			tx += '<td align="center"><b>' + svc_lang_str( 'TPSEGM_WEIGHT' ) + '</b></td>' ;
+			tx += '<td align="center"></td>' ;
 			tx += '</tr>';
 			tx += '</thead>';
 			tx += '<tbody>';
 			for ( var i = 0; i < rows.length ; i++ ) {
-				tx += '<tr>';
-				tx += '<td align="center">' + rows[i]['TPPHAS_ORDERBY'] + '</td>' ;
-				tx += '<td align="center">' + rows[i]['TPPHAS_WEIGHT'];
-				if ( global_master == 1 ) tx += ' <span class="svc-master">TPPHAS_ID: ' + rows[i]['TPPHAS_ID'] + '</span>';
-				tx += '</td>' ;
-				if ( permission > 0 ) {
-					tx += '<td align="right">';
-					tx += '<button type="button" class="btn btn-danger" onclick="modw_tpphas_delete(' + rows[i]['TPPHAS_ID'] + ', ' + templa_id + ',' + permission + ')"><i class="fa fa-trash"></i></button>';
+				
+				if ( last_tpphas_id != rows[i]['TPPHAS_ID'] ){
+					tx += '<tr style="background-color:#E0E0E0">';
+					tx += '<td align="center">' + rows[i]['TPPHAS_ORDERBY'] + '</td>' ;
+					tx += '<td align="center">' + rows[i]['TPPHAS_WEIGHT'];
+					if ( global_master == 1 ) tx += ' <span class="svc-master">TPPHAS_ID: ' + rows[i]['TPPHAS_ID'] + '</span>';
 					tx += '</td>' ;
+					if ( permission > 0 ) {
+						tx += '<td align="right">';
+						tx += '<button type="button" class="btn btn-danger" onclick="modw_tpphas_delete(' + rows[i]['TPPHAS_ID'] + ', ' + templa_id + ',' + permission + ')"><i class="fa fa-trash"></i></button>';
+						tx += '</td>' ;
+					}
+					else {
+						tx += '<td align="center"></td>' ;
+					}
+					tx += '</tr>';
+					last_tpphas_id = rows[i]['TPPHAS_ID'];
 				}
+				tx += '<tr style="font-size:70%">';
+				tx += '<td align="center">' + rows[i]['TPUNIT_NAME'] + '</td>' ;
+				tx += '<td align="center">' + rows[i]['TPSEGM_NAME'] + '</td>' ;
+				tx += '<td align="center">' + rows[i]['TPSEGM_WEIGHT'] + '</td>' ;
 				tx += '</tr>';
+				
 			}
 			tx += '</tbody>';
 			tx += '</table>';	
@@ -371,14 +388,16 @@ function mod_tpphas_list( templa_id, permission ) {
 /***** SEGMENTS ***********************************************************************************************************************************************************/
 
 
-function mod_tpsegm_show( tpunit_id, permission ) {
+function mod_tpsegm_show( tpunit_id, templa_id, permission ) {
 	if ( $( '#tpunit-' + tpunit_id ).html() == '' ) {
-		mod_tpsegm_list( tpunit_id, permission );
+		mod_tpsegm_list( tpunit_id, templa_id, permission );
 	}
 }
 
 
-function mod_tpsegm_list( tpunit_id, permission ) {
+function mod_tpsegm_list( tpunit_id, templa_id, permission ) {
+	
+	$( '#tpunit-' + tpunit_id ).html( global_processing );
 
 	$.ajax({
 		url: 'app/',
@@ -389,7 +408,7 @@ function mod_tpsegm_list( tpunit_id, permission ) {
 			rows = svc_get_json( data );
 			var tx = '';
 			
-			if ( permission ==  1 ) tx += '<p><button type="button" class="btn btn-primary mb-3" onclick="modw_tpsegm_insert(' + tpunit_id + ', ' + permission + ' )"><i class="fa fa-plus"></i> ' + svc_lang_str( 'SEGMENT' ) + '</button>';
+			if ( permission ==  1 ) tx += '<p><button type="button" class="btn btn-primary mb-3" onclick="modw_tpsegm_insert(' + tpunit_id + ', ' + templa_id + ', ' + permission + ' )"><i class="fa fa-plus"></i> ' + svc_lang_str( 'SEGMENT' ) + '</button>';
 
 			tx += '<table class="table">';
 			for ( var i = 0; i < rows.length ; i++ ) {
@@ -400,11 +419,10 @@ function mod_tpsegm_list( tpunit_id, permission ) {
 				var icobj = '<i style="color:#4BD396" class="fa fa-circle"></i>';
 				if ( rows[i]['TPSEGM_OBJECT_ID'] > 0 ) icobj = '<i class="fa fa-' + rows[i]['OBJTYP_ICON'] + '"></i>';
 				tx += '<td align="right">';
-				tx += '<button type="button" class="btn btn-success" onclick="modw_tpsegm_object(' + rows[i]['TPSEGM_ID'] + ')">' + icobj +'</button>';
-				tx += '<button type="button" class="btn btn-info" onclick="modw_tpsegm_segrel(' + rows[i]['TPSEGM_ID'] + ')"><i class="fa fa-cogs"></i></button>';
+				tx += '<button type="button" class="btn btn-success" onclick="modw_tpsegm_object(' + rows[i]['TPSEGM_ID'] + ', ' + permission + ')" id="object-button-' + rows[i]['TPSEGM_ID'] + '">' + icobj +'</button>';
 				if ( permission == 1 ) {
-					tx += '<button type="button" class="btn btn-primary" onclick="modw_tpsegm_update(' + rows[i]['TPSEGM_ID'] + ', ' + tpunit_id + ', ' + permission + ')"><i class="fa fa-pencil"></i></button>';
-					tx += '<button type="button" class="btn btn-danger" onclick="modw_tpsegm_delete(' + rows[i]['TPSEGM_ID'] + ', ' + tpunit_id + ', ' + permission + ')"><i class="fa fa-trash"></i></button>';
+					tx += '<button type="button" class="btn btn-primary" onclick="modw_tpsegm_update(' + rows[i]['TPSEGM_ID'] + ', ' + tpunit_id + ', ' + templa_id + ', ' + permission + ')"><i class="fa fa-pencil"></i></button>';
+					tx += '<button type="button" class="btn btn-danger" onclick="modw_tpsegm_delete(' + rows[i]['TPSEGM_ID'] + ', ' + tpunit_id + ', ' + templa_id + ', ' + permission + ')"><i class="fa fa-trash"></i></button>';
 				}
 				tx += '</td>';
 				tx += '</tr>';
@@ -434,7 +452,7 @@ function mod_tpsegm_get( tpsegm_id, tpunit_id, permission ) {
 			tx += '<tbody>';
 
 			tx += '<tr>';
-			tx += '<td><b>' + svc_lang_str( 'TPSEGM_ORDERBY' ) + '</b></td>';
+			tx += '<td width="200"><b>' + svc_lang_str( 'TPSEGM_ORDERBY' ) + '</b></td>';
 			tx += '<td>' + tpsegm['TPSEGM_ORDERBY'] + '</td>';
 			tx += '</tr>';
 
@@ -445,7 +463,7 @@ function mod_tpsegm_get( tpsegm_id, tpunit_id, permission ) {
 			tx += '</tr>';
 
 			tx += '<tr>';
-			tx += '<td><b>' + svc_lang_str( 'TPSEGM_DESCRIPTION' ) + '</b></td>';
+			tx += '<td style="vertical-align:top"><b>' + svc_lang_str( 'TPSEGM_DESCRIPTION' ) + '</b></td>';
 			tx += '<td>' + tpsegm['TPSEGM_DESCRIPTION'] + '</td>';
 			tx += '</tr>';
 			
@@ -495,13 +513,6 @@ function mod_tpsegm_get( tpsegm_id, tpunit_id, permission ) {
 			
 		}
 	});
-	
-	
-	
-	
-	
-	
-	
 	
 }
 

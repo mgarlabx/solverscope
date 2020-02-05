@@ -277,7 +277,7 @@ VALUES
 
 INSERT INTO `SYS_LNGSTR` (`LNGSTR_ID`, `LNGSTR_KEY`, `LNGSTR_EN`, `LNGSTR_PT`, `LNGSTR_ES`)
 VALUES
-	(1,'LANGUA_ID','2','3','4'),
+	(1,'LANGUA_ID','3','1','2'),
 	(2,'INSTITUTIONS','Institutions','Instituições','Instituciones'),
 	(3,'COURSES','Courses','Disciplinas','Materias'),
 	(4,'COURSE','Course','Disciplina','Materia'),
@@ -422,7 +422,7 @@ VALUES
 	(146,'DEVELOPER','Developer','Desenvolvedor','Desarrollador'),
 	(147,'TOGGLE_ID','Toggle IDs','Alternar IDs','Alternar IDs'),
 	(148,'LABEL','Label','Rótulo','Rótulo'),
-	(149,'LENGTH','Length','Duração','Duración'),
+	(149,'LENGTH','Length','Tamanho','Tamaño'),
 	(150,'SUMMARY','Summary','Resumo','Resumen'),
 	(151,'DESCRIPTION','Description','Descrição','Descripción'),
 	(152,'PROMPT_MODULE_DATA','Please enter the module data:','Por favor, insira os dados do módulo:','Por favor, introduzca los datos del modulo:'),
@@ -430,7 +430,7 @@ VALUES
 	(154,'MODULE_NAME','Name','Nome','Nombre'),
 	(155,'MODLBL_NAME','Label','Rótulo','Rótulo'),
 	(156,'MODTYP_NAME','Type','Tipo','Tipo'),
-	(157,'MODULE_LENGTH','Length','Duração','Duración'),
+	(157,'MODULE_LENGTH','Length','Tamanho','Tamaño'),
 	(158,'MODULE_SUMMARY','Summary','Resumo','Resumen'),
 	(159,'MODULE_DESCRIPTION','Description','Descrição','Descripción'),
 	(160,'MODULE_DATA','Module data','Dados do módulo','Datos del modulo'),
@@ -462,10 +462,10 @@ VALUES
 	(187,'TPSEGM_NOT_EMPTY','The segment cannot be deleted because it is being used.','O segmento não pode ser excluído porque está sendo usado.','El segmento no se puede eliminar porque se está utilizando.'),
 	(188,'TPSEGM_NAME','Name','Nome','Nombre'),
 	(189,'TPSEGM_DESCRIPTION','Description','Descrição','Descripción'),
-	(190,'TPSEGM_LENGTH','Length','Duração','Duración'),
+	(190,'TPSEGM_LENGTH','Length','Tamanho','Tamaño'),
 	(191,'TPSEGM_ORDERBY','Sequence','Sequência','Secuencia'),
-	(192,'TPSEGM_ALLOW_UPLOAD','Uploads','Uploads','Uploads'),
-	(193,'TPSEGM_MANUAL_GRADING','Grading','Avaliação','Calificación'),
+	(192,'TPSEGM_ALLOW_UPLOAD','Allow upload','Permite upload','Permite upload'),
+	(193,'TPSEGM_MANUAL_GRADING','Manual grading','Nota manual','Calificación manual'),
 	(194,'TPSEGM_TPPHAS_ID','Phase','Fase','Fase'),
 	(195,'TPSEGM_WEIGHT','Weight','Peso','Peso'),
 	(196,'TPSEGM_OBJECT_ID','Object','Objeto','Objeto'),
@@ -494,6 +494,13 @@ VALUES
 	(219,'ALL_ITEMS','All items','Todos itens','Todas cuestiones'),
 	(220,'SELECT_FOLDER','Select folder','Escolha a pasta','Elegir carpeta'),
 	(221,'NOT_SUB_FOLDER','There are no folders in that folder','Não há pastas nessa pasta','No hay carpetas en esa carpeta'),
-	(223,'VIEW_FOLDER','View folder','Ver pasta','Ver carpeta');
-
-
+	(223,'VIEW_FOLDER','View folder','Ver pasta','Ver carpeta'),
+	(224,'PROMPT_PHASE_NUMBER','Please enter the phase number:','Por favor digite o número da fase:','Por favor, introduzca el número de la fase:'),
+	(225,'PROMPT_PHASE_WEIGHT','Please enter the phase weight:','Por favor digite o peso da fase:','Por favor, introduzca el peso de la fase:'),
+	(226,'ASSESSMENT_PHASES','Assessment phases','Fases de avaliação','Fases de evaluación'),
+	(228,'ASSESSMENT_PHASE','Assessment phase','Fase de avaliação','Fase de evaluación'),
+	(229,'TPPHAS_NOT_EMPTY','The phase cannot be deleted because it is being used.','A fase não pode ser excluída porque está sendo usada.','La fase no se puede eliminar porque se está utilizando.'),
+	(231,'OBJECT_ID','Object ID','ID do Objeto','ID del Objeto'),
+	(232,'OBJECT_LINKED','Linked object','Objeto vinculado','Objeto vinculado'),
+	(233,'ASSESSMENT','Assessment','Avaliação','Calificación'),
+	(234,'RELATIONSHIP','Relationship','Relacionamento','Relación');

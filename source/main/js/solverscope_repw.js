@@ -1204,8 +1204,8 @@ function repw_quiait_insert_id( quiasm_id, object_id ) {
 	var tx = '';
 	tx += '<table>';
 	tx += '<tr>';
-	tx += '<td style="padding-bottom:1rem;margin-right:1rem;">' + svc_lang_str( 'QUESTION_ID' ) + ':&nbsp;&nbsp;&nbsp;</td>';
-	tx += '<td style="padding-bottom:1rem"><input type="text" style="width:4rem;text-align:center" class="form-control" id="quiite_id"></td>';
+	tx += '<td style="padding-bottom:1rem;margin-right:1rem;">' + svc_lang_str( 'OBJECT_ID' ) + ':&nbsp;&nbsp;&nbsp;</td>';
+	tx += '<td style="padding-bottom:1rem"><input type="text" style="width:4rem;text-align:center" class="form-control" id="object2_id"></td>';
 	tx += '</tr>';
 	tx += '</table>';
 
@@ -1220,13 +1220,13 @@ function repw_quiait_insert_id( quiasm_id, object_id ) {
 //insert item from selected ID
 function repw_quiait_insert_id_save( quiasm_id, object_id ) {
 	
-	var quiite_id = $( '#quiite_id' ).val();
+	var object2_id = $( '#object2_id' ).val();
 	
 	$.ajax({
 		url: 'app/',
 		type: 'POST',
 		headers: { 'tk': tk, 'procedure': 'repw_quiait_insert' },
-		data: { 'quiasm_id': quiasm_id, 'quiite_id': quiite_id },
+		data: { 'quiasm_id': quiasm_id, 'object_id': object2_id },
 		success: function( data ) {
 			rep_quiasm_get( object_id );
 			$( '#myModal' ).modal( 'hide' );

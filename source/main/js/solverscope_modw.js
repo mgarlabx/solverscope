@@ -131,10 +131,10 @@ function modw_module_update_save( module_id, column ) {
 		data: { 'module_id': module_id, 'column': column, 'module_input': module_input },
 		success: function( data ) {
 			if ( column == 'MODULE_SUMMARY' ) {
-				$( '#module-summary').html( module_input );
+				$( '#module-summary').html( svc_line_break( module_input ) );
 			}
 			else if ( column == 'MODULE_DESCRIPTION' ) {
-				$( '#module-description').html( module_input );
+				$( '#module-description').html( svc_line_break( module_input ) );
 			}
 			else {
 				mod_module_get( module_id );
@@ -315,7 +315,7 @@ function modw_tpphas_insert( templa_id, permission ){
 				headers: { 'tk': tk, 'procedure': 'modw_tpphas_insert' },
 				data: { 'templa_id': templa_id, 'phase_number': phase_number, 'phase_weight': phase_weight },
 				success: function( data ) {
-					mod_tpphas_list( templa_id, permission );		
+					mod_tpphas_tpsegm_list( templa_id, permission );		
 				}
 			});  
 	
@@ -337,7 +337,12 @@ function modw_tpphas_delete( tpphas_id, templa_id, permission ){
 			headers: { 'tk': tk, 'procedure': 'modw_tpphas_delete' },
 			data: { 'tpphas_id': tpphas_id },
 			success: function( data ) {
-				mod_tpphas_list( templa_id, permission );		
+				if ( data.trim() == 'Error 804' ) {
+					alert( svc_lang_str( 'TPPHAS_NOT_EMPTY' ) ); 
+				}
+				else {
+					mod_tpphas_tpsegm_list( templa_id, permission );
+				}
 			}
 		});  
 		
@@ -362,6 +367,8 @@ function modw_tpunit_insert( templa_id, module_id ) {
 
 
 function modw_tpunit_insert_save( templa_id, module_id ) {
+	
+	$( '#svc-main-content-body-2' ).html( global_processing )
 	
 	var tpunit_name = $( '#tpunit-name' ).val();
 	tpunit_name = tpunit_name.trim();
@@ -422,6 +429,8 @@ function modw_tpunit_update( tpunit_id, templa_id, module_id ) {
 
 function modw_tpunit_update_save( tpunit_id, templa_id, module_id ) {
 
+	$( '#svc-main-content-body-2' ).html( global_processing )
+	
 	var tpunit_name = $( '#tpunit-name' ).val();
 	var tpunit_orderby = $( '#tpunit-orderby' ).val();
 	
@@ -471,19 +480,21 @@ function modw_tpunit_delete( tpunit_id, templa_id, module_id ) {
 /***** SEGMENTS ***********************************************************************************************************************************************************/
 
 
-function modw_tpsegm_insert( tpunit_id, permission ) {
+function modw_tpsegm_insert( tpunit_id, templa_id, permission ) {
 	
 	$( '#myModalTitle' ).html( svc_lang_str( 'PROMPT_TPSEGM_NAME' ) );
 	$( '#myModalBody' ).html( '<input type="text" class="form-control" id="tpsegm-name">' );
-	$( '#myModalButton' ).html( '<button type="button" class="btn btn-primary" onclick="modw_tpsegm_insert_save(' + tpunit_id + ',' + permission + ')">' + svc_lang_str( 'SAVE' ) + '</button>' );
+	$( '#myModalButton' ).html( '<button type="button" class="btn btn-primary" onclick="modw_tpsegm_insert_save(' + tpunit_id + ', ' + templa_id + ',' + permission + ')">' + svc_lang_str( 'SAVE' ) + '</button>' );
 	$( '#myModal' ).modal( 'show' );
 	
 }
 
 
-function modw_tpsegm_insert_save( tpunit_id, permission ) {
+function modw_tpsegm_insert_save( tpunit_id, templa_id, permission ) {
 	
 	var tpsegm_name = $( '#tpsegm-name' ).val();
+	
+	$( '#tpunit-' + tpunit_id ).html( global_processing );
 	
 	tpsegm_name = tpsegm_name.trim();
 	if ( tpsegm_name != '' && tpsegm_name != null ) {
@@ -493,7 +504,7 @@ function modw_tpsegm_insert_save( tpunit_id, permission ) {
 			headers: { 'tk': tk, 'procedure': 'modw_tpsegm_insert' },
 			data: { 'tpunit_id': tpunit_id, 'tpsegm_name': tpsegm_name },
 			success: function( data ) {
-				mod_tpsegm_list( tpunit_id, permission );
+				mod_tpsegm_list( tpunit_id, templa_id, permission );
 			}
 		});
 	}
@@ -504,27 +515,309 @@ function modw_tpsegm_insert_save( tpunit_id, permission ) {
 
 
 
-function modw_tpsegm_object( tpsegm_id ) {
-	alert( 'WORK IN PROGRESS' );
-	//WORK_IN_PROGRESS: relação entre segmentos (adaptativo e requisitivo)
+
+function modw_tpsegm_object( tpsegm_id, permission ) {
+	
+	$.ajax({
+		url: 'app/',
+		type: 'POST',
+		headers: { 'tk': tk, 'procedure': 'mod_tpsegm_get' },
+		data: { 'tpsegm_id': tpsegm_id },
+		success: function( data ) {
+			
+			var segment = svc_get_json( data );
+			var str_obj_id = '';
+			var tx = '';
+			
+			$( '#myModalTitle' ).html( svc_lang_str( 'OBJECT_LINKED' ) );
+
+			if ( permission == 1 ) {
+				if ( segment['TPSEGM_OBJECT_ID'] == 0 ) {
+					str_obj_id = '<input onkeyup="modw_tpsegm_object_refresh()" size="4" style="text-align:center" id="tpsegm-object-id">';
+				}
+				else {
+					str_obj_id = '<input onkeyup="modw_tpsegm_object_refresh()" size="4" style="text-align:center" id="tpsegm-object-id" value="' + segment['TPSEGM_OBJECT_ID'] + '">';
+				}
+			}
+			else {
+				if ( segment['TPSEGM_OBJECT_ID'] == 0 ) {
+					str_obj_id = '';
+				}
+				else {
+					str_obj_id = segment['TPSEGM_OBJECT_ID'];
+				}
+			}
+			
+			tx += '<table cellpadding="10">';
+			
+			tx += '<tr>';
+			tx += '<td width="150"><b>' + svc_lang_str( 'OBJECT_ID' ) + '</b></td>';
+			tx += '<td>' + str_obj_id + '</td>';
+			tx += '</tr>';
+			
+			tx += '<tr>';
+			tx += '<td><b>' + svc_lang_str( 'NAME' ) + '</b></td>';
+			tx += '<td id="tpsegm-object-name"></td>';
+			tx += '</tr>';
+
+			tx += '<tr>';
+			tx += '<td><b>' + svc_lang_str( 'TYPE' ) + '</b></td>';
+			tx += '<td id="tpsegm-object-type"></td>';
+			tx += '</tr>';
+
+			tx += '<tr>';
+			tx += '<td><b>' + svc_lang_str( 'FOLDER' ) + '</b></td>';
+			tx += '<td id="tpsegm-object-folder"></td>';
+			tx += '</tr>';
+
+			tx += '</table>';
+			
+			$( '#myModalBody' ).html( tx );
+			if ( permission == 1 ) {
+				$( '#myModalButton' ).html( '<button type="button" class="btn btn-primary" onclick="modw_tpsegm_object_save(' + tpsegm_id + ')">' + svc_lang_str( 'SAVE' ) + '</button>' );
+			}
+			else {
+				$( '#myModalButton' ).html( '' );
+		
+			}
+			$( '#myModal' ).modal( 'show' );
+			modw_tpsegm_object_refresh();
+
+		}
+	});
 	
 }
+
+function modw_tpsegm_object_refresh() {
+
+	var object_id = $( '#tpsegm-object-id' ).val();
+
+	$( '#tpsegm-object-name' ).html( '<i class="fa fa-spinner fa-spin"></i>' );
+	$( '#tpsegm-object-type' ).html( '' );
+	$( '#tpsegm-object-folder' ).html( '' );
+
+	$.ajax({
+		url: 'app/',
+		type: 'POST',
+		headers: { 'tk': tk, 'procedure': 'rep_object_get' },
+		data: { 'object_id': object_id },
+		success: function( data ) {
+			
+			$( '#tpsegm-object-name' ).html( '' );
+			$( '#tpsegm-object-type' ).html( '' );
+			$( '#tpsegm-object-folder' ).html( '' );
+
+			if ( data.length > 20 ) {
+				var object = svc_get_json( data );
+				if ( object['OBJECT_ACTIVE'] == 1 ){
+					$( '#tpsegm-object-name' ).html( object['OBJECT_NAME'] );
+					$( '#tpsegm-object-type' ).html( '<i class="fa fa-' + object['OBJTYP_ICON'] + '"></i> ' + svc_lang_str( object['OBJTYP_NAME'] ) );
+					$( '#tpsegm-object-folder' ).html( '<a onclick="rep_folder_list(' + object['OBJECT_FOLDER_ID'] + ')" href="#">' + object['FOLDER_NAME'] + '</a>' );
+				}
+			}
+			
+
+		}
+	});
+
+}
+
+
+function modw_tpsegm_object_save( tpsegm_id ) {
+	var object_id = $( '#tpsegm-object-id' ).val();
+	if ( object_id == '' ) object_id = 0;
+	
+	$.ajax({
+		url: 'app/',
+		type: 'POST',
+		headers: { 'tk': tk, 'procedure': 'modw_tpsegm_object_update' },
+		data: { 'tpsegm_id': tpsegm_id, 'object_id': object_id  },
+		success: function( data ) {
+			if ( object_id == 0 ) {
+				$( '#object-button-' + tpsegm_id ).html( '<i style="color:#4BD396" class="fa fa-circle"></i>' );
+			}
+			else {
+				$( '#object-button-' + tpsegm_id ).html( '<i class="fa fa-' + data.trim() + '"></i>' );
+			}
+		}
+	});
+	$( '#myModal' ).modal( 'hide' );
+}
+
+
+
+
+
 
 
 function modw_tpsegm_segrel( tpsegm_id ) {
-	alert( 'WORK IN PROGRESS' );
+	alert( 'WORK IN PROGRESS - modw_tpsegm_segrel' );
 	//WORK_IN_PROGRESS: relação entre segmentos (adaptativo e requisitivo)
 	
 }
 
 
-function modw_tpsegm_update(){
-	alert( 'WORK IN PROGRESS' );
-	//WORK_IN_PROGRESS - updates nos segmentos
+
+
+
+function modw_tpsegm_update( tpsegm_id, tpunit_id, templa_id, permission ){
+	
+	$.ajax({
+		url: 'app/',
+		type: 'POST',
+		headers: { 'tk': tk, 'procedure': 'mod_tpphas_list' },
+		data: { 'templa_id': templa_id },
+		success: function( data1 ) {
+			var phases = svc_get_json( data1 );
+
+			$.ajax({
+				url: 'app/',
+				type: 'POST',
+				headers: { 'tk': tk, 'procedure': 'mod_tpsegm_get' },
+				data: { 'tpsegm_id': tpsegm_id },
+				success: function( data ) {
+			
+					tpsegm = svc_get_json( data );
+
+					var tx = '';
+					tx += '<table class="table table-hover">';
+					tx += '<tbody>';
+
+					tx += '<tr>';
+					tx += '<td width="200"><b>' + svc_lang_str( 'TPSEGM_ORDERBY' ) + '</b></td>';
+					tx += '<td><input size="2" style="text-align:center" id="tpsegm-orderby" value="' + tpsegm['TPSEGM_ORDERBY'] + '"></td>';
+					tx += '</tr>';
+
+					tx += '<tr>';
+					tx += '<td><b>' + svc_lang_str( 'TPSEGM_NAME' ) + '</b></td>';
+					tx += '<td><input id="tpsegm-name" value="' + tpsegm['TPSEGM_NAME'] + '"></td>';
+					tx += '</tr>';
+
+					tx += '<tr>';
+					tx += '<td><b>' + svc_lang_str( 'TPSEGM_DESCRIPTION' ) + '</b></td>';
+					tx += '<td><input id="tpsegm-description" value="' + tpsegm['TPSEGM_DESCRIPTION'] + '"></td>';
+					tx += '</tr>';
+			
+					tx += '<tr>';
+					tx += '<td><b>' + svc_lang_str( 'TPSEGM_LENGTH' ) + '</b></td>';
+					tx += '<td><input size="2" style="text-align:center" id="tpsegm-length" value="' + tpsegm['TPSEGM_LENGTH'] + '"></td>';
+					tx += '</tr>';
+
+					tx += '<tr>';
+					tx += '<td><b>' + svc_lang_str( 'TPSEGM_ALLOW_UPLOAD' ) + '</b></td>';
+					tx += '<td><label class="switchToggle">';
+				    tx += '<input id="tpsegm-allow-upload" type="checkbox" ';
+					if ( tpsegm['TPSEGM_ALLOW_UPLOAD'] == 1 ) tx += 'checked ';
+					tx += 'id="object-active">';
+					tx += '<span class="slider aqua round"></span>';
+					tx += '</label></td>';
+					tx += '</tr>';
+
+					tx += '<tr>';
+					tx += '<td><b>' + svc_lang_str( 'TPSEGM_MANUAL_GRADING' ) + '</b></td>';
+					tx += '<td><label class="switchToggle">';
+				    tx += '<input id="tpsegm-manual-grading" type="checkbox" ';
+					if ( tpsegm['TPSEGM_MANUAL_GRADING'] == 1 ) tx += 'checked ';
+					tx += 'id="object-active">';
+					tx += '<span class="slider aqua round"></span>';
+					tx += '</label></td>';
+					tx += '</tr>';
+
+					tx += '<tr>';
+					tx += '<td><b>' + svc_lang_str( 'ASSESSMENT_PHASE' ) + '</b></td>';
+					tx += '<td><select id="tpsegm-tpphas-id">';
+					tx += '<option value="0"';
+					if ( tpsegm['TPSEGM_TPPHAS_ID'] == 0 ) tx += ' SELECTED';
+					tx += '>0</option>';
+					for ( var i = 0; i < phases.length; i++ ) {
+						tx += '<option value="' + phases[i]['TPPHAS_ID'] + '"';
+						if ( tpsegm['TPSEGM_TPPHAS_ID'] == phases[i]['TPPHAS_ID'] ) tx += ' SELECTED';
+						tx += '>' + phases[i]['TPPHAS_ORDERBY'] + '</option>';
+					}
+					tx += '</select></td>';
+					tx += '</tr>';
+			
+					tx += '<tr>';
+					tx += '<td><b>' + svc_lang_str( 'TPSEGM_WEIGHT' ) + '</b></td>';
+					tx += '<td><input size="2" style="text-align:center" id="tpsegm-weight" value="' + tpsegm['TPSEGM_WEIGHT'] + '"></td>';
+
+					tx += '</tr>';
+			
+					tx += '</tbody>';
+					tx += '</table><p>';
+	
+					$( '#myModalTitle' ).html( svc_lang_str( 'SEGMENT' ) );
+					$( '#myModalBody' ).html( tx );
+					$( '#myModalButton' ).html( '<button type="button" class="btn btn-primary" onclick="modw_tpsegm_update_save(' + tpsegm_id + ', ' + tpunit_id + ', ' + templa_id + ', ' + permission + ')">' + svc_lang_str( 'SAVE' ) + '</button>' );
+					$( '#myModal' ).modal( 'show' );
+			
+				}
+			});
+	
+		}
+	});
 
 }
 
-function modw_tpsegm_delete( tpsegm_id, tpunit_id, permission ) {
+
+function modw_tpsegm_update_save( tpsegm_id, tpunit_id, templa_id, permission ){
+
+	var tpsegm_orderby = $( '#tpsegm-orderby' ).val();
+	var tpsegm_name = $( '#tpsegm-name' ).val();
+	var tpsegm_description = $( '#tpsegm-description' ).val();
+	var tpsegm_length = $( '#tpsegm-length' ).val();
+	var tpsegm_allow_upload = $( '#tpsegm-allow-upload' ).is( ':checked' );
+	var tpsegm_manual_grading = $( '#tpsegm-manual-grading' ).is( ':checked' );
+	var tpsegm_tpphas_id = $( '#tpsegm-tpphas-id' ).val();
+	var tpsegm_weight = $( '#tpsegm-weight' ).val();
+
+	tpsegm_orderby = tpsegm_orderby.trim();
+	tpsegm_name = tpsegm_name.trim();
+	tpsegm_description = tpsegm_description.trim();
+	tpsegm_length = tpsegm_length.trim();
+	if ( tpsegm_allow_upload ) {
+		tpsegm_allow_upload = 1;
+	}
+	else {
+		tpsegm_allow_upload = 0;
+	}
+	if ( tpsegm_manual_grading ) {
+		tpsegm_manual_grading = 1;
+	}
+	else {
+		tpsegm_manual_grading = 0;
+	}
+	tpsegm_tpphas_id = tpsegm_tpphas_id.trim();
+	tpsegm_weight = tpsegm_weight.trim();
+
+	$.ajax({
+		url: 'app/',
+		type: 'POST',
+		headers: { 'tk': tk, 'procedure': 'modw_tpsegm_update' },
+		data: { 
+			'tpsegm_id': tpsegm_id,
+			'tpsegm_orderby': tpsegm_orderby,
+			'tpsegm_name': tpsegm_name,
+			'tpsegm_description': tpsegm_description,
+			'tpsegm_length': tpsegm_length,
+			'tpsegm_allow_upload': tpsegm_allow_upload,
+			'tpsegm_manual_grading': tpsegm_manual_grading,
+			'tpsegm_tpphas_id': tpsegm_tpphas_id,
+			'tpsegm_weight': tpsegm_weight
+		},
+		success: function( data ) {
+			mod_tpsegm_list( tpunit_id, templa_id, permission );
+			$( '#myModal' ).modal( 'hide' );
+		}
+	});
+
+	
+}
+
+
+
+
+function modw_tpsegm_delete( tpsegm_id, tpunit_id, templa_id, permission ) {
 	
 	if ( confirm( svc_lang_str( 'CONFIRM_TPSEGM_DEL' ) ) ) {
 		$.ajax({
@@ -537,7 +830,7 @@ function modw_tpsegm_delete( tpsegm_id, tpunit_id, permission ) {
 					alert( svc_lang_str( 'TPSEGM_NOT_EMPTY' ) ); 
 				}
 				else {
-					mod_tpsegm_list( tpunit_id, permission );
+					mod_tpsegm_list( tpunit_id, templa_id, permission );
 				}
 			}
 		});

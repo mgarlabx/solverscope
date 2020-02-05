@@ -25,7 +25,11 @@ function rep_folder_list( parent ) {
 	svc_master_function( 'rep_folder_list(' + parent + ') @ solverscope_rep.js' );
 		
 	$( '#svc-main-content-0' ).html( global_processing );
-
+	
+	$( '#myModal' ).modal( 'hide' );
+	$( '#svc-main-content-1' ).hide();
+	$( '#svc-main-content-2' ).hide();
+	
 	//ajax get folder list START
 	$.ajax({
 		url: 'app/',
@@ -266,7 +270,7 @@ function rep_objects_list ( objects, parent, op_layout ) {
 		else {
 			txline += '&nbsp;&nbsp;&nbsp;<i style="color:red" title="' + svc_lang_str( 'INACTIVE' ) + '" class="fa fa-ban"></i>'
 		}
-		if ( global_master == 1 ) txline += '<span class="svc-master">OBJECT_ID: ' + objects[i]['OBJECT_ID'] + '</span>';
+		txline += '<span class="svc-master">' + svc_lang_str( 'OBJECT_ID' ) + ': ' + objects[i]['OBJECT_ID'] + '</span>';
 		txline += '</a></td>';
 		
 		for ( var j = 1; j < 6; j++ ){
@@ -405,7 +409,8 @@ function rep_quiite_get( object_id, svc_main_content_id ) {
 
 			//name
 			var header = object_name;
-			header += '<span style="font-size:80%;margin-left:1rem;"> (ID: ' + quiite_id + ')</span>';
+			header += '<span style="font-size:80%;margin-left:1rem;"> (ID: ' + object_id + ')</span>';
+			if ( global_master == 1 ) tx += '<span class="svc-master">QUIITE_ID: ' + quiite_id + '</span>';
 			$( '#svc-main-content-header-' + svc_main_content_id ).html( header );
 			tx += '<h4 class="ml-2">' + svc_lang_str( 'AUTHOR' ) + ': ' + author_name +'</h4>';
 			tx += '<div class="svc-main-content-path" id="object-path"></div>';

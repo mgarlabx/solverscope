@@ -503,4 +503,7 @@ VALUES
 	(231,'OBJECT_ID','Object ID','ID do Objeto','ID del Objeto'),
 	(232,'OBJECT_LINKED','Linked object','Objeto vinculado','Objeto vinculado'),
 	(233,'ASSESSMENT','Assessment','Avaliação','Calificación'),
-	(234,'RELATIONSHIP','Relationship','Relacionamento','Relación');
+	(234,'RELATIONSHIP','Relationship','Relacionamento','Relación'),
+	(235,'SEARCH','Search','Buscar','Buscar'),
+	(236,'FILTER','Filter','Filtrar','Filtrar'),
+	(237,'CLEAN','Clean','Limpar','Limpiar');

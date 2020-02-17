@@ -162,10 +162,11 @@ function sys_person_list(){
 			tx += '<tbody>';
 			for ( var i = 0; i < rows.length ; i++ ) {
 				tx += '<tr>';
-				tx += '<td>' + rows[i]['PERSON_ID'] + '</td>';
-				tx += '<td>' + rows[i]['PERSON_NAME'] + '</td>';
+				tx += '<td align="center">' + rows[i]['PERSON_ID'] + '</td>';
+				tx += '<td><a href="#" onclick="sys_person_get(' + rows[i]['PERSON_ID'] + ')">' + rows[i]['PERSON_NAME'] + '</a></td>';
 				tx += '<td>' + rows[i]['DOMAIN_NAME'] + '</td>';
-				tx += '<td>' + rows[i]['PROFIL_NAME'] + '</td>';
+				tx += '<td>' + svc_date_format( rows[i]['PERACC_DATE'] ) + '</td>';
+				tx += '<td>' + rows[i]['N'] + '</td>';
 				tx += '<td align="right">';
 				tx += '<button type="button" class="btn btn-primary" onclick="sysw_person_update(' + rows[i]['PERSON_ID'] + ')"><i class="fa fa-pencil"></i></button>&nbsp;&nbsp;';
 				tx += '<button type="button" class="btn btn-danger" onclick="sysw_person_delete(' + rows[i]['PERSON_ID'] + ')"><i class="fa fa-trash"></i></button>';
@@ -184,4 +185,7 @@ function sys_person_list(){
 
 }
 
-
+function sys_person_get( person_id ){
+	alert( 'WORK IN PROGRESS - sys_person_get' );
+}
+	

@@ -157,18 +157,18 @@ function sysw_profil_p_delete( profm1_id ) {
 
 function sysw_person_insert(){
 	//WORK_IN_PROGRESS - sysw_person_insert
-	alert( 'WORK IN PROGRESS' );
+	alert( 'WORK IN PROGRESS - sysw_person_insert' );
 }
 
 
 function sysw_person_update( person_id ){
 	//WORK_IN_PROGRESS - sysw_person_update
-	alert( 'WORK IN PROGRESS' );
+	alert( 'WORK IN PROGRESS - sysw_person_update' );
 }
 
 
 function sysw_person_delete( person_id ){
 	//WORK_IN_PROGRESS - sysw_person_delete
-	alert( 'WORK IN PROGRESS' );
+	alert( 'WORK IN PROGRESS - sysw_person_delete' );
 }
 

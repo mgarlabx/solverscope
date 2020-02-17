@@ -34,8 +34,7 @@ var global_master = 0; //set 1 for debug purposes - see function TOGGLE_ID()
 
 //include shortcuts to speed up development
 function svc_develop_mode() {
-	//mod_module_get(5); 
-	//mod_templa_get(2, 5);
+	//pro_schema_get(4);
 	//global_master = 1;
 }
 
@@ -285,25 +284,30 @@ function main_display( n ) {
 
 //format date according to language
 function svc_date_format( str ) {
-	var dat = new Date( str );
-	var d = dat.getDate();
-	var m = dat.getMonth();
-	var y = dat.getFullYear();
-	d = '0' + d;
- 	d = d.substr( -2 );
-	m = m + 1;
- 	m = '0' + m;
- 	m = m.substr( -2 );
-
-	var langua_id = svc_lang_str( 'LANGUA_ID' );
-
-	if ( langua_id == 2 ) {
-		return m + '/' + d + '/' + y;
+	
+	if ( str == null || str == undefined || str == '' ) {
+		return '';
 	}
 	else {
-		return d + '/' + m + '/' + y;
+		var dat = new Date( str );
+		var d = dat.getDate();
+		var m = dat.getMonth();
+		var y = dat.getFullYear();
+		d = '0' + d;
+	 	d = d.substr( -2 );
+		m = m + 1;
+	 	m = '0' + m;
+	 	m = m.substr( -2 );
+
+		var langua_id = svc_lang_str( 'LANGUA_ID' );
+
+		if ( langua_id == 2 ) {
+			return m + '/' + d + '/' + y;
+		}
+		else {
+			return d + '/' + m + '/' + y;
+		}
 	}
-//	return dat;
 }
 
 

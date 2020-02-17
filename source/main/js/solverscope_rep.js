@@ -243,6 +243,9 @@ function rep_objects_list ( objects, parent, op_layout ) {
 
 		var txline = '';
 		txline += '<tr>';
+		
+		txline += '<td align="center">' + objects[i]['OBJECT_ID'] + '</td>';
+		
 		txline += '<td style="width:60%" onclick="';
 		if ( objects[i]['OBJTYP_NAME'] == 'OBJ_QUIZ' ) {
 			txline += 'rep_quiite_get(' + objects[i]['OBJECT_ID'] + ', 1 )';
@@ -270,7 +273,6 @@ function rep_objects_list ( objects, parent, op_layout ) {
 		else {
 			txline += '&nbsp;&nbsp;&nbsp;<i style="color:red" title="' + svc_lang_str( 'INACTIVE' ) + '" class="fa fa-ban"></i>'
 		}
-		txline += '<span class="svc-master">' + svc_lang_str( 'OBJECT_ID' ) + ': ' + objects[i]['OBJECT_ID'] + '</span>';
 		txline += '</a></td>';
 		
 		for ( var j = 1; j < 6; j++ ){

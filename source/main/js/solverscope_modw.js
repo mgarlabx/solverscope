@@ -32,8 +32,9 @@ function modw_module_insert_save(){
 		data: { 'module_input': module_input },
 		success: function( data ) {
 			if ( data.trim() != 0 ) {
-				mod_module_get( data.trim() );
+				mod_module_get( data.trim(), 1 );
 			}
+			mod_module_search();
 			$( '#myModal' ).modal( 'hide' );
 		}
 	});
@@ -137,8 +138,9 @@ function modw_module_update_save( module_id, column ) {
 				$( '#module-description').html( svc_line_break( module_input ) );
 			}
 			else {
-				mod_module_get( module_id );
+				mod_module_get( module_id, 1 );
 			}
+			mod_module_search();
 			$( '#myModal' ).modal( 'hide' );
 			
 			
@@ -165,6 +167,8 @@ function modw_module_delete( module_id ) {
 					$( '#modules' ).html( '' );
 					$( '#svc-main-content-1' ).hide();
 					$( '#svc-main-content-0' ).show();
+					mod_module_search();
+					
 				}
 			}
 		});

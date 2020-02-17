@@ -26,16 +26,30 @@ function MODULES_main() {
 				tx += '<div style="display:inline-block;margin-right:1rem"><button class="btn btn-primary btn-xs" onclick="modw_module_insert()"><i class="fa fa-plus"></i> ' + svc_lang_str( 'MODULE' ) + '</button></div>';
 			}
 			tx += '</div>';			
-			tx += '<div style="width:100%;margin-top:2rem;margin-bottom:2rem;"><i class="fa fa-search"></i>&nbsp;<input onkeyup="mod_module_search()" id="svc-module-text"></div>';
+
+			tx += '<div style="width:100%;margin-top:2rem;margin-bottom:2rem;">';
+			tx += '<input id="svc-module-text">&nbsp;&nbsp;&nbsp;';
+			tx += '<button class="btn btn-success btn-xs" onclick="mod_module_search()"><i class="fa fa-search"></i> ' + svc_lang_str( 'FILTER' ) + '</button>&nbsp;&nbsp;&nbsp;';
+			tx += '<button class="btn btn-info btn-xs" onclick="mod_module_clean()"><i class="fa fa-minus-circle"></i> ' + svc_lang_str( 'CLEAN' ) + '</button>';
+			tx += '</div>';
+			
 			tx += '<div style="width:100%" id="modules"></div>';
+			
+			
 			$( '#svc-main-content-0' ).html( tx );
 			$( '#svc-main-content-0' ).show();
+			
+			mod_module_search();
 		}
 	});
 
 }
 
 
+function mod_module_clean(){
+	$( '#svc-module-text' ).val( '' );
+	mod_module_search();
+}
 
 
 function mod_module_search(){
@@ -43,40 +57,39 @@ function mod_module_search(){
 	$( '#modules' ).html( '' );
 	var str = $( '#svc-module-text' ).val();
 	str = str.trim();
-	if ( str.length > 2 ){
-		$.ajax({
-			url: 'app/',
-			type: 'POST',
-			headers: { 'tk': tk, 'procedure': 'mod_module_search' },
-			data: { 'str_search': str },
-			success: function( data ) {
-				rows = svc_get_json( data );
-				var tx = '';
-				tx += '<table class="table table-hover">';
-				tx += '<tbody>';
-				for ( var i = 0; i < rows.length ; i++ ) {
-					if ( rows[i]['MODULE_CODE'] != undefined ) {
-						tx += '<tr onclick="mod_module_get(' + rows[i]['MODULE_ID'] + ')">';
-						tx += '<td><a href="#">' + rows[i]['MODULE_CODE'] + '</a></td>' ;
-						tx += '<td><a href="#">' + rows[i]['MODULE_NAME'] + '</a>';
-						if ( global_master == 1 ) tx += ' <span class="svc-master">MODULE_ID: ' + rows[i]['MODULE_ID'] + '</span>';
-						tx += '</td>' ;
-						tx += '</tr>';
-					}
-				}
-				tx += '</tbody>';
-				tx += '</table>';
-				$( '#modules' ).html( tx );
 
+	$.ajax({
+		url: 'app/',
+		type: 'POST',
+		headers: { 'tk': tk, 'procedure': 'mod_module_search' },
+		data: { 'str_search': str },
+		success: function( data ) {
+			rows = svc_get_json( data );
+			var tx = '';
+			tx += '<table class="table table-hover">';
+			tx += '<tbody>';
+			for ( var i = 0; i < rows.length ; i++ ) {
+				if ( rows[i]['MODULE_CODE'] != undefined ) {
+					tx += '<tr>';
+					tx += '<td align="center">' + rows[i]['MODULE_ID'] + '</td>';
+					tx += '<td align="center">' + rows[i]['MODLBL_NAME'] + '</td>';
+					tx += '<td><a href="#" onclick="mod_module_get(' + rows[i]['MODULE_ID'] + ', 1)">' + rows[i]['MODULE_CODE'] + '</a></td>' ;
+					tx += '<td><a href="#" onclick="mod_module_get(' + rows[i]['MODULE_ID'] + ', 1)">' + rows[i]['MODULE_NAME'] + '</a></td>' ;
+					tx += '</tr>';
+				}
 			}
-		});
-	}
+			tx += '</tbody>';
+			tx += '</table>';
+			$( '#modules' ).html( tx );
+
+		}
+	});
+
 }
 
 
 
-
-function mod_module_get( module_id ) {
+function mod_module_get( module_id, svc_main_content_id ) {
 	
 	svc_master_function( 'mod_module_get(' + module_id + ') @ solverscope_mod.js' );
 	
@@ -183,10 +196,10 @@ function mod_module_get( module_id ) {
 
 			if ( module[ 'PERMISSION' ] == 1 ) tx += '<button type="button" class="btn btn-danger" onclick="modw_module_delete(' + module_id + ' )"><i class="fa fa-trash"></i> ' + svc_lang_str( 'DELETE' ) + ' ' + svc_lang_str( 'MODULE' ) + '</button>';
 
-			$( '#svc-main-content-header-1' ).html( '' ); 
-			$( '#svc-main-content-body-1' ).html( tx );
-			$( '#svc-main-content-0' ).hide();
-			$( '#svc-main-content-1' ).show();
+			$( '#svc-main-content-header-' + svc_main_content_id ).html( '' ); 
+			$( '#svc-main-content-body-' + svc_main_content_id ).html( tx );
+			$( '#svc-main-content-' + (svc_main_content_id-1) ).hide();
+			$( '#svc-main-content-' + svc_main_content_id ).show();
 
 			//templates
 			mod_templa_list( module_id );

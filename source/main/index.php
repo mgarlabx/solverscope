@@ -151,6 +151,13 @@ include( 'app/app_functions.php' );
 						<div class="svc-main-content-body" id="svc-main-content-body-2"></div>
 					</div>
 					
+ 	                <div class="row svc-main-content" id="svc-main-content-3">
+						<div class="svc-main-content-close" onclick="main_display( 2 )"><button type="button" class="btn btn-info" ><i class="fa fa-times"></i></button></div>
+						<div class="svc-main-content-header" id="svc-main-content-header-3"></div><p>
+						<div class="svc-main-content-body" id="svc-main-content-body-3"></div>
+					</div>
+
+
                 </div>
             </div>
         </div>

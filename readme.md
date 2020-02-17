@@ -2,7 +2,7 @@
 
  
 
-Solverscope CMS v0 - 04/02/2020
+Solverscope CMS v0 - 16/02/2020
 ===============================
 
 (esse é um documento em evolução)
@@ -119,7 +119,7 @@ está na tabela SYS_LANGSTR e para cada nova funcionalidade é preciso criar um
 novo registro com a expressão nos 3 idiomas.
 
 A modelagem de dados está disponível no arquivo
-**../extra/solverscope_dataschema_v0.pdf**.
+**../extra/solverscope_dataschema.pdf**.
 
  
 

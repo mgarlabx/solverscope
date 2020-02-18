@@ -219,7 +219,8 @@ VALUES
 	(1,'OBJ_QUIZ',10,'check-square-o',1),
 	(2,'OBJ_ESSAY',20,'pencil-square-o',1),
 	(3,'OBJ_TEXT',30,'file-text-o',1),
-	(4,'OBJ_QUIZ_ASM',40,'th-list',1);
+	(4,'OBJ_QUIZ_ASM',40,'th-list',1),
+	(5,'OBJ_MATCH',50,'exchange',1);
 
 
 

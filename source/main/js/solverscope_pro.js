@@ -205,8 +205,14 @@ function pro_schema_get( schema_id ) {
 							}
 					
 							tx += '<tr>';
-							tx += '<td><a href="#" onclick="mod_module_get(' + rows[i]['MODULE_ID'] + ',3)">' + rows[i]['MODULE_CODE'] + '</a><td>';
-							tx += '<td><a href="#" onclick="mod_module_get(' + rows[i]['MODULE_ID'] + ',3)">' + rows[i]['MODULE_NAME'] + '</a><td>';
+							
+
+							//WORK_IN_PROGRESS: verificar como fazer para não quebrar a navegação
+							// tx += '<td><a href="#" onclick="mod_module_get(' + rows[i]['MODULE_ID'] + ', 3)">' + rows[i]['MODULE_CODE'] + '</a><td>';
+							// tx += '<td><a href="#" onclick="mod_module_get(' + rows[i]['MODULE_ID'] + ', 3)">' + rows[i]['MODULE_NAME'] + '</a><td>';
+							tx += '<td>' + rows[i]['MODULE_CODE'] + '<td>';
+							tx += '<td>' + rows[i]['MODULE_NAME'] + '<td>';
+
 							if ( permission ==  1 ) {
 								tx += '<td align="right">';
 								tx += '<button type="button" class="btn btn-primary" onclick="prow_blomod_update(' + rows[i]['BLOMOD_ID'] + ')"><i class="fa fa-pencil"></i></button>&nbsp;&nbsp;';
@@ -235,3 +241,5 @@ function pro_schema_get( schema_id ) {
 	
 	
 }
+
+

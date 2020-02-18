@@ -34,7 +34,7 @@ var global_master = 0; //set 1 for debug purposes - see function TOGGLE_ID()
 
 //include shortcuts to speed up development
 function svc_develop_mode() {
-	//pro_schema_get(4);
+	//rep_folder_list(16);
 	//global_master = 1;
 }
 

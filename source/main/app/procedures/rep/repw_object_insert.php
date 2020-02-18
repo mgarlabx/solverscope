@@ -201,6 +201,80 @@ else if  ( $OBJTYP_NAME == 'OBJ_TEXT' ) {
 
 
 
+/********* OBJ_MATCH **************************************************************************/
+
+else if  ( $OBJTYP_NAME == 'OBJ_MATCH' ) {
+	
+
+	$sql = "INSERT INTO REP_TXTITE (TXTITE_DOMAIN_ID, TXTITE_CREATED_BY) VALUES (" . $DOMAIN_ID . ", " . $PERSON_ID . ")";
+	svc_query( $connection, $sql );
+	$TXTITE_ID_OPT1_L = svc_get_var( $connection, "SELECT MAX(TXTITE_ID) FROM REP_TXTITE" );
+
+	$sql = "INSERT INTO REP_TXTITE (TXTITE_DOMAIN_ID, TXTITE_CREATED_BY) VALUES (" . $DOMAIN_ID . ", " . $PERSON_ID . ")";
+	svc_query( $connection, $sql );
+	$TXTITE_ID_OPT1_R = svc_get_var( $connection, "SELECT MAX(TXTITE_ID) FROM REP_TXTITE" );
+
+	$sql = "INSERT INTO REP_TXTITE (TXTITE_DOMAIN_ID, TXTITE_CREATED_BY) VALUES (" . $DOMAIN_ID . ", " . $PERSON_ID . ")";
+	svc_query( $connection, $sql );
+	$TXTITE_ID_OPT2_L = svc_get_var( $connection, "SELECT MAX(TXTITE_ID) FROM REP_TXTITE" );
+
+	$sql = "INSERT INTO REP_TXTITE (TXTITE_DOMAIN_ID, TXTITE_CREATED_BY) VALUES (" . $DOMAIN_ID . ", " . $PERSON_ID . ")";
+	svc_query( $connection, $sql );
+	$TXTITE_ID_OPT2_R = svc_get_var( $connection, "SELECT MAX(TXTITE_ID) FROM REP_TXTITE" );
+
+	$sql = "INSERT INTO REP_TXTITE (TXTITE_DOMAIN_ID, TXTITE_CREATED_BY) VALUES (" . $DOMAIN_ID . ", " . $PERSON_ID . ")";
+	svc_query( $connection, $sql );
+	$TXTITE_ID_OPT3_L = svc_get_var( $connection, "SELECT MAX(TXTITE_ID) FROM REP_TXTITE" );
+
+	$sql = "INSERT INTO REP_TXTITE (TXTITE_DOMAIN_ID, TXTITE_CREATED_BY) VALUES (" . $DOMAIN_ID . ", " . $PERSON_ID . ")";
+	svc_query( $connection, $sql );
+	$TXTITE_ID_OPT3_R = svc_get_var( $connection, "SELECT MAX(TXTITE_ID) FROM REP_TXTITE" );
+
+	$sql = "INSERT INTO REP_TXTITE (TXTITE_DOMAIN_ID, TXTITE_CREATED_BY) VALUES (" . $DOMAIN_ID . ", " . $PERSON_ID . ")";
+	svc_query( $connection, $sql );
+	$TXTITE_ID_OPT4_L = svc_get_var( $connection, "SELECT MAX(TXTITE_ID) FROM REP_TXTITE" );
+
+	$sql = "INSERT INTO REP_TXTITE (TXTITE_DOMAIN_ID, TXTITE_CREATED_BY) VALUES (" . $DOMAIN_ID . ", " . $PERSON_ID . ")";
+	svc_query( $connection, $sql );
+	$TXTITE_ID_OPT4_R = svc_get_var( $connection, "SELECT MAX(TXTITE_ID) FROM REP_TXTITE" );
+
+	$sql = "INSERT INTO REP_TXTITE (TXTITE_DOMAIN_ID, TXTITE_CREATED_BY) VALUES (" . $DOMAIN_ID . ", " . $PERSON_ID . ")";
+	svc_query( $connection, $sql );
+	$TXTITE_ID_OPT5_L = svc_get_var( $connection, "SELECT MAX(TXTITE_ID) FROM REP_TXTITE" );
+
+	$sql = "INSERT INTO REP_TXTITE (TXTITE_DOMAIN_ID, TXTITE_CREATED_BY) VALUES (" . $DOMAIN_ID . ", " . $PERSON_ID . ")";
+	svc_query( $connection, $sql );
+	$TXTITE_ID_OPT5_R = svc_get_var( $connection, "SELECT MAX(TXTITE_ID) FROM REP_TXTITE" );
+
+
+	//insert item
+	$sql = "
+		INSERT INTO REP_MATTEX (
+			MATTEX_DOMAIN_ID, 
+			MATTEX_CREATED_BY, 
+			MATTEX_OBJECT_ID
+		) VALUES (
+			" . $DOMAIN_ID . ",
+			" . $PERSON_ID . ",
+			" . $OBJECT_ID . "
+		)
+		";
+	svc_query( $connection, $sql );
+	$MATTEX_ID = svc_get_var( $connection, "SELECT MAX(MATTEX_ID) FROM REP_MATTEX" );
+
+	//insert match options (default = 5)
+	$sql = "
+		INSERT INTO REP_MATOPT 
+			(MATOPT_DOMAIN_ID, MATOPT_CREATED_BY, MATOPT_MATTEX_ID, MATOPT_LEFT_TXTITE_ID, MATOPT_LEFT_NUM, MATOPT_RIGHT_TXTITE_ID, MATOPT_RIGHT_NUM ) VALUES 
+			(" . $DOMAIN_ID . "," . $PERSON_ID . "," . $MATTEX_ID . "," . $TXTITE_ID_OPT1_L . ", 1, " . $TXTITE_ID_OPT1_R . ", 1),
+			(" . $DOMAIN_ID . "," . $PERSON_ID . "," . $MATTEX_ID . "," . $TXTITE_ID_OPT2_L . ", 2, " . $TXTITE_ID_OPT2_R . ", 2),
+			(" . $DOMAIN_ID . "," . $PERSON_ID . "," . $MATTEX_ID . "," . $TXTITE_ID_OPT3_L . ", 3, " . $TXTITE_ID_OPT3_R . ", 3),
+			(" . $DOMAIN_ID . "," . $PERSON_ID . "," . $MATTEX_ID . "," . $TXTITE_ID_OPT4_L . ", 4, " . $TXTITE_ID_OPT4_R . ", 4),
+			(" . $DOMAIN_ID . "," . $PERSON_ID . "," . $MATTEX_ID . "," . $TXTITE_ID_OPT5_L . ", 5, " . $TXTITE_ID_OPT5_R . ", 5)
+		";
+	svc_query( $connection, $sql );
+	
+}
 
 
 

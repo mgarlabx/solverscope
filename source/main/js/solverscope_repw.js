@@ -300,6 +300,7 @@ function repw_object_insert_save( parent ) {
 			headers: { 'tk': tk, 'procedure': 'repw_object_insert' },
 			data: { 'parent': parent, 'object_name': object_name, 'object_type': object_type },
 			success: function( data ) {
+				console.log( data );
 				if ( global_last_op == 'rep_folder_list' ) {
 					rep_folder_list( parent );
 				}

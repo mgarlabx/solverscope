@@ -36,13 +36,18 @@ function pro_produc_list() {
 				type: 'POST',
 				headers: { 'tk': tk, 'procedure': 'pro_produc_list' },
 				success: function( data ) {
+				
 					var rows = svc_get_json( data );
 			
 					var tx = '';
 	
 					if ( permission ==  1 ) tx += '<div class="m-3"><button class="btn btn-primary" onclick="prow_produc_insert()"><i class="fa fa-plus"></i> ' + svc_lang_str( 'PRODUCT' ) + '</button></div>';
 
-					if (data.length > 20 ) {
+					if ( data.indexOf( 'Error 105' ) > -1 ) {
+						tx += 'Access not allowed for this profile';
+					}
+
+					else if (data.length > 20 ) {
 		
 						tx += '<table class="table table-hover">';
 						tx += '<tbody>';
@@ -111,10 +116,12 @@ function pro_produc_get( produc_id ) {
 	
 					if ( permission ==  1 ) tx += '<div class="m-3"><button class="btn btn-primary" onclick="prow_schema_insert()"><i class="fa fa-plus"></i> ' + svc_lang_str( 'SCHEMA' ) + '</button></div>';
 
-					if (data.length > 20 ) {
+					if ( data.indexOf( 'Error 105' ) > -1 ) {
+						tx += 'Access not allowed for this profile';
+					}
+
+					else if (data.length > 20 ) {
 		
-			
-	
 						tx += '<table class="table table-hover">';
 						tx += '<tbody>';
 						for ( var i = 0; i < rows.length ; i++ ) {

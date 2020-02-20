@@ -7,7 +7,8 @@ $FOLDER_ID = svc_sanitize_post( $post['folder_id'] );
 $sql = "
 	SELECT
 		QUIITE_ID,
-		OBJECT_NAME
+		OBJECT_NAME,
+		QUIITE_OBJECT_ID
 	FROM
 		REP_OBJECT
 		INNER JOIN REP_QUIITE

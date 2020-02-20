@@ -1152,7 +1152,7 @@ function repw_quiait_insert_folder_list( quiasm_id, object_id, folder_id ) {
 			tx += '</tr>';
 			for ( var i = 0; i < rows.length ; i++ ) {
 				tx += '<tr>';
-				tx += '<td><input type="checkbox" checked name="check-item" class="check-item" value="' + rows[i]['QUIITE_ID'] + '"></td>';
+				tx += '<td><input type="checkbox" checked name="check-item" class="check-item" value="' + rows[i]['QUIITE_OBJECT_ID'] + '"></td>';
 				tx += '<td>' + rows[i]['OBJECT_NAME'];
 				if ( global_master == 1 ) tx += ' <span class="svc-master">QUIITE_ID: ' + rows[i]['QUIITE_ID'] + '</span>';
 				tx += '</td>' ;
@@ -1176,17 +1176,17 @@ function repw_quiait_insert_folder_list( quiasm_id, object_id, folder_id ) {
 function repw_quiait_insert_folder_save( quiasm_id, object_id ) {
 	
 	$( 'input[name="check-item"]:checked' ).each( function() {
-	   var quiite_id = this.value;
+
+		var object2_id = this.value;
 	   
 	   	$.ajax({
 	   		url: 'app/',
 	   		type: 'POST',
 	   		headers: { 'tk': tk, 'procedure': 'repw_quiait_insert' },
-	   		data: { 'quiasm_id': quiasm_id, 'quiite_id': quiite_id },
+	   		data: { 'quiasm_id': quiasm_id, 'object_id': object2_id },
 			async: false,
 	   		success: function( data ) {
 	   			rep_quiasm_get( object_id );
-
 	   		}
 	   	});
 	

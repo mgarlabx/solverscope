@@ -2,7 +2,7 @@
 
  
 
-Solverscope CMS v0 - 19/02/2020
+Solverscope CMS v0 - 20/02/2020
 ===============================
 
 (esse é um documento em evolução)

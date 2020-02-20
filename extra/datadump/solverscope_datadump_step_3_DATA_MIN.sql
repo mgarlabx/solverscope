@@ -26,6 +26,8 @@ VALUES
 	(13,'repwr\\_%','Repository review write',0),
 	(21,'mod%','Module read and write',0),
 	(22,'mod\\_%','Module read only',0),
+	(31,'pro%','Product read and write',0),
+	(32,'pro\\_%','Product read only',0),
 	(90,'sys_person_domain_list','List of persons of the current domain',0),
 	(91,'sys_person_name_get','Get name of current user',1),
 	(92,'sys_domain_last_get','Get last domain visited',1),
@@ -36,18 +38,18 @@ VALUES
 	(97,'sys_domain_id_get','Get current domain id',1);
 
 
-
 # Dump of table SYS_PROFP1
 # ------------------------------------------------------------
 
-INSERT INTO `SYS_PROFP1` (`PROFP1_PROFP0_ID`, `PROFP1_PROFIL_ID`)
+INSERT INTO `SYS_PROFP1` (`PROFP1_ID`, `PROFP1_PROFP0_ID`, `PROFP1_PROFIL_ID`)
 VALUES
 	(2,1),
 	(2,2),
-	(21,2),
 	(12,3),
 	(13,3),
-	(22,3);
+	(22,3),
+	(11,4),
+	(32,3);
 
 
 # Dump of table SYS_PROFM0
@@ -57,28 +59,26 @@ INSERT INTO `SYS_PROFM0` (`PROFM0_ID`, `PROFM0_LABEL`, `PROFM0_LEVEL`, `PROFM0_I
 VALUES
 	(2,'HOME',1,'home',2,1,0,''),
 	(3,'DASHBOARD',1,'dashboard',3,0,0,''),
-	(11,'REPOSITORY',2,'library_books',11,1,0,''),
+	(11,'REPOSITORY',2,'library_books',21,1,0,''),
 	(12,'REPOSITORY_FULL_ACCESS',3,'',1,1,11,''),
 	(13,'REPOSITORY_MY_FOLDERS',3,'',2,1,11,''),
 	(14,'TAGS',3,'',3,1,11,''),
-	(21,'STRUCTURE',2,'layers',21,1,0,''),
-	(22,'MODULES',3,'',1,1,21,''),
-	(23,'PRODUCTS',3,'',2,1,21,''),
+	(21,'STRUCTURE',2,'layers',11,1,0,''),
+	(22,'MODULES',3,'',2,1,21,''),
+	(23,'PRODUCTS',3,'',1,1,21,''),
 	(81,'SETTINGS',2,'settings',81,1,0,''),
 	(82,'USERS',3,'',2,1,81,''),
-	(83,'PROFILES',3,'',1,1,81,''),
-	(84,'DOMAINS',3,'',3,1,81,''),
-	(91,'DEVELOPER',2,'developer_mode',91,1,0,''),
-	(92,'TOGGLE_ID',3,'',1,1,91,'');
-
+	(83,'PROFILES',3,'',2,1,91,''),
+	(84,'DOMAINS',3,'',1,1,91,''),
+	(91,'SYSTEM',2,'developer_mode',91,1,0,''),
+	(92,'TOGGLE_ID',3,'',3,1,91,'');
 
 
 # Dump of table SYS_PROFM1
 # ------------------------------------------------------------
 
-INSERT INTO `SYS_PROFM1` (`PROFM1_PROFM0_ID`, `PROFM1_PROFIL_ID`)
+INSERT INTO `SYS_PROFM1` (`PROFM1_ID`, `PROFM1_PROFM0_ID`, `PROFM1_PROFIL_ID`)
 VALUES
-
 	(2,1),
 	(3,1),
 	(11,1),
@@ -94,7 +94,6 @@ VALUES
 	(84,1),
 	(91,1),
 	(92,1),
-
 	(2,2),
 	(3,2),
 	(11,2),
@@ -108,7 +107,6 @@ VALUES
 	(82,2),
 	(83,2),
 	(84,2),
-
 	(2,3),
 	(3,3),
 	(11,3),
@@ -118,7 +116,6 @@ VALUES
 	(21,3),
 	(22,3),
 	(23,3),
-	
 	(2,4),
 	(11,4),
 	(13,4);
@@ -507,4 +504,11 @@ VALUES
 	(234,'RELATIONSHIP','Relationship','Relacionamento','Relación'),
 	(235,'SEARCH','Search','Buscar','Buscar'),
 	(236,'FILTER','Filter','Filtrar','Filtrar'),
-	(237,'CLEAN','Clean','Limpar','Limpiar');
+	(237,'CLEAN','Clean','Limpar','Limpiar'),
+	(238,'OBJ_MATCH','Text match','Correspondência de texto','Coincidencia de texto'),
+	(239,'PAIR','Pair','Dupla','Doble'),
+	(240,'COMMENTS','Comments','Comentários','Comentarios'),
+	(241,'LEFT','Left','Esquerda','Izquierda'),
+	(242,'RIGHT','Right','Direita','Derecha'),
+	(243,'PROMPT_PROFP0','Please select the procedure for this profile:','Por favor, selecione o procedimento para este perfil:','Por favor, seleccione el procedimiento de este perfil:'),
+	(244,'SYSTEM','System','Sistema','Sistema');

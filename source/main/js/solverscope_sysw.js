@@ -122,7 +122,7 @@ function sysw_profil_delete( profil_id ) {
 /***** PROFILES SIDEBAR ***********************************************************************************************************************************************************/
 
 
-function sysw_profil_m_insert() {
+function sysw_profil_m_insert( profil_id ) {
 	//WORK_IN_PROGRESS - sysw_profil_m_insert
 	alert( 'WORK IN PROGRESS' );
 }
@@ -139,14 +139,67 @@ function sysw_profil_m_delete( profm1_id ) {
 /***** PROFILES PROCEDURES ***********************************************************************************************************************************************************/
 
 
-function sysw_profil_p_insert() {
-	//WORK_IN_PROGRESS - sysw_profil_p_insert
-	alert( 'WORK IN PROGRESS' );
+function sysw_profil_p_insert( profil_id ) {
+	
+	$.ajax({
+		url: 'app/',
+		type: 'POST',
+		headers: { 'tk': tk, 'procedure': 'sys_profp0_list' },
+		success: function( data ) {
+			var rows = svc_get_json( data );
+			var tx = '';
+			tx += '<select id="profp0-id">';
+			for ( var i = 0; i < rows.length ; i++ ) {
+				tx += '<option value="' + rows[i]['PROFP0_ID'] + '">' + rows[i]['PROFP0_NAME'] + '</option>';
+			}
+			tx += '</select>';
+			$( '#myModalTitle' ).html( svc_lang_str( 'PROMPT_PROFP0' ) );
+			$( '#myModalBody' ).html( tx );
+			$( '#myModalButton' ).html( '<button type="button" class="btn btn-primary" onclick="sysw_profil_p_insert_save(' + profil_id + ')">' + svc_lang_str( 'SAVE' ) + '</button>' );
+			$( '#myModal' ).modal( 'show' );
+
+		}
+	});
+	
 }
 
-function sysw_profil_p_delete( profm1_id ) {
-	//WORK_IN_PROGRESS - sysw_profil_p_delete
-	alert( 'WORK IN PROGRESS' );
+function sysw_profil_p_insert_save( profil_id ) {
+
+	var profp0_id = $( '#profp0-id' ).val();
+
+	$.ajax({
+		url: 'app/',
+		type: 'POST',
+		headers: { 'tk': tk, 'procedure': 'sysw_profp1_insert' },
+		data: { 'profil_id': profil_id, 'profp0_id': profp0_id },
+		success: function( data ) {
+			sys_profil_get( profil_id );
+			$( '#myModal' ).modal( 'hide' );
+		}
+	});
+	
+}
+
+
+
+
+function sysw_profil_p_delete( profp1_id, profil_id ) {
+	
+	if ( confirm( svc_lang_str( 'CONFIRM_DEL' ) ) ) {
+		$.ajax({
+			url: 'app/',
+			type: 'POST',
+			headers: { 'tk': tk, 'procedure': 'sysw_profp1_delete' },
+			data: { 'profp1_id': profp1_id },
+			success: function( data ) {
+				sys_profil_get( profil_id );
+			}
+		});
+
+	}
+
+
+
 }
 
 

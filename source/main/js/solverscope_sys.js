@@ -57,6 +57,8 @@ function sys_profil_list(){
 
 function sys_profil_get( profil_id ) {
 	
+	svc_master_function( 'sys_profil_get(' + profil_id + ') @ solverscope_sys.js' );
+	
 	//sidebar
 	$.ajax({
 		url: 'app/',
@@ -77,7 +79,7 @@ function sys_profil_get( profil_id ) {
 			
 					var tx = '';
 			
-					tx += '<div class="m-3"><button class="btn btn-primary" onclick="sysw_profil_m_insert()"><i class="fa fa-plus"></i> SIDEBAR</button></div>';
+					tx += '<div class="m-3"><button class="btn btn-primary" onclick="sysw_profil_m_insert(' + profil_id + ')"><i class="fa fa-plus"></i> SIDEBAR</button></div>';
 
 					tx += '<table class="table table-hover">';
 					tx += '<tbody>';
@@ -92,7 +94,7 @@ function sys_profil_get( profil_id ) {
 						tx += '</td>' ;
 						tx += '<td>' + profil_m[i]['PROFM0_COMMENTS'] + '</td>';
 						tx += '<td align="right">';
-						tx += '<button type="button" class="btn btn-danger" onclick="sysw_profil_m_delete(' + profil_m[i]['PROFM1_ID'] + ')"><i class="fa fa-trash"></i></button>';
+						tx += '<button type="button" class="btn btn-danger" onclick="sysw_profil_m_delete(' + profil_m[i]['PROFM1_ID'] + ',' + profil_id + ')"><i class="fa fa-trash"></i></button>';
 						tx += '</td>' ;
 						tx += '</tr>';
 					}
@@ -100,7 +102,7 @@ function sys_profil_get( profil_id ) {
 					tx += '</table>';
 					
 
-					tx += '<div class="m-3 mt-8"><button class="btn btn-primary" onclick="sysw_profil_p_insert()"><i class="fa fa-plus"></i> PROCEDURE</button></div>';
+					tx += '<div class="m-3 mt-8"><button class="btn btn-primary" onclick="sysw_profil_p_insert(' + profil_id + ')"><i class="fa fa-plus"></i> PROCEDURE</button></div>';
 
 					tx += '<table class="table table-hover">';
 					tx += '<tbody>';
@@ -112,7 +114,7 @@ function sys_profil_get( profil_id ) {
 						tx += '</td>' ;
 						tx += '<td>' + profil_p[i]['PROFP0_COMMENTS'] + '</td>';
 						tx += '<td align="right">';
-						tx += '<button type="button" class="btn btn-danger" onclick="sysw_profil_p_delete(' + profil_p[i]['PROFP1_ID'] + ')"><i class="fa fa-trash"></i></button>';
+						tx += '<button type="button" class="btn btn-danger" onclick="sysw_profil_p_delete(' + profil_p[i]['PROFP1_ID'] + ',' + profil_id + ')"><i class="fa fa-trash"></i></button>';
 						tx += '</td>' ;
 						tx += '</tr>';
 					}

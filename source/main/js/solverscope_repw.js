@@ -300,7 +300,6 @@ function repw_object_insert_save( parent ) {
 			headers: { 'tk': tk, 'procedure': 'repw_object_insert' },
 			data: { 'parent': parent, 'object_name': object_name, 'object_type': object_type },
 			success: function( data ) {
-				console.log( data );
 				if ( global_last_op == 'rep_folder_list' ) {
 					rep_folder_list( parent );
 				}
@@ -323,6 +322,7 @@ function repw_object_delete( object_id, parent ) {
 			headers: { 'tk': tk, 'procedure': 'repw_object_delete' },
 			data: { 'object_id': object_id },
 			success: function( data ) {
+				
 				if ( data.trim() == 'Error 804' ) {
 					alert( svc_lang_str( 'OBJECT_NOT_EMPTY' ) ); //WORK_IN_PROGRESS -------- checar se esse objeto está sendo usado
 				}
@@ -342,6 +342,8 @@ function repw_object_delete( object_id, parent ) {
 
 
 function repw_object_update( object_id, parent, old_name, object_active ) {
+	
+	global_last_op = 'repw_object_update';
 	
 	var tx = '';
 	tx += '<table>';
@@ -394,8 +396,8 @@ function repw_object_update_save( parent, object_id ) {
 			headers: { 'tk': tk, 'procedure': 'repw_object_update' },
 			data: { 'object_name': object_name, 'object_id': object_id, 'object_active': object_active },
 			success: function( data ) {
-				
-				if ( global_last_op == 'rep_folder_list' ) {
+
+				if ( global_last_op == 'rep_folder_list' || global_last_op == 'repw_object_update' ) {
 					rep_folder_list( parent );
 				}
 				else if ( global_last_op == 'rep_my_folders_list' ) {
@@ -1294,5 +1296,138 @@ function repw_quiait_update_save( quiait_id, object_id ) {
 
 
 
+/******  MATCH ***************************************************************************************************************/
+
+
+function repw_matopt_update( matopt_id, object_id ) {
+	
+	$.ajax({
+		url: 'app/',
+		type: 'POST',
+		headers: { 'tk': tk, 'procedure': 'rep_matopt_get' },
+		data: { 'matopt_id': matopt_id },
+		success: function( data ) {
+			
+			var matopt = svc_get_json( data );
+			var tx = '';
+			
+			tx += '<table class="table">';
+			tx += '<tr>';
+			tx += '<td>' + svc_lang_str( 'ORDER_BY' ) + '</td>';
+			tx += '<td><input size="3" id="matopt-orderby" value="' + matopt[ 'MATOPT_ORDERBY' ] + '"></td>';
+			tx += '</tr>';
+			tx += '<td>' + svc_lang_str( 'COMMENTS' ) + '</td>';
+			tx += '<td><input id="matopt-comments" value="' + matopt[ 'MATOPT_COMMENTS' ] + '"></td>';
+			tx += '</tr>';
+			tx += '<td>' + svc_lang_str( 'LEFT' ) + '</td>';
+			tx += '<td><input size="3" id="matopt-left-num" value="' + matopt[ 'MATOPT_LEFT_NUM' ] + '"></td>';
+			tx += '</tr>';
+			tx += '<td>' + svc_lang_str( 'RIGHT' ) + '</td>';
+			tx += '<td><input size="3" id="matopt-right-num" value="' + matopt[ 'MATOPT_RIGHT_NUM' ] + '"></td>';
+			tx += '</tr>';
+			tx += '</table>';
+			
+			$( '#myModalTitle' ).html( svc_lang_str( 'PROMPT_OPTION_INFO' ) );
+			$( '#myModalBody' ).html( tx );
+			$( '#myModalButton' ).html( '<button type="button" class="btn btn-primary" onclick="repw_matopt_update_save( ' + matopt_id + ', ' + object_id + ' )">' + svc_lang_str( 'SAVE' ) + '</button>' );
+			$( '#myModal' ).modal( 'show' );
+
+		
+			
+		}
+	});
+	
+	
+}
+
+
+function repw_matopt_update_save( matopt_id, object_id ) {
+	
+	var matopt_orderby = $( '#matopt-orderby' ).val();
+	var matopt_comments = $( '#matopt-comments' ).val();
+	var matopt_left_num = $( '#matopt-left-num' ).val();
+	var matopt_right_num = $( '#matopt-right-num' ).val();
+	
+	$.ajax({
+		url: 'app/',
+		type: 'POST',
+		headers: { 'tk': tk, 'procedure': 'repw_matopt_update' },
+		data: { 'matopt_id': matopt_id, 'matopt_orderby': matopt_orderby, 'matopt_comments': matopt_comments, 'matopt_left_num': matopt_left_num, 'matopt_right_num': matopt_right_num },
+		success: function( data ) {
+			rep_matopt_list( object_id );
+			$( '#myModal' ).modal( 'hide' );
+		}
+	});
+	
+}
+
+
+function repw_matopt_insert( object_id ) {
+	
+	var tx = '';
+	
+	tx += '<table class="table">';
+	tx += '<tr>';
+	tx += '<td>' + svc_lang_str( 'ORDER_BY' ) + '</td>';
+	tx += '<td><input size="3" id="matopt-orderby"></td>';
+	tx += '</tr>';
+	tx += '<td>' + svc_lang_str( 'COMMENTS' ) + '</td>';
+	tx += '<td><input id="matopt-comments"></td>';
+	tx += '</tr>';
+	tx += '<td>' + svc_lang_str( 'LEFT' ) + '</td>';
+	tx += '<td><input size="3" id="matopt-left-num"></td>';
+	tx += '</tr>';
+	tx += '<td>' + svc_lang_str( 'RIGHT' ) + '</td>';
+	tx += '<td><input size="3" id="matopt-right-num"></td>';
+	tx += '</tr>';
+	tx += '</table>';
+	
+	$( '#myModalTitle' ).html( svc_lang_str( 'PROMPT_OPTION_INFO' ) );
+	$( '#myModalBody' ).html( tx );
+	$( '#myModalButton' ).html( '<button type="button" class="btn btn-primary" onclick="repw_matopt_insert_save( ' + object_id + ' )">' + svc_lang_str( 'SAVE' ) + '</button>' );
+	$( '#myModal' ).modal( 'show' );
+	
+}
+
+
+function repw_matopt_insert_save( object_id ) {
+	
+	var matopt_orderby = $( '#matopt-orderby' ).val();
+	var matopt_comments = $( '#matopt-comments' ).val();
+	var matopt_left_num = $( '#matopt-left-num' ).val();
+	var matopt_right_num = $( '#matopt-right-num' ).val();
+	
+	$.ajax({
+		url: 'app/',
+		type: 'POST',
+		headers: { 'tk': tk, 'procedure': 'repw_matopt_insert' },
+		data: { 'object_id': object_id, 'matopt_orderby': matopt_orderby, 'matopt_comments': matopt_comments, 'matopt_left_num': matopt_left_num, 'matopt_right_num': matopt_right_num },
+		success: function( data ) {
+			rep_matopt_list( object_id );
+			$( '#myModal' ).modal( 'hide' );
+		}
+	});
+	
+	
+}
+
+
+function repw_matopt_delete( matopt_id, object_id ) {
+	
+	if ( confirm( svc_lang_str( 'CONFIRM_DEL' ) ) ) {
+	
+		$.ajax({
+			url: 'app/',
+			type: 'POST',
+			headers: { 'tk': tk, 'procedure': 'repw_matopt_delete' },
+			data: { 'matopt_id': matopt_id },
+			success: function( data ) {
+				rep_matopt_list( object_id );
+			}
+		});
+	
+	}
+
+}
 
 

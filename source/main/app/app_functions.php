@@ -39,6 +39,8 @@ function svc_sanitize_post( $str ) {
 	$ret = str_replace( '=', '&#61;', $ret );
 	$ret = str_replace( '"', '&#34;', $ret );
 	$ret = str_replace( "'", '&#39;', $ret );
+	$ret = str_replace( "&amp;#39;", '&#39;', $ret );
+	$ret = str_replace( "&amp;nbsp;", ' ', $ret );
 	$ret = trim( $ret );
 	return $ret;
 }

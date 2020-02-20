@@ -277,17 +277,18 @@ else if  ( $OBJTYP_NAME == 'OBJ_MATCH' ) {
 	$sql = "
 		UPDATE REP_TXTITE SET TXTITE_DELETED = 1
 		WHERE TXTITE_ID IN
-			(SELECT MATTEX_LEFT_TXTITE_ID FROM REP_MATOPT WHERE
+			(SELECT MATOPT_LEFT_TXTITE_ID FROM REP_MATOPT WHERE
 				MATOPT_MATTEX_ID = " . $MATTEX_ID . "
 				AND MATOPT_DOMAIN_ID = " . $DOMAIN_ID . "
 				AND MATOPT_CREATED_BY = " . $PERSON_ID . "
 			)
 		";
 	$resp = svc_query( $connection, $sql );
+
 	$sql = "
 		UPDATE REP_TXTITE SET TXTITE_DELETED = 1
 		WHERE TXTITE_ID IN
-			(SELECT MATTEX_RIGHT_TXTITE_ID FROM REP_MATOPT WHERE
+			(SELECT MATOPT_RIGHT_TXTITE_ID FROM REP_MATOPT WHERE
 				MATOPT_MATTEX_ID = " . $MATTEX_ID . "
 				AND MATOPT_DOMAIN_ID = " . $DOMAIN_ID . "
 				AND MATOPT_CREATED_BY = " . $PERSON_ID . "
@@ -296,8 +297,18 @@ else if  ( $OBJTYP_NAME == 'OBJ_MATCH' ) {
 	$resp = svc_query( $connection, $sql );
 	
 	
+	//delete REP_MATOPT
+	$sql = "
+		DELETE FROM 
+			REP_MATOPT 
+		WHERE
+			MATOPT_MATTEX_ID = " . $MATTEX_ID . "
+			AND MATOPT_DOMAIN_ID = " . $DOMAIN_ID . "
+			AND MATOPT_CREATED_BY = " . $PERSON_ID . "
+		";
+	$resp = svc_query( $connection, $sql );
+
 	//delete REP_MATTEX
-	//REP_MATOPT will be deleted by CASCADE
 	$sql = "
 		DELETE FROM 
 			REP_MATTEX 
@@ -308,7 +319,7 @@ else if  ( $OBJTYP_NAME == 'OBJ_MATCH' ) {
 		";
 	$resp = svc_query( $connection, $sql );
 	
-	
+		
 	//delete REP_TXTITE
 	//REP_TXTSEG will be deleted by CASCADE
 	$sql = "

@@ -31,8 +31,6 @@ $sql = "
 	
 	";
 
-//echo $sql;die();
-
 $rows = svc_get_rows( $connection, $sql );
 
 svc_show_result_encoded( $rows );

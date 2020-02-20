@@ -75,6 +75,7 @@ function rep_folder_list( parent ) {
 							if ( global_master == 1 ) tx += '<span class="svc-master">FOLDER_ID: ' + rows[i]['FOLDER_ID'] + '</span>';
 							tx += '</a></td>';
 							if ( rows[i]['PERMISSION'] == 1 ) {
+								global_rep_permission = 1;
 								tx += '<td align="right">';
 								tx += '<button class="btn btn-info btn-xs" onclick="repw_folder_share(' + rows[i]['FOLDER_ID'] + ',' + parent + ')"><i class="fa fa-share-alt"></i></button>';
 								tx += '<button class="btn btn-success btn-xs" onclick="repw_folder_move(' + rows[i]['FOLDER_ID'] + ',' + parent + ')"><i class="fa fa-arrows"></i></button>';
@@ -259,7 +260,10 @@ function rep_objects_list ( objects, parent, op_layout ) {
 		else if  ( objects[i]['OBJTYP_NAME'] == 'OBJ_TEXT' ) {
 			txline += 'rep_htmobj_get(' + objects[i]['OBJECT_ID'] +')';
 		}
-		
+		else if  ( objects[i]['OBJTYP_NAME'] == 'OBJ_MATCH' ) {
+			txline += 'rep_matopt_list(' + objects[i]['OBJECT_ID'] +')';
+		}
+
 		else {
 			txline += 'alert( \'WORK IN PROGRESS\' );' //WORK_IN_PROGRESS: fazer outros objetos
 		}
@@ -888,5 +892,91 @@ function rep_htmobj_get( object_id ) {
 	});
 	
 	
+}
+
+
+/***** TXTITE & TXTSEG ***********************************************************************************************************************************************************/
+                                    
+                 
+function rep_matopt_list( object_id ) {
+	
+	svc_master_function( 'rep_matopt_list(' + object_id + ') @ solverscope_rep.js' );
+	
+	$.ajax({
+		url: 'app/',
+		type: 'POST',
+		headers: { 'tk': tk, 'procedure': 'rep_matopt_list' },
+		data: { 'object_id': object_id },
+		success: function( data ) {
+			
+			var rows = svc_get_json( data );
+		
+			var tx = '';
+		
+			global_last_str1 = 'rep_matopt_list';
+			global_last_id = object_id;
+			
+			if ( global_rep_permission == 1 ) tx += '<div class="m-3"><button class="btn btn-primary" onclick="repw_matopt_insert(' + object_id + ')"><i class="fa fa-plus"></i> ' + svc_lang_str( 'PAIR' ) + '</button></div>';
+	
+			tx += '<table class="table table-hover">';
+			tx += '<tbody>';
+			for ( var i = 0; i < rows.length ; i++ ) {
+				tx += '<tr>';
+				
+				tx += '<td align="left"><b>' + rows[i]['MATOPT_ORDERBY'] + '</b></td>';
+				tx += '<td colspan="3">' + rows[i]['MATOPT_COMMENTS'];
+				if ( global_master == 1 ) tx += ' <span class="svc-master">MATOPT_ID: ' + rows[i]['MATOPT_ID'] + '</span>';
+				tx += '</td>';
+				tx += '<td rowspan="2" align="right" width="150">';
+				if ( global_rep_permission == 1 ) {
+					tx += '<button type="button" class="btn btn-primary" onclick="repw_matopt_update(' + rows[i]['MATOPT_ID'] + ', ' + object_id + ')"><i class="fa fa-pencil"></i></button>&nbsp;&nbsp;';
+					tx += '<button type="button" class="btn btn-danger" onclick="repw_matopt_delete(' + rows[i]['MATOPT_ID'] + ', ' + object_id + ')"><i class="fa fa-trash"></i></button>';
+				}
+				else {
+					tx += '&nbsp;'
+				}
+				tx += '</td>' ;
+				tx += '</tr>';
+				
+				tx += '<tr style="background-color:#FFF">';
+				tx += '<td align="center">' + rows[i]['MATOPT_LEFT_NUM'] + '</td>';
+
+				tx += '<td align="left">';
+				tx += '<div class="texseg" id="texseg-' + rows[i]['MATOPT_LEFT_TXTITE_ID'] + '"></div>';
+				tx += '<button type="button" class="btn btn-primary" onclick="repw_txtite_update(' + rows[i]['MATOPT_LEFT_TXTITE_ID'] + ', ' + object_id + ')"><i class="fa fa-pencil"></i></button>&nbsp;&nbsp;';
+				tx += '</td>';
+				
+				tx += '<td align="center">' + rows[i]['MATOPT_RIGHT_NUM'] + '</td>';
+				
+				tx += '<td align="left">';
+				tx += '<div class="texseg" id="texseg-' + rows[i]['MATOPT_RIGHT_TXTITE_ID'] + '"></div>';
+				tx += '<button type="button" class="btn btn-primary" onclick="repw_txtite_update(' + rows[i]['MATOPT_RIGHT_TXTITE_ID'] + ', ' + object_id + ')"><i class="fa fa-pencil"></i></button>&nbsp;&nbsp;';
+				tx += '</td>';
+
+				tx += '</tr>';
+				
+				tx += '<tr>';
+				tx += '<td colspan="10">&nbsp;</td>';
+				tx += '</tr>';
+				
+				
+			}
+			tx += '</tbody>';
+			tx += '</table>';	
+		
+			$( '#svc-main-content-body-1' ).html( tx );
+			$( '#svc-main-content-1' ).show();
+			$( '#svc-main-content-0' ).hide();
+			
+			//get and populate texts
+			$( '.texseg' ).each( function(){
+				var id = $( this ).attr( 'id' );
+				id = id.replace( 'texseg-', '' );
+				rep_txtite_get( id, 'texseg-' + id );
+			});
+		
+		}
+	});  
+
 }
 

@@ -265,12 +265,12 @@ else if  ( $OBJTYP_NAME == 'OBJ_MATCH' ) {
 	//insert match options (default = 5)
 	$sql = "
 		INSERT INTO REP_MATOPT 
-			(MATOPT_DOMAIN_ID, MATOPT_CREATED_BY, MATOPT_MATTEX_ID, MATOPT_LEFT_TXTITE_ID, MATOPT_LEFT_NUM, MATOPT_RIGHT_TXTITE_ID, MATOPT_RIGHT_NUM ) VALUES 
-			(" . $DOMAIN_ID . "," . $PERSON_ID . "," . $MATTEX_ID . "," . $TXTITE_ID_OPT1_L . ", 1, " . $TXTITE_ID_OPT1_R . ", 1),
-			(" . $DOMAIN_ID . "," . $PERSON_ID . "," . $MATTEX_ID . "," . $TXTITE_ID_OPT2_L . ", 2, " . $TXTITE_ID_OPT2_R . ", 2),
-			(" . $DOMAIN_ID . "," . $PERSON_ID . "," . $MATTEX_ID . "," . $TXTITE_ID_OPT3_L . ", 3, " . $TXTITE_ID_OPT3_R . ", 3),
-			(" . $DOMAIN_ID . "," . $PERSON_ID . "," . $MATTEX_ID . "," . $TXTITE_ID_OPT4_L . ", 4, " . $TXTITE_ID_OPT4_R . ", 4),
-			(" . $DOMAIN_ID . "," . $PERSON_ID . "," . $MATTEX_ID . "," . $TXTITE_ID_OPT5_L . ", 5, " . $TXTITE_ID_OPT5_R . ", 5)
+			(MATOPT_DOMAIN_ID, MATOPT_CREATED_BY, MATOPT_MATTEX_ID, MATOPT_LEFT_TXTITE_ID, MATOPT_LEFT_NUM, MATOPT_RIGHT_TXTITE_ID, MATOPT_RIGHT_NUM, MATOPT_ORDERBY ) VALUES 
+			(" . $DOMAIN_ID . "," . $PERSON_ID . "," . $MATTEX_ID . "," . $TXTITE_ID_OPT1_L . ", 1, " . $TXTITE_ID_OPT1_R . ", 1, 1),
+			(" . $DOMAIN_ID . "," . $PERSON_ID . "," . $MATTEX_ID . "," . $TXTITE_ID_OPT2_L . ", 2, " . $TXTITE_ID_OPT2_R . ", 2, 2),
+			(" . $DOMAIN_ID . "," . $PERSON_ID . "," . $MATTEX_ID . "," . $TXTITE_ID_OPT3_L . ", 3, " . $TXTITE_ID_OPT3_R . ", 3, 3),
+			(" . $DOMAIN_ID . "," . $PERSON_ID . "," . $MATTEX_ID . "," . $TXTITE_ID_OPT4_L . ", 4, " . $TXTITE_ID_OPT4_R . ", 4, 4),
+			(" . $DOMAIN_ID . "," . $PERSON_ID . "," . $MATTEX_ID . "," . $TXTITE_ID_OPT5_L . ", 5, " . $TXTITE_ID_OPT5_R . ", 5, 5)
 		";
 	svc_query( $connection, $sql );
 	

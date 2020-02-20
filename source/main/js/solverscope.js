@@ -21,6 +21,8 @@ var global_tags_packets = [];
 var global_tags_entities = [];
 var global_tags_filters = [];
 
+var global_rep_permission = 0;
+
 var global_last_op = '';
 var global_last_id = 0;
 var global_last_str1 = '';
@@ -32,9 +34,9 @@ var global_last_str2 = '';
 
 var global_master = 0; //set 1 for debug purposes - see function TOGGLE_ID()
 
-//include shortcuts to speed up development
+//include shortcuts to speed up development 
 function svc_develop_mode() {
-	//rep_folder_list(16);
+	//rep_matopt_list(133);
 	//global_master = 1;
 }
 
@@ -268,7 +270,9 @@ function main_display( n ) {
 			else if ( global_last_str1 == 'rep_htmobj_get' ) {
 				rep_htmobj_get( global_last_id );
 			}
-			
+			else if ( global_last_str1 == 'rep_matopt_list' ) {
+				rep_matopt_list( global_last_id );
+			}
 		}
 	}
 }
@@ -289,15 +293,19 @@ function svc_date_format( str ) {
 		return '';
 	}
 	else {
-		var dat = new Date( str );
-		var d = dat.getDate();
-		var m = dat.getMonth();
-		var y = dat.getFullYear();
-		d = '0' + d;
-	 	d = d.substr( -2 );
-		m = m + 1;
-	 	m = '0' + m;
-	 	m = m.substr( -2 );
+		// var dat = new Date( str );
+		// var d = dat.getDate();
+		// var m = dat.getMonth();
+		// var y = dat.getFullYear();
+		// d = '0' + d;
+		// 	 	d = d.substr( -2 );
+		// m = m + 1;
+		// 	 	m = '0' + m;
+		// 	 	m = m.substr( -2 );
+
+		var d = str.substr( 8, 2 );
+		var m = str.substr( 5, 2 );
+		var y = str.substr( 0, 4 );
 
 		var langua_id = svc_lang_str( 'LANGUA_ID' );
 

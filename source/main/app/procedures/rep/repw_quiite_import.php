@@ -31,7 +31,7 @@ if ( $xlsx = SimpleXLSX::parse( $my_file ) ) {
 		$die = true;
 		$msg = 'Too large file, max. 500 rows.';
 	}
-	else if ( count( $rows[0] ) != 10 ) {
+	else if ( count( $rows[0] ) != 11 ) {
 		$die = true;
 		$msg = 'Invalid number of columns.';
 	}
@@ -43,41 +43,45 @@ if ( $xlsx = SimpleXLSX::parse( $my_file ) ) {
 		$die = true;
 		$msg = 'Invalid column 1.';
 	}
-	else if ( $rows[0][2] != 'QUESTION_COMMAND' ) {
-		$die = true;
-		$msg = 'Invalid column 2.';
-	}
-	else if ( $rows[0][3] != 'QUESTION_CORRECT' ) {
+	else if ( $rows[0][2] != 'QUESTION_FEEDBACK' ) {
 		$die = true;
 		$msg = 'Invalid column 3.';
 	}
-	else if ( $rows[0][4] != 'QUESTION_OPT_1' ) {
+	else if ( $rows[0][3] != 'QUESTION_COMMAND' ) {
+		$die = true;
+		$msg = 'Invalid column 2.';
+	}
+	else if ( $rows[0][4] != 'QUESTION_CORRECT' ) {
 		$die = true;
 		$msg = 'Invalid column 4.';
 	}
-	else if ( $rows[0][5] != 'QUESTION_OPT_2' ) {
+	else if ( $rows[0][5] != 'QUESTION_OPT_1' ) {
 		$die = true;
 		$msg = 'Invalid column 5.';
 	}
-	else if ( $rows[0][6] != 'QUESTION_OPT_3' ) {
+	else if ( $rows[0][6] != 'QUESTION_OPT_2' ) {
 		$die = true;
 		$msg = 'Invalid column 6.';
 	}
-	else if ( $rows[0][7] != 'QUESTION_OPT_4' ) {
+	else if ( $rows[0][7] != 'QUESTION_OPT_3' ) {
 		$die = true;
 		$msg = 'Invalid column 7.';
 	}
-	else if ( $rows[0][8] != 'QUESTION_OPT_5' ) {
+	else if ( $rows[0][8] != 'QUESTION_OPT_4' ) {
 		$die = true;
 		$msg = 'Invalid column 8.';
 	}
-	else if ( $rows[0][9] != 'QUESTION_OPT_6' ) {
+	else if ( $rows[0][9] != 'QUESTION_OPT_5' ) {
 		$die = true;
 		$msg = 'Invalid column 9.';
 	}
+	else if ( $rows[0][10] != 'QUESTION_OPT_6' ) {
+		$die = true;
+		$msg = 'Invalid column 10.';
+	}
 	
 	foreach ( $rows as $row ) {
-		if ( count( $row ) != 10 ) {
+		if ( count( $row ) != 11 ) {
 			$die = true;
 			$msg = 'Invalid row';
 			break;
@@ -203,9 +207,42 @@ if ( $xlsx = SimpleXLSX::parse( $my_file ) ) {
 			}
 			$TXTITE_FEEDBACK_ID = $res;
 			
+
+			//5 - INSERT TXTSEG FOR FEEDBACK
+			$content = svc_sanitize_post( $row[2] );
+			$content = str_replace( '&amp;#34;', '&quot;', $content );
+			$content = str_replace( '&amp;#39;', '&apos;', $content );
+			$content = str_replace( '&amp;#61;', '=', $content );
+			$sql = "
+				INSERT INTO REP_TXTSEG (
+					TXTSEG_DOMAIN_ID,
+					TXTSEG_TXTITE_ID,
+					TXTSEG_ORDERBY,
+					TXTSEG_TYPE,
+					TXTSEG_STYLE,
+					TXTSEG_CONTENT,
+					TXTSEG_CREATED_BY
+				) VALUES (
+					" . $DOMAIN_ID . ",
+					" . $TXTITE_FEEDBACK_ID . ",
+					1,
+					'TXT',
+					'paragraph',
+					'" . $content . "',
+					" . $PERSON_ID . "
+				)
+				";
+			$res = svc_query( $connection, $sql );
+			if ( $res != 1 ){
+				svc_disconnect( $connection );
+				echo $sql;
+				//echo 'ABORTED 5 - row ' . $r . ' - ' . $res;
+				die();
+			}
+			
 			
 
-			//5 - INSERT TXTITE FOR COMMAND
+			//6 - INSERT TXTITE FOR COMMAND
 			$sql = "
 				INSERT INTO REP_TXTITE (
 					TXTITE_DOMAIN_ID,
@@ -218,12 +255,12 @@ if ( $xlsx = SimpleXLSX::parse( $my_file ) ) {
 			$res = svc_query( $connection, $sql );
 			if ( $res != 1 ){
 				svc_disconnect( $connection );
-				echo 'ABORTED 5 - row ' . $r . ' - ' . $res;
+				echo 'ABORTED 6 - row ' . $r . ' - ' . $res;
 				die();
 			}
 
 
-			//6 - GET TXTITE_ID FOR COMMAND
+			//7 - GET TXTITE_ID FOR COMMAND
 			$sql = "
 				SELECT
 					MAX(TXTITE_ID)
@@ -236,14 +273,14 @@ if ( $xlsx = SimpleXLSX::parse( $my_file ) ) {
 			$res = svc_get_var( $connection, $sql );
 			if ( strpos( $res, 'rror 80' ) == 1 ){
 				svc_disconnect( $connection );
-				echo 'ABORTED 6 - row ' . $r . ' - ' . $res;
+				echo 'ABORTED 7 - row ' . $r . ' - ' . $res;
 				die();
 			}
 			$TXTITE_ID = $res;
 
 			
-			//7 - INSERT TXTSEG FOR COMMAND
-			$content = svc_sanitize_post( $row[2] );
+			//8 - INSERT TXTSEG FOR COMMAND
+			$content = svc_sanitize_post( $row[3] );
 			$content = str_replace( '&amp;#34;', '&quot;', $content );
 			$content = str_replace( '&amp;#39;', '&apos;', $content );
 			$content = str_replace( '&amp;#61;', '=', $content );
@@ -269,12 +306,12 @@ if ( $xlsx = SimpleXLSX::parse( $my_file ) ) {
 			$res = svc_query( $connection, $sql );
 			if ( $res != 1 ){
 				svc_disconnect( $connection );
-				echo 'ABORTED 7 - row ' . $r . ' - ' . $res;
+				echo 'ABORTED 8 - row ' . $r . ' - ' . $res;
 				die();
 			}
 			
 			
-			//8 - INSERT QUIITE
+			//9 - INSERT QUIITE
 			$sql = "
 				INSERT INTO REP_QUIITE (
 					QUIITE_DOMAIN_ID,
@@ -293,12 +330,12 @@ if ( $xlsx = SimpleXLSX::parse( $my_file ) ) {
 			$res = svc_query( $connection, $sql );
 			if ( $res != 1 ){
 				svc_disconnect( $connection );
-				echo 'ABORTED 8 - row ' . $r . ' - ' . $res;
+				echo 'ABORTED 9 - row ' . $r . ' - ' . $res;
 				die();
 			}
 		
 
-			//9 - GET QUIITE_ID
+			//10 - GET QUIITE_ID
 			$sql = "
 				SELECT
 					MAX(QUIITE_ID)
@@ -313,7 +350,7 @@ if ( $xlsx = SimpleXLSX::parse( $my_file ) ) {
 			$res = svc_get_var( $connection, $sql );
 			if ( strpos( $res, 'rror 80' ) == 1 ){
 				svc_disconnect( $connection );
-				echo 'ABORTED 9 - row ' . $r . ' - ' . $res;
+				echo 'ABORTED 10 - row ' . $r . ' - ' . $res;
 				die();
 			}
 			$QUIITE_ID = $res;
@@ -328,7 +365,7 @@ if ( $xlsx = SimpleXLSX::parse( $my_file ) ) {
 			for ( $i=1; $i < 7; $i++ ) {
 
 
-				if ( $row[ 3 + $i ] != '' ) {
+				if ( $row[ 4 + $i ] != '' ) {
 
 					//101 - INSERT TXTITE FOR OPT
 					$sql = "
@@ -368,7 +405,7 @@ if ( $xlsx = SimpleXLSX::parse( $my_file ) ) {
 
 			
 					//103 - INSERT TXTSEG
-					$content = svc_sanitize_post( $row[ 3 + $i ] );
+					$content = svc_sanitize_post( $row[ 4 + $i ] );
 					$content = str_replace( '&amp;#34;', '&quot;', $content );
 					$content = str_replace( '&amp;#39;', '&apos;', $content );
 					$content = str_replace( '&amp;#61;', '=', $content );
@@ -401,7 +438,7 @@ if ( $xlsx = SimpleXLSX::parse( $my_file ) ) {
 			
 					//104 - INSERT QUIOPT
 					$CORRECT = 0;
-					if ( $row[3] == $i ) $CORRECT = 1;
+					if ( $row[4] == $i ) $CORRECT = 1;
 
 					$sql = "
 						INSERT INTO REP_QUIOPT (
